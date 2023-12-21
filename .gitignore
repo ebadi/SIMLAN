@@ -1,0 +1,24 @@
+# ros2 colcon
+install/
+log/
+build/
+# python
+*.pcd
+*.pyc
+# local
+experiments/
+*.iml
+*.swp
+.project
+.pydevproject
+.DS_Store
+.idea
+**/phobos_out/
+# colcon/CMake output
+build
+install
+log
+.trunk
+Tools
+blender*
+phobos*

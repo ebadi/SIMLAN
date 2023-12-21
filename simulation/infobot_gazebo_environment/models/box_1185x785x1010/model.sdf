@@ -1,0 +1,57 @@
+<sdf version="1.7">
+<model name="box_1185x785x1010" canonical_link="node0_link">
+  <link name="node0_link">
+    <collision name="node0_collision">
+      <pose relative_to="node0_link">0.59250 -0.39250 0.50500 0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <box>
+          <size>1.185 0.785 1.01</size>
+        </box>
+      </geometry>
+
+      <surface>
+      <friction>
+        <ode>
+          <mu>1</mu>
+          <mu2>1</mu2>
+          <slip1>0</slip1>
+          <slip2>0</slip2>
+        </ode>
+      </friction>
+      <contact>
+        <ode>
+          <soft_cfm>0</soft_cfm>
+          <soft_erp>0.2</soft_erp>
+          <kp>1e+13</kp>
+          <kd>1</kd>
+          <max_vel>0.01</max_vel>
+          <min_depth>0</min_depth>
+        </ode>
+      </contact>
+      </surface>
+      
+    </collision>
+    <inertial>
+      <inertia>
+        <ixx>34.08996</ixx>
+        <ixy>-0.00000</ixy>
+        <ixz>-0.00000</ixz>
+        <iyy>50.50658</iyy>
+        <iyz>-0.00000</iyz>
+        <izz>42.09254</izz>
+      </inertia>
+      <pose relative_to="node0_link">0.59250 -0.39250 0.50500 0.00000 0.00000 0.00000</pose>
+      <mass>50.00000</mass>
+    </inertial>
+    <visual name="node0">
+      <pose relative_to="node0_link">0.00000 0.00000 0.00000 0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>meshes/textured_1185x785x1010.dae</uri>
+          <scale>1.00000 1.00000 1.00000</scale>
+        </mesh>
+      </geometry>
+    </visual>
+  </link>
+</model>
+</sdf>

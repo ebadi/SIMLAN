@@ -1,0 +1,143 @@
+<sdf version="1.7">
+<model name="eur_pallet" canonical_link="node0_link">
+  <link name="node0_link">
+    <visual name="node0">
+      <pose relative_to="node0_link">0.00000 0.00000 0.00000 0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <mesh>
+          <uri>meshes/textured_pallet.dae</uri>
+          <scale>1.00000 1.00000 1.00000</scale>
+        </mesh>
+      </geometry>
+    </visual>
+    <inertial>
+      <inertia>
+        <ixx>1.28388</ixx>
+        <ixy>0</ixy>
+        <ixz>0</ixz>
+        <iyy>2.88614</iyy>
+        <iyz>0</iyz>
+        <izz>4.06990</izz>
+      </inertia>
+      <pose relative_to="node0_link">0.6 0.4 0.1 0 0 0</pose>
+      <mass>25.00000</mass>
+    </inertial>
+  </link>
+
+  <link name="collision_holder_1">
+    <mass>0.0001</mass>
+    <collision name="collision_holder_1">
+      <pose>0.6 0.05 0.075 0.0 0.0 0.0</pose>
+      <geometry>
+        <box>
+          <size>1.2 0.1 0.15</size>
+        </box>
+      </geometry>
+      <surface>
+      <friction>
+        <ode>
+          <mu>1</mu>
+          <mu2>1</mu2>
+          <slip1>0</slip1>
+          <slip2>0</slip2>
+        </ode>
+      </friction>
+      <contact>
+        <ode>
+          <soft_cfm>0</soft_cfm>
+          <soft_erp>0.2</soft_erp>
+          <kp>1e+13</kp>
+          <kd>1</kd>
+          <max_vel>0.01</max_vel>
+          <min_depth>0</min_depth>
+        </ode>
+      </contact>
+      </surface>
+    </collision>
+  </link>
+
+
+  <link name="collision_holder_2">
+    <mass>0.0001</mass>
+    <collision name="collision_holder_2">
+      <pose>0.6 0.4 0.075 0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <box>
+          <size>1.2 0.1 0.15</size>
+        </box>
+      </geometry>
+      <surface>
+      <friction>
+        <ode>
+          <mu>1</mu>
+          <mu2>1</mu2>
+          <slip1>0</slip1>
+          <slip2>0</slip2>
+        </ode>
+      </friction>
+      <contact>
+        <ode>
+          <soft_cfm>0</soft_cfm>
+          <soft_erp>0.2</soft_erp>
+          <kp>1e+13</kp>
+          <kd>1</kd>
+          <max_vel>0.01</max_vel>
+          <min_depth>0</min_depth>
+        </ode>
+      </contact>
+      </surface>
+
+    </collision>
+  </link>
+
+  <link name="collision_holder_3">
+    <mass>0.0001</mass>
+    <collision name="collision_holder_3">
+      <pose>0.6 0.75 0.075 0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <box>
+          <size>1.2 0.1 0.15</size>
+        </box>
+      </geometry>
+      <surface>
+      <friction>
+        <ode>
+          <mu>1</mu>
+          <mu2>1</mu2>
+          <slip1>0</slip1>
+          <slip2>0</slip2>
+        </ode>
+      </friction>
+      <contact>
+        <ode>
+          <soft_cfm>0</soft_cfm>
+          <soft_erp>0.2</soft_erp>
+          <kp>1e+13</kp>
+          <kd>1</kd>
+          <max_vel>0.01</max_vel>
+          <min_depth>0</min_depth>
+        </ode>
+      </contact>
+      </surface>
+
+    </collision>
+  </link>
+  <joint name="fixed_joint_2" type="fixed">
+    <parent>node0_link</parent>
+    <child>collision_holder_2</child>
+  </joint>
+
+  <joint name="fixed_joint_3" type="fixed">
+    <parent>node0_link</parent>
+    <child>collision_holder_3</child>
+  </joint>
+
+  <joint name="fixed_joint_1" type="fixed">
+    <parent>node0_link</parent>
+    <child>collision_holder_1</child>
+  </joint>
+
+
+
+</model>
+</sdf>

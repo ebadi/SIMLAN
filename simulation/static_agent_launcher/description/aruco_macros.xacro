@@ -1,0 +1,62 @@
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+
+    <xacro:macro name="aruco_link" params="number">
+        <link name="aruco_${number}_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.5 0.5 .001"/>
+                </geometry>
+            </visual>
+        </link>
+        <xacro:inertial_box mass="0.1" x="0.12" y="0.15" z="0.15"/>
+    </xacro:macro>
+
+    <xacro:macro name="aruco_joint" params="attach_to number x y z r p yw">
+        <joint name="aruco_${number}_joint" type="fixed">
+            <origin xyz="${x} ${y} ${z}" rpy="${r} ${p} ${yw}"/>
+            <parent link="${attach_to}"/>
+            <child link="aruco_${number}_link"/>        
+        </joint>
+    </xacro:macro>
+
+   <xacro:macro name="aruco_gazebo" params="number">
+        <gazebo reference="aruco_${number}_link">
+            <static>true</static>
+            <visual name="aruco_front_face">
+                <pose>0.00005 0 0 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.0001 0.5 0.5</size>
+                    </box>
+                </geometry>
+                <material>
+                    <script>
+                        <uri>model://aruco/materials/scripts</uri>
+                        <uri>model://aruco/materials/textures</uri>
+                        <name>aruco_${number}</name>
+                    </script>
+                </material>
+            </visual>
+            <visual name="aruco_back_face">
+                <pose>-0.00005 0 0 0 0 0</pose>
+                <geometry>
+                    <box>
+                        <size>0.0001 0.5 0.5</size>
+                    </box>
+                </geometry>
+            </visual> 
+        </gazebo>
+   </xacro:macro>
+
+   <xacro:macro name="aruco" params="number x y z r p yw">
+        <xacro:attach_aruco attach_to="base_link" number="${number}" x="${x}" y="${y}" z="${z}" r="${r}" p="${p}" yw="${yw}"/>
+   </xacro:macro>
+
+    <xacro:macro name="attach_aruco" params="attach_to number x y z r p yw">
+            <xacro:aruco_link number="${number}"/>
+            <xacro:aruco_joint attach_to="${attach_to}" number="${number}" x="${x}" y="${y}" z="${z}" r="${r}" p="${p}" yw="${yw}"/>
+            <xacro:aruco_gazebo number="${number}"/>
+    </xacro:macro>
+</robot>
