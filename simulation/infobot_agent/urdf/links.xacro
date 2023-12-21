@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+    <link name="base_footprint" />
+
+
+    <link name="base_link">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <geometry>
+                <mesh filename="file://infobot_agent/models/infobot_common/meshes/AMR_GP400.dae" scale="1 1 1"/>
+                <!-- <box size="${base_length} ${base_width} ${base_height}" /> -->
+            </geometry>
+            <material name="blue"/>
+        </visual>
+
+        <collision>
+            <geometry>
+                <mesh filename="file://infobot_agent/models/infobot_common/meshes/AMR_GP400.dae" scale="1 1 1"/>
+                <!-- <box size="${base_length} ${base_width} ${base_height}" />  -->
+            </geometry>
+        </collision>
+        <xacro:inertial_box m="${base_mass}"  d="${base_length}" w="${base_width}" h="${base_height}"/>
+    </link>
+
+    <xacro:macro name="wheel" params="prefix wheel_radius_multiple">
+        <link name="wheel_${prefix}_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0" />
+                <geometry>
+                    <cylinder length="${wheel_width}" radius="${wheel_radius*wheel_radius_multiple}" />
+                </geometry>
+                <material name="grey" />
+            </visual>
+            <collision>
+                <geometry>
+                    <cylinder length="${wheel_width}" radius="${wheel_radius*wheel_radius_multiple}" />
+                </geometry>
+            </collision>
+            <xacro:inertial_cylinder m="${wheel_mass}" r="${wheel_radius*wheel_radius_multiple}" h="${wheel_width}"/>
+        </link>
+    </xacro:macro>
+
+    <xacro:wheel prefix="left" wheel_radius_multiple="1" />
+    <xacro:wheel prefix="right" wheel_radius_multiple="1" />
+    <xacro:wheel prefix="frictionless_back_left" wheel_radius_multiple="1" />
+    <xacro:wheel prefix="frictionless_back_right" wheel_radius_multiple="0.99" />
+    <xacro:wheel prefix="frictionless_front_left" wheel_radius_multiple="0.99" />
+    <xacro:wheel prefix="frictionless_front_right" wheel_radius_multiple="0.99" />
+
+</robot>

@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+
+
+    <xacro:macro name="frictionless_wheel_joint_macro" params="prefix x y z">
+        <joint name="wheel_${prefix}_joint" type="fixed">
+            <parent link="base_link" />
+            <child link="wheel_${prefix}_link" />
+            <axis xyz="0 0 1" />
+            <origin xyz="${x} ${y} -${z}" rpy="0 ${pi/2} ${pi/2}" />
+            <dynamics friction="0.0"/>
+        </joint>
+    </xacro:macro>
+
+    <xacro:macro name="wheel_joint_macro" params="prefix x y z">
+        <joint name="wheel_${prefix}_joint" type="continuous">
+            <parent link="base_link" />
+            <child link="wheel_${prefix}_link" />
+            <axis xyz="0 0 1" />
+            <origin xyz="${x} ${y} -${z}" rpy="0 ${pi/2} ${pi/2}" />
+            <dynamics friction="${infobot_friction}" damping="${infobot_damping}"/>
+        </joint>
+    </xacro:macro>
+
+    <joint name="base_joint" type="fixed">
+        <parent link="base_footprint" />
+        <child link="base_link" />
+        <origin xyz="0 0 0.0" rpy="0 0 0" />
+        <dynamics friction="0.01"/>
+    </joint>
+
+    <xacro:wheel_joint_macro prefix="left" x="0"  y="${1*wheel_separation/2 }"  z="0" />
+    <xacro:wheel_joint_macro prefix="right" x="0" y="${-1*wheel_separation/2 }"  z="0" />
+    <xacro:frictionless_wheel_joint_macro prefix="frictionless_back_left"   x="${(base_length/2 - wheel_radius) * 1}"  y="${(base_width/2 - wheel_width) * 1}"   z="0" />
+    <xacro:frictionless_wheel_joint_macro prefix="frictionless_back_right"  x="${(base_length/2 - wheel_radius) * 1}"  y="${(base_width/2 - wheel_width) * -1}"  z="0" />
+    <xacro:frictionless_wheel_joint_macro prefix="frictionless_front_left"  x="${(base_length/2 - wheel_radius) * -1}" y="${(base_width/2 - wheel_width) * 1}"   z="0" />
+    <xacro:frictionless_wheel_joint_macro prefix="frictionless_front_right" x="${(base_length/2 - wheel_radius) * -1}" y="${(base_width/2 - wheel_width) * -1}"  z="0" />
+
+</robot>
