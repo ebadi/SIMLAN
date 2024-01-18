@@ -1,6 +1,5 @@
 # InfoBot Navigation Within a Simulation Warehouse
 
-
 This is the repository for research project activities at Infotiv Technology Development.
 
 Find technical and more detailed documentation and specifications in the following links:
@@ -15,14 +14,17 @@ Find technical and more detailed documentation and specifications in the followi
 [video demo 1](resources/demo1.mp4)
 ,
 [video demo 2](resources/demo2.mp4)
+
+
+Click on image below to see the Volvo layout demo:
+
+[![Delivery 2, Volvo layout](https://img.youtube.com/vi/f8ULCZFEM5Q/0.jpg)](https://www.youtube.com/watch?v=f8ULCZFEM5Q)
+
 ## Installation
 
 These steps are used to install ROS (Humble) and Gazebo (11.10.2) on
   - Ubuntu 22.04
   - Windows 10 (after installing "ubuntu 22.04.3 LTS" WSL2 from Microsoft Store).
-    - WSL-version: 2.0.9.0
-    - Kernelversion: 5.15.133.1-1
-    - WSLg-version: 1.0.59
 
 ### ROS, RViz
 

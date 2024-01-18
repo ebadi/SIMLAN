@@ -122,6 +122,43 @@
 
     </collision>
   </link>
+
+
+
+  <link name="collision_holder_surface">
+    <mass>0.0001</mass>
+    <collision name="collision_holder_3">
+      <pose>0.6 0.4 0.144 0.00000 0.00000 0.00000</pose>
+      <geometry>
+        <box>
+          <size>1.2 0.8 0.01</size>
+        </box>
+      </geometry>
+      <surface>
+      <friction>
+        <ode>
+          <mu>1</mu>
+          <mu2>1</mu2>
+          <slip1>0</slip1>
+          <slip2>0</slip2>
+        </ode>
+      </friction>
+      <contact>
+        <ode>
+          <soft_cfm>0</soft_cfm>
+          <soft_erp>0.2</soft_erp>
+          <kp>1e+13</kp>
+          <kd>1</kd>
+          <max_vel>0.01</max_vel>
+          <min_depth>0</min_depth>
+        </ode>
+      </contact>
+      </surface>
+
+    </collision>
+  </link>
+
+
   <joint name="fixed_joint_2" type="fixed">
     <parent>node0_link</parent>
     <child>collision_holder_2</child>
@@ -137,7 +174,10 @@
     <child>collision_holder_1</child>
   </joint>
 
-
+  <joint name="fixed_joint_surface" type="fixed">
+    <parent>node0_link</parent>
+    <child>collision_holder_surface</child>
+  </joint>
 
 </model>
 </sdf>

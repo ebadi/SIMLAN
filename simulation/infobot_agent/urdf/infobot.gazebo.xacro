@@ -14,7 +14,7 @@
 
     <xacro:macro name="gazebo_frictionless" params="ref">
         <gazebo reference="${ref}">
-            <material>Gazebo/Blue</material>
+            <material>Gazebo/Grey</material>
             <mu>0.0</mu>
             <mu2>0.0</mu2>
         </gazebo>
@@ -49,9 +49,8 @@
 
 
 
-
     <gazebo reference="base_link">
-        <material>Gazebo/Blue</material>
+        <material>Gazebo/Orange</material>
     </gazebo>
 
     <gazebo reference="imu_link">
@@ -227,11 +226,6 @@
       <joint_name>wheel_left_joint</joint_name>
       <joint_name>wheel_right_joint</joint_name>
     </plugin>
-
-    <!-- 
-    <xacro:include filename="/home/research/repositories/SMILEIV/simulation/install/static_agent_launcher/share/static_agent_launcher/description/aruco_macros.xacro" />
-    <xacro:attach_aruco attach_to="wheel_left_link" number="99" x="0" y="0" z="0.3" r="0" p="0" yw="0"/>
-    This doesn't work because aruco_macros.xacro is not present        -->
 
 
     </gazebo>

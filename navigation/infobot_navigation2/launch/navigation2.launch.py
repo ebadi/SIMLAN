@@ -50,7 +50,7 @@ def generate_launch_description():
     rviz_config_dir = os.path.join(
         get_package_share_directory('infobot_navigation2'),
         'rviz',
-        'tb3_navigation2.rviz')
+        'infobot_navigation2.rviz')
 
     return LaunchDescription([
         DeclareLaunchArgument(

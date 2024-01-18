@@ -34,7 +34,7 @@ def generate_launch_description():
     (output, err) = p.communicate()
     print(output, err)
     p.wait()
-    print("urdf_path2:", urdf_path)
+    print("urdf_path:", urdf_path)
     x_pose = LaunchConfiguration('x_pose', default='0.0')
     y_pose = LaunchConfiguration('y_pose', default='0.0')
     z_pose = LaunchConfiguration('z_pose', default='0.0')

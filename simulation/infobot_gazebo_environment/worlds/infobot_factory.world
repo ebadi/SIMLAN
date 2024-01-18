@@ -1,0 +1,650 @@
+<sdf version='1.7'>
+  <world name='default'>
+
+    <include>
+      <uri>model://factory_floor</uri>
+    </include>
+
+  <light type="directional" name="sun">
+    <cast_shadows>true</cast_shadows>
+    <pose>0 0 10 0 0 0</pose>
+    <diffuse>0.8 0.8 0.8 1</diffuse>
+    <specular>0.2 0.2 0.2 1</specular>
+    <attenuation>
+      <range>1000</range>
+      <constant>0.9</constant>
+      <linear>0.01</linear>
+      <quadratic>0.001</quadratic>
+    </attenuation>
+    <direction>0.1 0.1 -0.9</direction>
+  </light>
+
+
+    <include>
+      <uri>model://factory</uri>
+      <pose>0 0 0</pose>
+    </include>
+
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_2</name>
+      <pose>-27 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_3</name>
+      <pose>-24 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_4</name>
+      <pose>-21 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_5</name>
+      <pose>-18 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_6</name>
+      <pose>-15 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_7</name>
+      <pose>-12 -2  0.001 0 0 0</pose>
+    </include>
+
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_8</name>
+      <pose>-9 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_9</name>
+      <pose>-6 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_10</name>
+      <pose>-3 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_11</name>
+      <pose>0 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_12</name>
+      <pose>3 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_13</name>
+      <pose>6 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_14</name>
+      <pose>9 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_15</name>
+      <pose>12 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_16</name>
+      <pose>15 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_17</name>
+      <pose>18 -2  0.001 0 0 0</pose>
+    </include>
+<!-- FORKLIFT ALLEY
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_18</name>
+      <pose>21 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_19</name>
+      <pose>24 -2  0.001 0 0 0</pose>
+    </include>
+-->
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_20</name>
+      <pose>27 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_21</name>
+      <pose>30 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_22</name>
+      <pose>33 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_23</name>
+      <pose>36 -2  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_1_24</name>
+      <pose>39 -2  0.001 0 0 0</pose>
+    </include>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_2</name>
+      <pose>-27 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_3</name>
+      <pose>-24 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_4</name>
+      <pose>-21 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_5</name>
+      <pose>-18 4  0.001 0 0 0</pose>
+    </include>
+
+<!-- PICKUP POINT
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_6</name>
+      <pose>-15 4  0.001 0 0 0</pose>
+    </include>
+-->
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_7</name>
+      <pose>-12 4  0.001 0 0 0</pose>
+    </include>
+
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_8</name>
+      <pose>-9 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_9</name>
+      <pose>-6 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_10</name>
+      <pose>-3 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_11</name>
+      <pose>0 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_12</name>
+      <pose>3 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_13</name>
+      <pose>6 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_14</name>
+      <pose>9 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_15</name>
+      <pose>12 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_16</name>
+      <pose>15 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_17</name>
+      <pose>18 4  0.001 0 0 0</pose>
+    </include>
+<!-- FORKLIFT ALLEY
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_18</name>
+      <pose>21 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_19</name>
+      <pose>24 4  0.001 0 0 0</pose>
+    </include>
+-->
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_20</name>
+      <pose>27 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_21</name>
+      <pose>30 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_22</name>
+      <pose>33 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_23</name>
+      <pose>36 4  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_2_24</name>
+      <pose>39 4  0.001 0 0 0</pose>
+    </include>
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_2</name>
+      <pose>-27 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_3</name>
+      <pose>-24 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_4</name>
+      <pose>-21 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_5</name>
+      <pose>-18 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_6</name>
+      <pose>-15 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_7</name>
+      <pose>-12 7.5  0.001 0 0 0</pose>
+    </include>
+
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_8</name>
+      <pose>-9 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_9</name>
+      <pose>-6 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_10</name>
+      <pose>-3 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_11</name>
+      <pose>0 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_12</name>
+      <pose>3 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_13</name>
+      <pose>6 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_14</name>
+      <pose>9 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_15</name>
+      <pose>12 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_16</name>
+      <pose>15 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_17</name>
+      <pose>18 7.5  0.001 0 0 0</pose>
+    </include>
+<!-- FORKLIFT ALLEY
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_18</name>
+      <pose>21 7.5  0.001 0 0 0</pose>
+    </include>
+
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_19</name>
+      <pose>24 7.5  0.001 0 0 0</pose>
+    </include>
+-->
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_20</name>
+      <pose>27 7.5  0.001 0 0 0</pose>
+    </include>
+
+<!-- DROP OFF POINT
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_21</name>
+      <pose>30 7.5  0.001 0 0 0</pose>
+    </include>
+-->
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_22</name>
+      <pose>33 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_23</name>
+      <pose>36 7.5  0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <static>1</static>
+      <uri>model://shelf</uri>
+      <name>shelf_wall_3_24</name>
+      <pose>39 7.5  0.001 0 0 0</pose>
+    </include>
+
+
+
+
+
+
+
+
+    <include>
+      <uri>model://eur_pallet</uri>
+      <name>pallet_group_pickup</name>
+      <pose>-15 4 0.001 0 0 0</pose>
+    </include>
+
+
+    <include>
+      <uri>model://box_1185x785x1010</uri>
+      <name>box_group_pickup</name>
+      <pose>-15  5 0.4 0 0 0</pose>
+    </include>
+
+
+
+
+    <include>
+      <uri>model://eur_pallet</uri>
+      <name>pallet_group_dropoff</name>
+      <pose>31 8 0.001 0 -0 0</pose>
+    </include>
+
+
+
+
+
+    <actor name="test_actor">
+      <link name="body">
+      <visual name="aruco_front_face">
+        <pose>0 0.7 0 0 0 1.57 </pose>
+        <geometry>
+          <box>
+            <size>0.0001 0.5 0.5</size>
+          </box>
+        </geometry>
+        <material>
+          <script>
+            <uri>model://aruco/materials/scripts</uri>
+            <uri>model://aruco/materials/textures</uri>
+            <name>aruco_0</name>
+          </script>
+        </material>
+      </visual>
+
+      </link>
+      <skin>
+        <filename>walk.dae</filename>
+      </skin>
+      <animation name="walking">
+        <filename>walk.dae</filename>
+        <interpolate_x>true</interpolate_x>
+      </animation>
+      <script>
+        <loop>1</loop>
+        <auto_start>1</auto_start>
+        <trajectory id="0" type="walking" tension="1">
+          <waypoint>
+            <time>0</time>
+            <pose>25 0 0 0 0 1.57</pose>
+          </waypoint>
+
+          <waypoint>
+            <time>5</time>
+            <pose>25 10 0 0 0 1.57</pose>
+          </waypoint>
+
+          <waypoint>
+            <time>5.5</time>
+            <pose>25 10 0 0 0 4.71</pose>
+          </waypoint>
+
+          <waypoint>
+            <time>10</time>
+            <pose>25 0 0 0 0 4.71</pose>
+          </waypoint>
+
+          <waypoint>
+            <time>10.5</time>
+            <pose>25 0 0 0 0 1.57</pose>
+          </waypoint>
+
+
+
+        </trajectory>
+      </script>
+    </actor>
+
+
+    <gui fullscreen='0'>
+      <camera name='user_camera'>
+        <pose>26.8898 11.6672 18.7547 -0 0.649796 -3.003</pose>
+        <view_controller>orbit</view_controller>
+        <projection_type>perspective</projection_type>
+      </camera>
+    </gui>
+  </world>
+</sdf>

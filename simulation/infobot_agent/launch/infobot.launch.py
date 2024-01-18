@@ -23,6 +23,11 @@ from launch import LaunchDescription
 from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration
+from launch import LaunchDescription
+from launch.actions import ExecuteProcess, IncludeLaunchDescription, RegisterEventHandler
+from launch.event_handlers import OnProcessExit
+
+from launch_ros.actions import Node
 
 
 def generate_launch_description():
@@ -30,8 +35,8 @@ def generate_launch_description():
         get_package_share_directory('infobot_agent'), 'launch')
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     # INITIAL_POSITION
-    x_pose = LaunchConfiguration('x_pose', default='3.0')
-    y_pose = LaunchConfiguration('y_pose', default='7.0')
+    x_pose = LaunchConfiguration('x_pose', default='1.0')
+    y_pose = LaunchConfiguration('y_pose', default='1.0')
     z_pose = LaunchConfiguration('z_pose', default='0.1')
 
     robot_state_publisher_cmd = IncludeLaunchDescription(
@@ -52,9 +57,22 @@ def generate_launch_description():
         }.items()
     )
 
-    ld = LaunchDescription()
+    load_joint_state_broadcaster = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'joint_state_broadcaster'],
+        output='screen'
+    )
 
+    load_joint_trajectory_controller = ExecuteProcess(
+        cmd=['ros2', 'control', 'load_controller', '--set-state', 'active', 'effort_controller'],
+        output='screen'
+    )
+
+    ld =LaunchDescription()
     ld.add_action(spawn_infobot_cmd)
     ld.add_action(robot_state_publisher_cmd)
+
+    ld.add_action(load_joint_state_broadcaster)
+    ld.add_action(load_joint_trajectory_controller)
+
 
     return ld

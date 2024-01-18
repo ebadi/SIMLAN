@@ -13,12 +13,59 @@ dictionary = cv.aruco.getPredefinedDictionary(cv.aruco.DICT_5X5_1000)
 parameters =  cv.aruco.DetectorParameters()
 detector = cv.aruco.ArucoDetector(dictionary, parameters)
 
+"""
+import cv2
+import numpy as np
+
+canvas = np.zeros((300, 400, 3), dtype=np.uint8)
+
+# dimensions of the grid
+rows, cols = 3, 4
+image_width, image_height = canvas.shape[1] // cols, canvas.shape[0] // rows
+
+for i in range(rows):
+    for j in range(cols):
+        image = opencv image
+        canvas[i * image_height: (i + 1) * image_height, j * image_width: (j + 1) * image_width] = image
+
+cv2.imshow('Grid of Images', canvas)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+"""
+
+def detect_aruco(cv_image):
+    # Aruco detection code is based on https://pyimagesearch.com/2020/12/21/detecting-aruco-markers-with-opencv-and-python/
+    corners, ids, rejectedCandidates = detector.detectMarkers(cv_image)
+    if len(corners) > 0:
+        for (markerCorner, markerID) in zip(corners, ids):
+            corners = markerCorner.reshape((4, 2))
+            (topLeft, topRight, bottomRight, bottomLeft) = corners
+            topRight = (int(topRight[0]), int(topRight[1]))
+            bottomRight = (int(bottomRight[0]), int(bottomRight[1]))
+            bottomLeft = (int(bottomLeft[0]), int(bottomLeft[1]))
+            topLeft = (int(topLeft[0]), int(topLeft[1]))
+            # print(topRight, bottomRight, bottomLeft, topLeft)
+            # draw the bounding box
+            cv.line(cv_image, topLeft, topRight, (0, 255, 0), 2)
+            cv.line(cv_image, topRight, bottomRight, (0, 255, 0), 2)
+            cv.line(cv_image, bottomRight, bottomLeft, (0, 255, 0), 2)
+            cv.line(cv_image, bottomLeft, topLeft, (0, 255, 0), 2)
+            # compute and draw the center (x, y)-coordinates of the ArUco marker
+            cX = int((topLeft[0] + bottomRight[0]) / 2.0)
+            cY = int((topLeft[1] + bottomRight[1]) / 2.0)
+            cv.circle(cv_image, (cX, cY), 4, (0, 0, 255), -1)
+            cv.putText(cv_image, str(markerID),
+                (topLeft[0], topLeft[1] - 15),
+                cv.FONT_HERSHEY_SIMPLEX,
+                0.5, (0, 255, 0), 2)
+
+
 class ImageSubscriber(Node):
     def __init__(self):
         super().__init__('image_subscriber')
         self.subscription = self.create_subscription(
             Image,
-            '/static_agents/camera_1/image_raw',
+            '/static_agents/camera_160/image_raw',
             self.image_callback,
             10
         )
@@ -30,30 +77,7 @@ class ImageSubscriber(Node):
             cv_image = self.cv_bridge.imgmsg_to_cv2(
                 msg, desired_encoding='bgr8')
 
-            # Aruco detection code is based on https://pyimagesearch.com/2020/12/21/detecting-aruco-markers-with-opencv-and-python/
-            corners, ids, rejectedCandidates = detector.detectMarkers(cv_image)
-            if len(corners) > 0:
-                for (markerCorner, markerID) in zip(corners, ids):
-                    corners = markerCorner.reshape((4, 2))
-                    (topLeft, topRight, bottomRight, bottomLeft) = corners
-                    topRight = (int(topRight[0]), int(topRight[1]))
-                    bottomRight = (int(bottomRight[0]), int(bottomRight[1]))
-                    bottomLeft = (int(bottomLeft[0]), int(bottomLeft[1]))
-                    topLeft = (int(topLeft[0]), int(topLeft[1]))
-                    # print(topRight, bottomRight, bottomLeft, topLeft)
-                    # draw the bounding box
-                    cv.line(cv_image, topLeft, topRight, (0, 255, 0), 2)
-                    cv.line(cv_image, topRight, bottomRight, (0, 255, 0), 2)
-                    cv.line(cv_image, bottomRight, bottomLeft, (0, 255, 0), 2)
-                    cv.line(cv_image, bottomLeft, topLeft, (0, 255, 0), 2)
-                    # compute and draw the center (x, y)-coordinates of the ArUco marker
-                    cX = int((topLeft[0] + bottomRight[0]) / 2.0)
-                    cY = int((topLeft[1] + bottomRight[1]) / 2.0)
-                    cv.circle(cv_image, (cX, cY), 4, (0, 0, 255), -1)
-                    cv.putText(cv_image, str(markerID),
-                        (topLeft[0], topLeft[1] - 15),
-                        cv.FONT_HERSHEY_SIMPLEX,
-                        0.5, (0, 255, 0), 2)
+            detect_aruco(cv_image)
             cv.imshow('Image from ROS2', cv_image)
             cv.waitKey(1)
         except Exception as e:

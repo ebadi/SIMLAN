@@ -2,8 +2,10 @@
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro"> 
 
+<!-- GOPAL400 and FORKLIFT -->
+<xacro:property name="robot_type" value="FORKLIFT"/>
 
-    <!--GOPAL 400 :  https://www.mobile-robots.de/files/554/factsheet-mr-robotize-gopal-400-e24-09-22-en-min.pdf -->
+
     <xacro:property name="base_length" value="1.4"/>
     <xacro:property name="base_width" value="0.86"/> <!-- wheel_separation -->
     <xacro:property name="base_height" value="0.315"/>
@@ -24,4 +26,40 @@
     <xacro:property name="infobot_friction" value="0.1"/>
     <xacro:property name="infobot_slip" value="0.0"/>
     <xacro:property name="infobot_damping" value="0.7"/>
+
+    <xacro:property name="infobot_slide_range" value="2"/>
+
+<xacro:if value="${robot_type == 'GOPAL400'}">
+    <!--GOPAL 400 :  https://www.mobile-robots.de/files/554/factsheet-mr-robotize-gopal-400-e24-09-22-en-min.pdf -->
+    
+    <xacro:property name="fork_size_x" value="1.2"/>
+    <xacro:property name="fork_size_y" value="0.1"/>
+    <xacro:property name="fork_size_z" value="0.1"/>
+
+
+
+    <xacro:property name="fork_pos_x" value="0.0"/>
+    <xacro:property name="fork_separation" value="0.2"/>
+    <xacro:property name="fork_pos_z" value="0.0"/>
+
+</xacro:if>
+
+<xacro:if value="${robot_type == 'FORKLIFT'}">
+    <!-- FORKLIFT -->
+    
+    <xacro:property name="fork_size_x" value="1.2"/>
+    <xacro:property name="fork_size_y" value="0.1"/>
+    <xacro:property name="fork_size_z" value="0.1"/>
+
+
+    <xacro:property name="fork_pos_x" value="1.3"/>
+    <xacro:property name="fork_separation" value="0.2"/>
+    <xacro:property name="fork_pos_z" value="-0.3"/>
+
+</xacro:if>
+
+
+
+
+
 </robot>

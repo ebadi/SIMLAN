@@ -9,7 +9,6 @@
       <uri>model://sun</uri>
     </include>
 
-
     <light name='point_light' type='point'>
       <pose>3 17 1 0 0 0</pose>
       <diffuse>0.5 0.5 0.5 1</diffuse>
@@ -28,12 +27,6 @@
       <uri>model://warehouse</uri>
       <pose>0 0 0.0005</pose>
     </include>
-
-    <include>
-      <uri>model://factory</uri>
-      <pose>0 0 0</pose>
-    </include>
-
 
     <include>
       <static>1</static>

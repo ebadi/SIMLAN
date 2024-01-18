@@ -9,8 +9,10 @@
 - camera-viewer 1.0.0: Python code to get Gazebo camera feed : Hamid Ebadi
 
 ### Experimental features:
-- Infobot_agent 0.0.1: InfoBot differential-drive AMR (Autonomous Mobile Robot) URDF and ROS launcher : Hamid Ebadi
-- Infobot_cartographer 0.0.1: cartographer for creating PGM maps
-- nav2_commander 0.0.1: ROS package to command Infobot where the destination is : Hamid Ebadi
-- Infobot_navigation2 0.0.1: Standard Nav2 stack launcher : Hamid Ebadi
-- Infobot_teleop 0.0.1: Teleoperation for InfotBot
+- Volvo warehouse 0.0.1 : Hamid Ebadi
+- Volvo camera calibration in Gazebo 0.0.1 : Hamid Ebadi
+- Integrate Infobot_agent 0.0.2: InfoBot differential-drive AMR (Autonomous Mobile Robot) URDF and ROS launcher (GOPAL and forklift): Hamid Ebadi
+- Integrate Infobot_cartographer 2.1.5: cartographer for creating PGM maps
+- Integrate nav2_commander 0.0.2: ROS package to command Infobot where the destination is : Hamid Ebadi
+- Integrate Infobot_navigation2 2.1.5: Standard Nav2 stack launcher : Hamid Ebadi
+- Integrate Infobot_teleop 0.0.2: Teleoperation for InfotBot

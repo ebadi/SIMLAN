@@ -26,13 +26,12 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    INFOBOT_MODEL = os.environ['INFOBOT_MODEL']
 
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
 
     urdf_path = os.path.join(get_package_share_directory(
         'infobot_agent'), 'urdf', 'infobot.urdf')
-    print('urdf_path1:' + urdf_path)
+    print('ros2 launch urdf_tutorial display.launch.py model:=' + urdf_path)
     with open(urdf_path, 'r') as infp:
         robot_desc = infp.read()
 

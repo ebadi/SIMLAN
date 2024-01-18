@@ -39,7 +39,7 @@ def generate_launch_description():
         'publish_period_sec', default='1.0')
 
     rviz_config_dir = os.path.join(get_package_share_directory('infobot_cartographer'),
-                                   'rviz', 'tb3_cartographer.rviz')
+                                   'rviz', 'infobot_cartographer.rviz')
 
     return LaunchDescription([
         DeclareLaunchArgument(

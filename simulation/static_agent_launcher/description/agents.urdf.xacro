@@ -21,11 +21,8 @@
         <child link="base_link"/>        
     </joint>
 
+    <xacro:include filename="camera_config.xacro" />
 
-    <xacro:camera number="1" x="9" y="1" z="7" r="0" p="${pi/4}" yw="${pi/2}"/>
-    <xacro:camera number="2" x="10" y="15" z="6" r="0" p="${pi/4}" yw="${-pi/2}"/>
-
-    <xacro:aruco number="1" x="9" y="9" z="0.001" r="0" p="0" yw="0"/>
-    <xacro:aruco number="2" x="8" y="6" z="0.001" r="0" p="0" yw="0"/>
-
+    <xacro:aruco number="1" x="9" y="9" z="0.001" r="0" p="0" w="0"/>
+    <xacro:aruco number="2" x="8" y="6" z="0.001" r="0" p="0" w="0"/>
 </robot>

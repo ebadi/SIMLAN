@@ -13,9 +13,9 @@
         <xacro:inertial_box mass="0.1" x="0.12" y="0.15" z="0.15"/>
     </xacro:macro>
 
-    <xacro:macro name="aruco_joint" params="attach_to number x y z r p yw">
+    <xacro:macro name="aruco_joint" params="attach_to number x y z r p w">
         <joint name="aruco_${number}_joint" type="fixed">
-            <origin xyz="${x} ${y} ${z}" rpy="${r} ${p} ${yw}"/>
+            <origin xyz="${x} ${y} ${z}" rpy="${r} ${p} ${w}"/>
             <parent link="${attach_to}"/>
             <child link="aruco_${number}_link"/>        
         </joint>
@@ -50,13 +50,13 @@
         </gazebo>
    </xacro:macro>
 
-   <xacro:macro name="aruco" params="number x y z r p yw">
-        <xacro:attach_aruco attach_to="base_link" number="${number}" x="${x}" y="${y}" z="${z}" r="${r}" p="${p}" yw="${yw}"/>
+   <xacro:macro name="aruco" params="number x y z r p w">
+        <xacro:attach_aruco attach_to="base_link" number="${number}" x="${x}" y="${y}" z="${z}" r="${r}" p="${p}" w="${w}"/>
    </xacro:macro>
 
-    <xacro:macro name="attach_aruco" params="attach_to number x y z r p yw">
+    <xacro:macro name="attach_aruco" params="attach_to number x y z r p w">
             <xacro:aruco_link number="${number}"/>
-            <xacro:aruco_joint attach_to="${attach_to}" number="${number}" x="${x}" y="${y}" z="${z}" r="${r}" p="${p}" yw="${yw}"/>
+            <xacro:aruco_joint attach_to="${attach_to}" number="${number}" x="${x}" y="${y}" z="${z}" r="${r}" p="${p}" w="${w}"/>
             <xacro:aruco_gazebo number="${number}"/>
     </xacro:macro>
 </robot>

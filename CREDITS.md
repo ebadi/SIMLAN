@@ -1,7 +1,6 @@
 ## Licenses and Credits
 
-The robot majority of code in this repository comes from these [turtlebot3](https://github.com/ROBOTIS-GIT/turtlebot3.git) and [turtlebot3_simulations](https://github.com/ROBOTIS-GIT/turtlebot3_simulations) repositories (in `humble-devel` branch) with [*Apache-2.0 license*](LICENSE) and we continue using the same license:
-
+The majority of code in this repository comes from these [turtlebot3](https://github.com/ROBOTIS-GIT/turtlebot3.git) and [turtlebot3_simulations](https://github.com/ROBOTIS-GIT/turtlebot3_simulations) repositories (in `humble-devel` branch) with [*Apache-2.0 license*](LICENSE) and we continue using the same license:
 
 The Turtlebot3 robot project belongs to [robotis.com](http://turtlebot3.robotis.com) and accessible in [git repository](https://github.com/ROBOTIS-GIT/). The authors and maintainers of the original packages that all credits go to are:
 
@@ -10,15 +9,17 @@ The Turtlebot3 robot project belongs to [robotis.com](http://turtlebot3.robotis.
 - [Will Son](willson@robotis.com)
 - Ryan Shim
 
-In October 2023, [Hamid Ebadi](hamid.ebadi@gmail.com) renamed the [package owner information and name](package.xml) for turtlebot3 projects to avoid any confusion with the original packages and create independent packages for activities within the research project.
+In October 2023, [Hamid Ebadi](hamid.ebadi@gmail.com) renamed the [package owner information and name](package.xml) for turtlebot3 projects to avoid dependency issues any nam ing confusion with the original packages and created independent packages for activities within the research project.
 
-We also got inspired and used the skeleton code from these courses and projects
+We also got inspired and used the skeleton code from these open source project and courses:
+- https://github.com/ros-controls/gazebo_ros2_control
+- https://github.com/renan028/forklift_robot
+- https://github.com/ROBOTIS-GIT/
+- http://turtlebot3.robotis.com
 - [Articulated Robotics](https://www.youtube.com/@ArticulatedRobotics)
 - ["ROS2 for Beginners Level 2 - TF | URDF | RViz | Gazebo" Udemy course](https://www.udemy.com/course/ros2-tf-urdf-rviz-gazebo/)
 - ["ROS2 Nav2 [Navigation 2 Stack] - with SLAM and Navigation" Udemy course](https://www.udemy.com/course/ros2-tf-urdf-rviz-gazebo/)
 - [Visual Servoing in Gazebo grobot](https://github.com/nlamprian/grobot)
-
-
 
 ## Resources
 
@@ -40,7 +41,7 @@ We also got inspired and used the skeleton code from these courses and projects
 - [warehouse](https://app.gazebosim.org/MovAi)
 - [forklift](https://github.com/renan028/forklift_robot)
 
-Current solutions:
+Other solutions:
 - [Kollmorgen: How does an AGV navigate? ](https://www.youtube.com/watch?v=JIYOndxW9hc)
 - [SwissLog CarryPick](https://www.swisslog.com/en-us/products-systems-solutions/asrs-automated-storage-retrieval-systems/boxes-cartons-small-parts-items/carrypick-storage-and-picking-system)
 - [Toyota forklifts](https://toyota-forklifts.se/automatiserade-losningar/)
@@ -59,3 +60,7 @@ Specification of items
 - [SDF format](http://sdformat.org/tutorials)
 - [SDF tutorial](https://github.com/gazebosim/sdf_tutorials)
 - [FreeCAD RobotCreator Workbench](https://github.com/maidenone/RobotCreator)
+
+## Project maintainer
+
+This project is currently maintained by [Hamid Ebadi](hamid.ebadi@gmail.com).

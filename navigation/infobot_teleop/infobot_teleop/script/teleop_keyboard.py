@@ -38,37 +38,38 @@ import os
 import select
 import sys
 import rclpy
-
+from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
 from rclpy.qos import QoSProfile
-
+from std_msgs.msg import Float64MultiArray
 if os.name == 'nt':
     import msvcrt
 else:
     import termios
     import tty
 
-BURGER_MAX_LIN_VEL = 0.22
-BURGER_MAX_ANG_VEL = 2.84
-
-WAFFLE_MAX_LIN_VEL = 0.26
-WAFFLE_MAX_ANG_VEL = 1.82
+INFOBOT_MAX_LIN_VEL = 0.25
+INFOBOT_MAX_ANG_VEL = 2
 
 LIN_VEL_STEP_SIZE = 0.01
-ANG_VEL_STEP_SIZE = 0.1
+ARM_FORCE_STEP_SIZE = 0.1
 
-INFOBOT_MODEL = os.environ['INFOBOT_MODEL']
+ANG_VEL_STEP_SIZE = 0.1
+FORCE_STEP_SIZE = 500
 
 msg = """
-Control Your TurtleBot3!
+Control Your INFOBOT!
 ---------------------------
+Controlling the lifter
+1/2 : up/down
+
 Moving around:
         w
    a    s    d
         x
 
-w/x : increase/decrease linear velocity (Burger : ~ 0.22, Waffle and Waffle Pi : ~ 0.26)
-a/d : increase/decrease angular velocity (Burger : ~ 2.84, Waffle and Waffle Pi : ~ 1.82)
+w/x : increase/decrease linear velocity
+a/d : increase/decrease angular velocity
 
 space key, s : force stop
 
@@ -94,10 +95,12 @@ def get_key(settings):
     return key
 
 
-def print_vels(target_linear_velocity, target_angular_velocity):
-    print('currently:\tlinear velocity {0}\t angular velocity {1} '.format(
+def print_vels(target_linear_velocity, target_angular_velocity, target_arm_force):
+    print('currently:\tlinear velocity {0}\t angular velocity {1}\t arm force {2} '.format(
         target_linear_velocity,
-        target_angular_velocity))
+        target_angular_velocity,
+        target_arm_force
+        ))
 
 
 def make_simple_profile(output, input, slop):
@@ -123,18 +126,16 @@ def constrain(input_vel, low_bound, high_bound):
 
 
 def check_linear_limit_velocity(velocity):
-    if INFOBOT_MODEL == 'burger':
-        return constrain(velocity, -BURGER_MAX_LIN_VEL, BURGER_MAX_LIN_VEL)
-    else:
-        return constrain(velocity, -WAFFLE_MAX_LIN_VEL, WAFFLE_MAX_LIN_VEL)
+    return constrain(velocity, -INFOBOT_MAX_LIN_VEL, INFOBOT_MAX_LIN_VEL)
+
 
 
 def check_angular_limit_velocity(velocity):
-    if INFOBOT_MODEL == 'burger':
-        return constrain(velocity, -BURGER_MAX_ANG_VEL, BURGER_MAX_ANG_VEL)
-    else:
-        return constrain(velocity, -WAFFLE_MAX_ANG_VEL, WAFFLE_MAX_ANG_VEL)
+    return constrain(velocity, -INFOBOT_MAX_ANG_VEL, INFOBOT_MAX_ANG_VEL)
 
+
+def check_prismatic_arm_limit(force):
+    return constrain(force, -10, 10)
 
 def main():
     settings = None
@@ -146,13 +147,14 @@ def main():
     qos = QoSProfile(depth=10)
     node = rclpy.create_node('teleop_keyboard')
     pub = node.create_publisher(Twist, 'cmd_vel', qos)
+    prismatic_joint_pub = node.create_publisher(Float64MultiArray, '/effort_controller/commands', 10)
 
     status = 0
     target_linear_velocity = 0.0
     target_angular_velocity = 0.0
     control_linear_velocity = 0.0
     control_angular_velocity = 0.0
-
+    target_arm_force = 0.0
     try:
         print(msg)
         while (1):
@@ -162,31 +164,38 @@ def main():
                     check_linear_limit_velocity(
                         target_linear_velocity + LIN_VEL_STEP_SIZE)
                 status = status + 1
-                print_vels(target_linear_velocity, target_angular_velocity)
+                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
             elif key == 'x':
                 target_linear_velocity =\
                     check_linear_limit_velocity(
                         target_linear_velocity - LIN_VEL_STEP_SIZE)
                 status = status + 1
-                print_vels(target_linear_velocity, target_angular_velocity)
+                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
             elif key == 'a':
                 target_angular_velocity =\
                     check_angular_limit_velocity(
                         target_angular_velocity + ANG_VEL_STEP_SIZE)
                 status = status + 1
-                print_vels(target_linear_velocity, target_angular_velocity)
+                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
             elif key == 'd':
                 target_angular_velocity =\
                     check_angular_limit_velocity(
                         target_angular_velocity - ANG_VEL_STEP_SIZE)
                 status = status + 1
-                print_vels(target_linear_velocity, target_angular_velocity)
+                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
             elif key == ' ' or key == 's':
                 target_linear_velocity = 0.0
                 control_linear_velocity = 0.0
                 target_angular_velocity = 0.0
                 control_angular_velocity = 0.0
-                print_vels(target_linear_velocity, target_angular_velocity)
+                target_arm_force = 0.0
+                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
+            elif key == '1':
+                target_arm_force =  target_arm_force  + FORCE_STEP_SIZE
+                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
+            elif key == '2':
+                target_arm_force =  target_arm_force  - FORCE_STEP_SIZE
+                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
             else:
                 if (key == '\x03'):
                     break
@@ -216,6 +225,11 @@ def main():
             twist.angular.z = control_angular_velocity
 
             pub.publish(twist)
+
+            prismatic_msg = Float64MultiArray()
+            prismatic_msg.data = [target_arm_force] 
+            prismatic_joint_pub.publish(prismatic_msg)
+
 
     except Exception as e:
         print(e)

@@ -22,10 +22,10 @@ Wait until the Gazebo UI is loaded.
 ```
 ## Adding Aruco and camera (static agents)
 
-Aruco codes and cameras are all attached to the same link in Gazebo. To create new static agents, go to `simulation/static_agent_launcher/description/agents.urdf.xacro`. There you only need to add a new line on the form `<xacro:camera number="1" x="3" y="3" z="6" r="0" p="0" yw="0"/>` for a new camera, or a new line on the form `<xacro:aruco number="1" x="3" y="3" z="0.1" r="0" p="0" yw="0"/>` for a new aruco. The commands are identical apart from the name.
+Aruco codes and cameras are all attached to the same link in Gazebo. To create new static agents, go to `simulation/static_agent_launcher/description/agents.urdf.xacro`. There you only need to add a new line on the form `<xacro:camera number="1" x="3" y="3" z="6" r="0" p="0" w="0"/>` for a new camera, or a new line on the form `<xacro:aruco number="1" x="3" y="3" z="0.1" r="0" p="0" w="0"/>` for a new aruco. The commands are identical apart from the name.
 - `Number` is added to the name to make the static agent unique. For cameras this mean they will publish on e.g. the topic `static_agents/camera_[number]/image_raw`. For aruco the number indicates which aruco png to use.
 - `x, y, z` is the coordinate offset from the link the agents are all attached to.
-- `r, p, yw` are the rotation, pitch, and yaw of the camera, dictating in which direction and at what angle the cameras are looking.
+- `r, p, w` are the rotation, pitch, and yaw of the camera, dictating in which direction and at what angle the cameras are looking.
 
 ## Using actors in Gazebo
 

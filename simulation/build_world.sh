@@ -11,4 +11,5 @@ rm -rf ./build ./install ./log
 
 colcon build --symlink-install --cmake-args "-Wno-dev"
 source install/setup.bash
-ros2 launch infobot_gazebo_environment infobot_warehouse.launch.py
+#ros2 launch infobot_gazebo_environment infobot_warehouse.launch.py
+ros2 launch infobot_gazebo_environment infobot_factory.launch.py
