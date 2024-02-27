@@ -6,19 +6,29 @@ services:
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [compute,utility,graphics,display]
     volumes:
       - /etc/localtime:/etc/localtime:ro
-      - ${XAUTHORITY}:/tmp/.Xauthority
+      # - ${XAUTHORITY}:/tmp/.Xauthority
+      - /tmp/.docker.xauth:/tmp/.docker.xauth:rw
       - /tmp/.X11-unix:/tmp/.X11-unix
       - ./:/home/ros/src
     privileged: true
     tty: true
     environment:
-      - DISPLAY
-      - XAUTHORITY=/tmp/.Xauthority
-      - ROS_DOMAIN_ID=34
+      DISPLAY: ${DISPLAY}
+      XAUTHORITY: /tmp/.docker.xauth
+      ROS_DOMAIN_ID: 39
+      SDL_VIDEODRIVER: x11
     devices:
       - /dev/tty*:/dev/tty*
     network_mode: host
     command: tail -f /dev/null
     restart: always
+    runtime: nvidia
