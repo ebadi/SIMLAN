@@ -2,7 +2,7 @@
 
 First make sure that the dependencies and packages on the parent [README.md](../README.md) are installed.  
 
-To stop the previous simulation, build and start a new simulation:
+To build and start a new simulation:
 
 ```bash
 ./build_navigation.sh

@@ -1,37 +1,112 @@
+#!/usr/bin/python3
+# pip install opencv-contrib-python
+# pip install transforms3d==0.4.1
+
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
+from time import time 
 
+import sys
+import argparse
 # Authors: Hamid Ebadi
 # Run this after spawn-static-agents.sh script as below:
 # python3 ./camera_viewer.py
-
+# Background subtraction: https://docs.opencv.org/4.x/d1/dc5/tutorial_background_subtraction.html
 
 import cv2 as cv
 dictionary = cv.aruco.getPredefinedDictionary(cv.aruco.DICT_5X5_1000)
 parameters =  cv.aruco.DetectorParameters()
 detector = cv.aruco.ArucoDetector(dictionary, parameters)
 
-"""
-import cv2
-import numpy as np
+import cameraCalibration
 
-canvas = np.zeros((300, 400, 3), dtype=np.uint8)
+import shutil, os
+start_timestamp = time()
+DATA_DIR = 'images_data/'
+shutil.rmtree(DATA_DIR, ignore_errors = True)
+os.mkdir(DATA_DIR)
 
-# dimensions of the grid
-rows, cols = 3, 4
-image_width, image_height = canvas.shape[1] // cols, canvas.shape[0] // rows
+def camera_config_by_id(camera_id):
+    conf = cameraCalibration.Camera_config( "intrinsic/"+ camera_id +".yaml", "extrinsic/" + camera_id + ".yaml", camera_id )
+    # conf.print_xacro()
+    # conf.X now has ret, mtx, dist, rvecs, tvecs
+    return conf
 
-for i in range(rows):
-    for j in range(cols):
-        image = opencv image
-        canvas[i * image_height: (i + 1) * image_height, j * image_width: (j + 1) * image_width] = image
+class MultiCameraSubscriber(Node):
+    def __init__(self, camera_ids ):
+        super().__init__('image_subscriber')
+        for camera_id in camera_ids:
+            camera_conf = camera_config_by_id(camera_id)
+            f = open(DATA_DIR + "cameras.txt", "a")
+            f.write(camera_conf.voxel_str())
+            f.close()
+            #create Background Subtractor objects
+            if args.algo == 'MOG2':
+                backSub[camera_id] = cv.createBackgroundSubtractorMOG2(history = 500, varThreshold = 8, detectShadows = False)
+            else:
+                backSub[camera_id] = cv.createBackgroundSubtractorKNN(history=500, dist2Threshold=400.0, detectShadows = False)
+            self.subscription = self.create_subscription(
+                Image,
+                '/static_agents/camera_' + camera_id + '/image_raw',
+                lambda msg, camera_id=camera_id: self.image_callback(msg, camera_id, camera_conf),
+                10  # QoS
+            )
+            self.cv_bridge = CvBridge()
 
-cv2.imshow('Grid of Images', canvas)
-cv2.waitKey(0)
-cv2.destroyAllWindows()
-"""
+    def image_callback(self, msg, camera_id, camera_conf):
+        timestamp = str(int(time()- start_timestamp))
+        try:
+            os.mkdir(os.path.join(DATA_DIR, timestamp))
+        except:
+            pass
+        
+        try:
+            # Convert ROS Image message to OpenCV format imgmsg_to_cv
+            cv_image = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+            # np_image = numpy.array(cv_image)
+            # detect_aruco(cv_image)
+            if args.action == 'save':
+                cv.imshow('raw-image-'  + camera_id , cv_image)
+                cv.imwrite(os.path.join(DATA_DIR, timestamp , "raw_" + camera_id + ".png"), cv_image)
+            elif args.action == 'removebg':
+                fgMask = backSub[camera_id].apply(cv_image)
+                cv.imshow('mask-image-'  + camera_id , fgMask)
+                cv.imwrite(os.path.join(DATA_DIR, timestamp , "mask_" + camera_id + ".png"), fgMask)
+                cv.waitKey(1)
+            else:
+                print("unknown action" + args.action)
+
+
+        except Exception as e:
+            self.get_logger().error(f"Error processing image: {str(e)}")
+
+
+
+def main():
+
+    rclpy.init()
+    # all cameras
+    cam_list = ['160','161','162','163','164','165','166','167', '168', '169', '170', '171']
+
+    try:
+        node = MultiCameraSubscriber(cam_list)
+        rclpy.spin(node)
+    except KeyboardInterrupt:
+        pass
+
+    node.destroy_node()
+    rclpy.shutdown()
+
+if __name__ == '__main__':
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--action', help='continuously save camera images (for background extraction)' )
+    parser.add_argument('--algo', type=str, help='Background subtraction method (KNN, MOG2).', default='MOG2')
+    args = parser.parse_args()
+    backSub = {}
+    main()
+
 
 def detect_aruco(cv_image):
     # Aruco detection code is based on https://pyimagesearch.com/2020/12/21/detecting-aruco-markers-with-opencv-and-python/
@@ -58,43 +133,3 @@ def detect_aruco(cv_image):
                 (topLeft[0], topLeft[1] - 15),
                 cv.FONT_HERSHEY_SIMPLEX,
                 0.5, (0, 255, 0), 2)
-
-
-class ImageSubscriber(Node):
-    def __init__(self):
-        super().__init__('image_subscriber')
-        self.subscription = self.create_subscription(
-            Image,
-            '/static_agents/camera_160/image_raw',
-            self.image_callback,
-            10
-        )
-        self.cv_bridge = CvBridge()
-
-    def image_callback(self, msg):
-        try:
-            # Convert ROS Image message to OpenCV format imgmsg_to_cv
-            cv_image = self.cv_bridge.imgmsg_to_cv2(
-                msg, desired_encoding='bgr8')
-
-            detect_aruco(cv_image)
-            cv.imshow('Image from ROS2', cv_image)
-            cv.waitKey(1)
-        except Exception as e:
-            self.get_logger().error(f"Error processing image: {str(e)}")
-
-def main(args=None):
-    rclpy.init(args=args)
-
-    image_subscriber = ImageSubscriber()
-
-    try:
-        rclpy.spin(image_subscriber)
-    except KeyboardInterrupt:
-        pass
-
-    image_subscriber.destroy_node()
-    rclpy.shutdown()
-
-if __name__ == '__main__':
-    main()

@@ -22,3 +22,5 @@ log
 Tools
 blender*
 phobos*
+.ipynb_checkpoints
+.ipy*
