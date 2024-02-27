@@ -1,0 +1,24 @@
+repositories:
+
+  wireless:
+    type: git
+    url: https://github.com/clearpathrobotics/wireless.git
+    version: foxy-devel
+
+  imu_tools:
+    type: git
+    url: https://github.com/CCNYRoboticsLab/imu_tools.git
+    version: humble
+
+  # rcl
+  rcl:
+    type: git
+    url: https://github.com/ros2/rcl.git
+    version: 5.3.2
+
+  # others...
+  gazebo_ros2_control:
+    type: git
+    url: https://github.com/ros-controls/gazebo_ros2_control.git
+    version: 0dbce66334b1b1e49dec923527e03897d8ffc74d
+

@@ -1,0 +1,4 @@
+utm
+transforms3d
+atomicwrites
+pysimplegui
