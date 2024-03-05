@@ -18,7 +18,8 @@
                 "twxs.cmake",
                 "yzhang.markdown-all-in-one",
                 "eamodio.gitlens",
-                "njpwerner.autodocstring"
+                "njpwerner.autodocstring",
+                "mhutchie.git-graph"
             ]
         }
     }

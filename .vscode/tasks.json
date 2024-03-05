@@ -1,0 +1,43 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "detail": "Build workspace (default)",
+            "type": "shell",
+            "command": "colcon build --merge-install --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/.."
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "rebuild",
+            "detail": "Rebuild workspace",
+            "type": "shell",
+            "command": "rm -rf build install log; colcon build --merge-install --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=RelWithDebInfo",
+            "group": {
+                "kind": "build",
+                "isDefault": false
+            },
+            "options": {
+                "cwd": "${workspaceFolder}/.."
+            },
+            "problemMatcher": "$gcc"
+        },
+        {
+            "label": "rosdep",
+            "detail": "Run rosdep for workspace",
+            "type": "shell",
+            "command": "sudo bash -c 'apt-get update && source /home/ros/install/setup.bash && rosdep install --from-paths src --skip-keys rtcm_msgs --skip-keys gazebo_ros2_control --ignore-src -y'",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
