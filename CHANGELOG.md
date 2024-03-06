@@ -1,3 +1,10 @@
+## Update Docker (Mar 2024) - Christoffer Johannesson
+- Added .devcontainer folder with Dockerfile and devcontainer.json to set up project container in VS Code.
+- Added dockercompose to link all needed files and set environment variables.
+- Added .vscode folder with settings and tasks for easy building of the project.
+- Updated README with info on how to use Docker setup in VS Code, and some features to make it easy to share the same setup with others.
+- Features includes: python3 dependency install with pip, cloning of other git repositories and how to make changes to those repositories.
+
 ## Delivery 1 (Dec 2023) - Supervisor: Hamid Ebadi
 
 - Basic warehouse model 1.0.0: Anders Bäckelie
