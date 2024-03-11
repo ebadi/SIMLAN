@@ -20,5 +20,5 @@ repositories:
   gazebo_ros2_control:
     type: git
     url: https://github.com/ros-controls/gazebo_ros2_control.git
-    version: 0dbce66334b1b1e49dec923527e03897d8ffc74d
+    version: humble
 
