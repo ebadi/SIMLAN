@@ -40,6 +40,7 @@ We also got inspired and used the skeleton code from these open source project a
 - [gazebo_worlds](https://dev.px4.io/v1.11_noredirect/en/simulation/gazebo_worlds.html#warehouse)
 - [warehouse](https://app.gazebosim.org/MovAi)
 - [forklift](https://github.com/renan028/forklift_robot)
+- [Docker install guide](https://docs.docker.com/engine/install/)
 
 Other solutions:
 - [Kollmorgen: How does an AGV navigate? ](https://www.youtube.com/watch?v=JIYOndxW9hc)
@@ -60,6 +61,9 @@ Specification of items
 - [SDF format](http://sdformat.org/tutorials)
 - [SDF tutorial](https://github.com/gazebosim/sdf_tutorials)
 - [FreeCAD RobotCreator Workbench](https://github.com/maidenone/RobotCreator)
+
+## Docker and VS Code setup
+The Docker setup added by [Christoffer Johanesson (Dyno Robotics)](christoffer@dynorobotics.se), based on their experience working with Docker.
 
 ## Project maintainer
 

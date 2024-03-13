@@ -80,6 +80,35 @@ $ gazebo -v
 Gazebo multi-robot simulator, version 11.10.2
 ```
 
-### Additional information
+## Docker container
+Need a brushup on docker, see this tutorial.
+
+### Install and start
+Another option for installing is to run the environment in a Docker container, to avoid installing everything on your own computer. Check [docker install guide](https://docs.docker.com/engine/install/) to install docker on your machine.
+
+Developing in a docker container can easily be done by using VS Code, and installing the _Remote Development extension_.
+
+Once all this is done, open the repository in VS Code. Hit ctr + shift + p and select _Dev Containers: Rebuild in container_. This will build the container and open VS Code inside of the container, thanks to the [docker-compose](docker-compose.yaml)-file. Your terminal inside VS Code is then running inside the Docker container. 
+
+### Developing inside the container
+Below are some features than can assist you in developing inside the container.
+
+#### Building ros2 packages
+There is also a [tasks.json](.vscode/tasks.json) file where some build rules are stated. Building can be done by ctrl + shift + b. 
+
+#### Dependencies and other repos
+This development environment has a few nice features. There are two files: [requirements](requirements.txt) and [ros_dependencies](ros_dependencies.repos), where python3 (pip install) and Github repos can be listed to be installed and cloned into the container.
+
+The repos installed in the [ros_dependencies](ros_dependencies.repos) will end up in _/opt/dependencies_ws/src/_ in the container. They can be copied into the working directory if changes to these repos are needed. For example copying it into the simulation folder.
+```bash
+cp -r /opt/dependencies_ws/src/<dir_name> simulation/
+```
+The package in the working directory will be prioritized over the one in _/opt/dependencies_ws/_, and will be build together with the rest of your ros2 packages. Note: if these packages are big, the building time can increase.
+
+To avoid uploading the package to git adjust your [gitignore](.gitignore) accordingly. Once you are done making changes to the imported repo, you need to make sure others get the changes as well. Easiest is often to fork the repo needed and commit and push your changes to it. Then change the _url_ in the [ros_dependencies](ros_dependencies.repos)-file to import from your fork instead. Then remove the folder from your workspace and rebuild the container and make sure it works.
+
+Think about if the change is really needed before going through this somewhat lengthy process. Launch and config files can often be made inside a a bringup package instead of places inside the imported repo.
+
+## Additional information
 
 Please see [LICENSE](LINCESE),  [CREDITS.md](CREDITS.md) and [CHANGELOG.md](CHANGELOG.md) for more information.
