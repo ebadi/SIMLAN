@@ -62,8 +62,12 @@ Specification of items
 - [SDF tutorial](https://github.com/gazebosim/sdf_tutorials)
 - [FreeCAD RobotCreator Workbench](https://github.com/maidenone/RobotCreator)
 
+Jackal Robot: 
+
+The Clearpath Jackal Robot code is forked by Dyno Robotics from Clearpaths [jackal](https://github.com/jackal/jackal) Github. Branch foxy-devel is ported to dyno_humble, where changes for namespacing and a bringup package is added.
+
 ## Docker and VS Code setup
-The Docker setup added by [Christoffer Johanesson (Dyno Robotics)](christoffer@dynorobotics.se), based on their experience working with Docker.
+The Docker setup added by [Christoffer Johanesson (Dyno Robotics)](christoffer@dynorobotics.se), based on Dyno experience working with Docker.
 
 ## Project maintainer
 

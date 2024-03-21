@@ -1,3 +1,8 @@
+## Jackal Robot (Mar 2024) - Christoffer Johannesson
+- Added dyno fork of jackal repo from Clearpath Robotics.
+- Updated to Humble, added bringup and support for namespacing.
+- Jackal can be spawned in Gazebo and controlled through the keyboard.
+
 ## Update Docker (Mar 2024) - Christoffer Johannesson
 - Added .devcontainer folder with Dockerfile and devcontainer.json to set up project container in VS Code.
 - Added dockercompose to link all needed files and set environment variables.
