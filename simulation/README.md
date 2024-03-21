@@ -20,6 +20,17 @@ Wait until the Gazebo UI is loaded.
 ```bash
 ./run_infobot.sh
 ```
+
+4. Spawn Jackal robot:
+```bash
+./run_jackal.sh
+```
+
+The jackal can then be controlled with the computer keyboard by running
+```bash
+ros2 launch dyno_jackal_bringup keyboard_steering.launch.py
+```
+
 ## Adding Aruco and camera (static agents)
 
 Aruco codes and cameras are all attached to the same link in Gazebo. To create new static agents, go to `simulation/static_agent_launcher/description/agents.urdf.xacro`. There you only need to add a new line on the form `<xacro:camera number="1" x="3" y="3" z="6" r="0" p="0" w="0"/>` for a new camera, or a new line on the form `<xacro:aruco number="1" x="3" y="3" z="0.1" r="0" p="0" w="0"/>` for a new aruco. The commands are identical apart from the name.
