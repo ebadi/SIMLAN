@@ -22,3 +22,7 @@ repositories:
     url: https://github.com/ros-controls/gazebo_ros2_control.git
     version: humble
 
+  jackal:
+    type: git
+    url: https://github.com/DynoRobotics/jackal
+    version: dyno_humble
