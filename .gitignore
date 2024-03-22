@@ -24,3 +24,5 @@ blender*
 phobos*
 .ipynb_checkpoints
 .ipy*
+#other repos
+**/jackal
