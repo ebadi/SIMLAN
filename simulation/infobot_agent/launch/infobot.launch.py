@@ -35,8 +35,8 @@ def generate_launch_description():
         get_package_share_directory('infobot_agent'), 'launch')
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     # INITIAL_POSITION
-    x_pose = LaunchConfiguration('x_pose', default='1.0')
-    y_pose = LaunchConfiguration('y_pose', default='1.0')
+    x_pose = LaunchConfiguration('x_pose', default='20.0')
+    y_pose = LaunchConfiguration('y_pose', default='0.0')
     z_pose = LaunchConfiguration('z_pose', default='0.1')
 
     robot_state_publisher_cmd = IncludeLaunchDescription(

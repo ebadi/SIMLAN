@@ -3,7 +3,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro"> 
 
 <!-- GOPAL400 and FORKLIFT -->
-<xacro:property name="robot_type" value="FORKLIFT"/>
+<xacro:property name="robot_type" value="GOPAL400"/>
 
 
     <xacro:property name="base_length" value="1.4"/>
@@ -29,9 +29,9 @@
 
     <xacro:property name="infobot_slide_range" value="2"/>
 
+<!--GOPAL 400 :  https://www.mobile-robots.de/files/554/factsheet-mr-robotize-gopal-400-e24-09-22-en-min.pdf -->
 <xacro:if value="${robot_type == 'GOPAL400'}">
-    <!--GOPAL 400 :  https://www.mobile-robots.de/files/554/factsheet-mr-robotize-gopal-400-e24-09-22-en-min.pdf -->
-    
+
     <xacro:property name="fork_size_x" value="1.2"/>
     <xacro:property name="fork_size_y" value="0.1"/>
     <xacro:property name="fork_size_z" value="0.1"/>
@@ -44,9 +44,9 @@
 
 </xacro:if>
 
+<!-- FORKLIFT -->  
 <xacro:if value="${robot_type == 'FORKLIFT'}">
-    <!-- FORKLIFT -->
-    
+
     <xacro:property name="fork_size_x" value="1.2"/>
     <xacro:property name="fork_size_y" value="0.1"/>
     <xacro:property name="fork_size_z" value="0.1"/>

@@ -20,7 +20,7 @@ Click on image below to see the Volvo layout demo:
 
 [![Delivery 2, Volvo layout](https://img.youtube.com/vi/f8ULCZFEM5Q/0.jpg)](https://www.youtube.com/watch?v=f8ULCZFEM5Q)
 
-## Installation
+## Installation in production environment
 
 These steps are used to install ROS (Humble) and Gazebo (11.10.2) on
   - Ubuntu 22.04
@@ -28,7 +28,7 @@ These steps are used to install ROS (Humble) and Gazebo (11.10.2) on
 
 ### ROS, RViz
 
-We follow [the installation instruction](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html) to install ROS, RViz, Gazebo and nav2s.
+We follow [the installation instruction](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html) to install ROS, RViz, Gazebo and nav2. [.devcontainer/Dockerfile](.devcontainer/Dockerfile) can alternatively be used.
 
 ```bash
 sudo apt update && sudo apt install locales
@@ -58,7 +58,7 @@ After successful installation you need to set up the ROS environment, which can 
 echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 ```
 
-Open a *new* terminal make sure the following command prints out `humble` to ensure that ROS environment is set up correctly.
+On a *new* terminal make sure the following command prints out `humble` to ensure that ROS environment is set up correctly.
 
 ```bash
 $ printenv ROS_DISTRO
@@ -80,35 +80,30 @@ $ gazebo -v
 Gazebo multi-robot simulator, version 11.10.2
 ```
 
-## Docker container
-Need a brushup on docker, see this tutorial.
+### Development environment
+To improve collaboration in development environment we use vscode and docker as explained in [this instruction](https://www.allisonthackston.com/articles/docker-development.html) using these [docker files](https://github.com/athackst/dockerfiles).
 
-### Install and start
-Another option for installing is to run the environment in a Docker container, to avoid installing everything on your own computer. Check [docker install guide](https://docs.docker.com/engine/install/) to install docker on your machine.
+To build and open the container in vscode: `Ctrl + Shift + P` and select `Dev containers: Rebuild and Reopen in container`
 
-Developing in a docker container can easily be done by using VS Code, and installing the _Remote Development extension_.
-
-Once all this is done, open the repository in VS Code. Hit ctr + shift + p and select _Dev Containers: Rebuild in container_. This will build the container and open VS Code inside of the container, thanks to the [docker-compose](docker-compose.yaml)-file. Your terminal inside VS Code is then running inside the Docker container. 
-
-### Developing inside the container
-Below are some features than can assist you in developing inside the container.
-
-#### Building ros2 packages
-There is also a [tasks.json](.vscode/tasks.json) file where some build rules are stated. Building can be done by ctrl + shift + b. 
-
-#### Dependencies and other repos
-This development environment has a few nice features. There are two files: [requirements](requirements.txt) and [ros_dependencies](ros_dependencies.repos), where python3 (pip install) and Github repos can be listed to be installed and cloned into the container.
-
-The repos installed in the [ros_dependencies](ros_dependencies.repos) will end up in _/opt/dependencies_ws/src/_ in the container. They can be copied into the working directory if changes to these repos are needed. For example copying it into the simulation folder.
-```bash
-cp -r /opt/dependencies_ws/src/<dir_name> simulation/
+If you have any issue with the dockerfile, update `.devcontainer/Dockerfile`
 ```
-The package in the working directory will be prioritized over the one in _/opt/dependencies_ws/_, and will be build together with the rest of your ros2 packages. Note: if these packages are big, the building time can increase.
+-FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04 AS base
++FROM ubuntu:22.04 AS base
+```
 
-To avoid uploading the package to git adjust your [gitignore](.gitignore) accordingly. Once you are done making changes to the imported repo, you need to make sure others get the changes as well. Easiest is often to fork the repo needed and commit and push your changes to it. Then change the _url_ in the [ros_dependencies](ros_dependencies.repos)-file to import from your fork instead. Then remove the folder from your workspace and rebuild the container and make sure it works.
+#### Nvidia GPU
 
-Think about if the change is really needed before going through this somewhat lengthy process. Launch and config files can often be made inside a a bringup package instead of places inside the imported repo.
+To build the docker files with nvidia support, update `.devcontainer/devcontainer.json`  from `"service": "smile_simulation"` to `"service": "smile_simulation_nvidia"`
 
-## Additional information
+To test the docker files : `docker compose up --build`
+
+#### Python Packages 
+For communicating with ROS2 we use `rclpy` package. Make sure that you source your environment if `rclpy` is missing. For other packages use pip to install the right package as below:
+
+```bash
+pip install -r requirements.txt
+```
+
+### Additional information
 
 Please see [LICENSE](LINCESE),  [CREDITS.md](CREDITS.md) and [CHANGELOG.md](CHANGELOG.md) for more information.

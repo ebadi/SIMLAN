@@ -1,4 +1,6 @@
 utm
-transforms3d
 atomicwrites
 pysimplegui
+opencv-contrib-python==4.7.0.68
+opencv-python==4.7.0.68
+transforms3d==0.4.1

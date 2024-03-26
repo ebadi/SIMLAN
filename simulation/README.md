@@ -38,6 +38,13 @@ Aruco codes and cameras are all attached to the same link in Gazebo. To create n
 - `x, y, z` is the coordinate offset from the link the agents are all attached to.
 - `r, p, w` are the rotation, pitch, and yaw of the camera, dictating in which direction and at what angle the cameras are looking.
 
+[Gazebo supports simulation of camera](https://classic.gazebosim.org/tutorials?tut=camera_distortion) based on the Brown's distortion model. It expects 5 distortion coefficients k1, k2, k3, p1, p2 that you can get from the camera calibration tools. The k coefficients are the radial components of the distortion model, while the p coefficients are the tangential components.
+
+- `<aspect_ratio>`  : The ratio of the width and height of the camera.
+- `<horizontal_fov>`: The horizontal field of view of the camera in radians.
+
+[OpenCV](https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html) uses five parameters, known as distortion coefficients given by like this: `k1, k2, p1, p2 , k3 # pay attention to the order`
+
 ## Using actors in Gazebo
 
 * Placed in sdf or world file
@@ -185,3 +192,4 @@ Box and warehouse floor are using images from Volvo as a base.
 
 - Keep your links/joints paired, and use the suffix _link and _joint (e.g. arm_link and arm_joint) and maybe follow [REP 120 naming conventions](https://www.ros.org/reps/rep-0120.html)
 - Define visual, collision, inertial and Gazebo material (and maybe friction) for all objects
+

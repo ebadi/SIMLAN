@@ -26,19 +26,21 @@
         </joint>
     </xacro:macro>
 
-    <xacro:macro name="camera_gazebo" params="number width height k1 k2 k3 p1 p2 horizental_fov">
+    <xacro:macro name="camera_gazebo" params="number width height k1 k2 k3 p1 p2 horizental_fov aspect_ratio">
         <gazebo reference="camera_${number}_link">
             <sensor name="camera_${number}" type="camera">
                 <always_on>true</always_on>
                 <visualize>true</visualize>
-                <update_rate>1</update_rate>
+                <update_rate>0</update_rate>
                 <camera name="intel_realsense_r200">
                   <horizontal_fov>${horizental_fov}</horizontal_fov>
+                  <aspect_ratio>${aspect_ratio}</aspect_ratio>
                   <image>
                     <width>${width}</width>
                     <height>${height}</height>
                     <format>R8G8B8</format>
                   </image>
+<!--
                   <clip>
                     <near>0.02</near>
                     <far>300</far>
@@ -48,6 +50,7 @@
                     <mean>0.0</mean>
                     <stddev>0.007</stddev>
                   </noise>
+-->
                     <distortion>
                         <k1>${k1}</k1>
                         <k2>${k2}</k2>
@@ -55,6 +58,7 @@
                         <p1>${p1}</p1>
                         <p2>${p2}</p2>
                     </distortion>
+
                 </camera>
                   <plugin name="camera_driver_${number}" filename="libgazebo_ros_camera.so">
                   </plugin>
@@ -62,10 +66,10 @@
         </gazebo>
     </xacro:macro>
 
-    <xacro:macro name="camera" params="number x y z r p w width height k1 k2 k3 p1 p2 horizental_fov">
+    <xacro:macro name="camera" params="number x y z r p w width height k1 k2 k3 p1 p2 horizental_fov aspect_ratio">
         <xacro:camera_link number="${number}"/>
         <xacro:camera_joint number="${number}" x="${x}" y="${y}" z="${z}" r="${r}" p="${p}" w="${w}"/>
-        <xacro:camera_gazebo number="${number}" width="${width}" height="${height}"    k1="${k1}" k2="${k2}" k3="${k3}" p1="${p1}" p2="${p2}" horizental_fov="${horizental_fov}"  />
+        <xacro:camera_gazebo number="${number}" width="${width}" height="${height}"    k1="${k1}" k2="${k2}" k3="${k3}" p1="${p1}" p2="${p2}" horizental_fov="${horizental_fov}" aspect_ratio="${aspect_ratio}"  />
     </xacro:macro>
 
 </robot>

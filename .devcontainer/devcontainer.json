@@ -1,7 +1,7 @@
 {
     "name": "SMILE_IV (Extending docker-compose)",
     "dockerComposeFile": "../docker-compose.yaml",
-    "service": "smile_simulation", // or smile_simulation_nvidia to use the computers nvidea GPUs
+    "service": "smile_simulation_nvidia", // or smile_simulation_nvidia to use the computers nvidea GPUs
     "remoteUser": "ros",
     "workspaceFolder": "/home/ros/src",
     "customizations": {
