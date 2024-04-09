@@ -5,13 +5,13 @@
             "label": "build",
             "detail": "Build workspace (default)",
             "type": "shell",
-            "command": "./src/build.sh",
+            "command": "./build.sh",
             "group": {
                 "kind": "build",
                 "isDefault": true
             },
             "options": {
-                "cwd": "${workspaceFolder}/.."
+                "cwd": "${workspaceFolder}/"
             },
             "problemMatcher": "$gcc"
         },
@@ -19,13 +19,13 @@
             "label": "rebuild",
             "detail": "Rebuild workspace",
             "type": "shell",
-            "command": "./src/clean.sh ; ./src/build.sh",
+            "command": "./clean.sh ; ./build.sh",
             "group": {
                 "kind": "build",
                 "isDefault": false
             },
             "options": {
-                "cwd": "${workspaceFolder}/.."
+                "cwd": "${workspaceFolder}/"
             },
             "problemMatcher": "$gcc"
         },
