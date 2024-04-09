@@ -26,7 +26,7 @@ These steps are used to install ROS (Humble) and Gazebo (11.10.2) on
   - Ubuntu 22.04
   - Windows 10 (after installing "ubuntu 22.04.3 LTS" WSL2 from Microsoft Store).
 
-### ROS, RViz
+### ROS, RViz, Gazebo
 
 We follow [the installation instruction](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html) to install ROS, RViz, Gazebo and nav2. [.devcontainer/Dockerfile](.devcontainer/Dockerfile) can alternatively be used.
 
@@ -65,8 +65,6 @@ $ printenv ROS_DISTRO
 humble
 ```
 
-### Gazebo
-
 For a quick installation of Gazebo, use the following command command:
 
 ```bash
@@ -103,6 +101,23 @@ For communicating with ROS2 we use `rclpy` package. Make sure that you source yo
 ```bash
 pip install -r requirements.txt
 ```
+### to build and run the simulation
+
+```bash
+./build.sh
+```
+
+2. Spawn Aruco and Camera on the scene:
+
+```bash
+./start all
+```
+
+The jackal can then be controlled with the computer keyboard by running
+```bash
+ros2 launch dyno_jackal_bringup keyboard_steering.launch.py
+```
+
 
 ### Additional information
 

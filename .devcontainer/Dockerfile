@@ -55,34 +55,7 @@ RUN apt-get update && apt-get install -y \
   python3-autopep8 \
   && rm -rf /var/lib/apt/lists/* \
   && rosdep init || echo "rosdep already initialized"
-  
-ARG USERNAME=ros
-ARG USER_UID=1453
-ARG USER_GID=$USER_UID
 
-# # Create a non-root user
-# RUN groupadd --gid $USER_GID $USERNAME \
-#   && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
-#   # [Optional] Add sudo support for the non-root user
-#   && apt-get update \
-#   && apt-get install -y sudo \
-#   && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
-#   && chmod 0440 /etc/sudoers.d/$USERNAME \
-#   # Cleanup
-#   && rm -rf /var/lib/apt/lists/* \
-#   && echo "source /usr/share/bash-completion/completions/git" >> /home/$USERNAME/.bashrc \
-#   && echo "if [ -f /opt/ros/${ROS_DISTRO}/setup.bash ]; then source /opt/ros/${ROS_DISTRO}/setup.bash; fi" >> /home/$USERNAME/.bashrc
-
-ARG USERNAME=ros
-ARG WORKSPACE=/home/${USERNAME}
-
-ENV DEPENDENCIES_WS /opt/dependencies_ws
-RUN mkdir -p $DEPENDENCIES_WS/src
-
-ENV HOME=/home/${USERNAME}
-ENV WS=${WORKSPACE}
-
-ARG CMAKE_BUILD_TYPE=RelWithDebInfo
 
 # Install palanteer
 RUN apt-get update && apt-get install -y \ 
@@ -94,49 +67,35 @@ RUN cd /opt && git clone https://github.com/dfeneyrou/palanteer && \
     make -j$(nproc) && \
     make install
 
+# Install PIP requirements
+COPY requirements.txt /tmp/
+RUN python3 -m pip install -r /tmp/requirements.txt
+
 # Install supl dependencies
 RUN apt-get update && \
     apt-get install -y -qq --no-install-recommends \
     gcc cmake libssl-dev make ninja-build ranger \
     && rm -rf /var/lib/apt/lists/*
 
+RUN mkdir -p /opt/dependencies_ws/src
 # Build ROS 2 source dependencies
-WORKDIR $DEPENDENCIES_WS
+
+# cd /opt/dependencies_ws
+WORKDIR /opt/dependencies_ws
 COPY ros_dependencies.repos ros_dependencies.repos
 RUN vcs import src < ros_dependencies.repos
 RUN apt-get update && \
     rosdep update && \
     rosdep install -q -y --from-paths src --ignore-src && \
     rm -rf /var/likb/apt/lists/*
+#  building depoendencies
+RUN . /opt/ros/humble/setup.sh && colcon build --merge-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
-RUN . /opt/ros/humble/setup.sh && colcon build --merge-install --cmake-args -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE
-
-# Install PIP requirements
-COPY requirements.txt /tmp/
-RUN python3 -m pip install -r /tmp/requirements.txt
-
-ENV DEBIAN_FRONTEND=dialog
-
-# Create source folder
-WORKDIR $WS
-
-# Install ros dependencies
-COPY --chown=$USERNAME . src
-
-RUN apt-get update && \
-    . $DEPENDENCIES_WS/install/setup.sh && \
-    rosdep update && \
-    rosdep install --from-paths src --ignore-src -y && \
-    rm -rf /var/lib/apt/lists/*
-
-USER $USERNAME
-
-RUN sudo chown -R ros .ros
-
-# Build ros
-RUN /bin/bash -c 'source $DEPENDENCIES_WS/install/setup.bash && cd /home/ros && colcon build --merge-install --symlink-install --cmake-args -DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE'
+WORKDIR /home/ros/src/
+USER ros
 
 RUN echo "if [ -f /home/ros/install/setup.bash ]; then source /home/ros/install/setup.bash; fi" >> /home/ros/.bashrc
 RUN echo "if [ -f /usr/share/gazebo/setup.sh ]; then . /usr/share/gazebo/setup.sh; fi" >> /home/ros/.bashrc
 RUN echo "export RCUTILS_COLORIZED_OUTPUT=1" >> /home/ros/.bashrc
 
+RUN echo "export GAZEBO_MASTER_URI=http://localhost:11333" >> /home/ros/.bashrc

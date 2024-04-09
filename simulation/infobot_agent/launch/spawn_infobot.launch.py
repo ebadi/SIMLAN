@@ -32,9 +32,8 @@ def generate_launch_description():
     p = subprocess.Popen(['xacro', xacro_urdf_path],
                          stdout=open(urdf_path, "w"))
     (output, err) = p.communicate()
-    print(output, err)
     p.wait()
-    print("urdf_path:", urdf_path)
+    print("urdf_path2:", urdf_path)
     x_pose = LaunchConfiguration('x_pose', default='0.0')
     y_pose = LaunchConfiguration('y_pose', default='0.0')
     z_pose = LaunchConfiguration('z_pose', default='0.0')
@@ -55,7 +54,7 @@ def generate_launch_description():
         package='gazebo_ros',
         executable='spawn_entity.py',
         arguments=[
-            '-entity', os.environ['INFOBOT_MODEL'],
+            '-entity', 'infotiv',
             '-file', urdf_path,
             '-x', x_pose,
             '-y', y_pose,

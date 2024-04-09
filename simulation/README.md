@@ -1,35 +1,3 @@
-# How to start Gazebo simulation
-
-Make sure that all [dependencies](../README.md) are installed.
-
-1- Build and run the gazebo world simulation:
-
-```bash
-./build_world.sh
-```
-Wait until the Gazebo UI is loaded.
-
-2. Spawn Aruco and Camera on the scene:
-
-```bash
-./spawn-static-agents.sh
-```
-
-3. Spawn infobot robot:
-
-```bash
-./run_infobot.sh
-```
-
-4. Spawn Jackal robot:
-```bash
-./run_jackal.sh
-```
-
-The jackal can then be controlled with the computer keyboard by running
-```bash
-ros2 launch dyno_jackal_bringup keyboard_steering.launch.py
-```
 
 ## Adding Aruco and camera (static agents)
 

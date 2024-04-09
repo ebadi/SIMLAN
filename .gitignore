@@ -26,3 +26,7 @@ phobos*
 .ipy*
 #other repos
 **/jackal
+imu_tools/
+gazebo_ros2_control/
+rcl/
+wireless/

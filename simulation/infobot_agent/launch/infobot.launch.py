@@ -31,8 +31,7 @@ from launch_ros.actions import Node
 
 
 def generate_launch_description():
-    launch_file_dir = os.path.join(
-        get_package_share_directory('infobot_agent'), 'launch')
+    launch_file_dir = os.path.join(get_package_share_directory('infobot_agent'), 'launch')
     use_sim_time = LaunchConfiguration('use_sim_time', default='true')
     # INITIAL_POSITION
     x_pose = LaunchConfiguration('x_pose', default='20.0')
