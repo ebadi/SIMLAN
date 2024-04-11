@@ -49,9 +49,10 @@ class MultiCameraSubscriber(Node):
             #create Background Subtractor objects
             if args.algo == 'MOG2':
                 backSub[camera_id] = cv.createBackgroundSubtractorMOG2(history = 500, varThreshold = 8, detectShadows = False)
-            else:
+            elif args.algo == 'KNN':
                 backSub[camera_id] = cv.createBackgroundSubtractorKNN(history=500, dist2Threshold=400.0, detectShadows = False)
-            
+            else:
+                print ("No BackgroundSubtractor for camera: ",  camera_id)
             self.subscription = self.create_subscription(
                 Image,
                 '/static_agents/camera_' + camera_id + '/image_raw',
@@ -88,8 +89,8 @@ def main():
 
     rclpy.init()
     # all cameras
-    cam_list = ['160','161','162','163','164','165','166','167', '168', '169', '170', '171']
-    # cam_list = ['164']
+    # cam_list = ['160','161','162','163','164','165','166','167', '168', '169', '170', '171']
+    cam_list = ['164','165','166','167', '168']
 
     try:
         node = MultiCameraSubscriber(cam_list)

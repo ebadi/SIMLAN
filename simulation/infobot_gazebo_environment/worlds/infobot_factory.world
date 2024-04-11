@@ -585,6 +585,7 @@
 
     <actor name="test_actor">
       <link name="body">
+      <!-- ATTACK ARUCO TO THE BODY
       <visual name="aruco_front_face">
         <pose>0 0.7 0 0 0 1.57 </pose>
         <geometry>
@@ -600,7 +601,7 @@
           </script>
         </material>
       </visual>
-
+      -->
       </link>
       <skin>
         <filename>walk.dae</filename>
@@ -643,6 +644,26 @@
         </trajectory>
       </script>
     </actor>
+
+
+
+
+
+    <include>
+      <uri>model://eur_pallet</uri>
+      <name>pallet__obsticle</name>
+      <pose>23 2 0.001 0 0 0</pose>
+    </include>
+
+
+    <include>
+      <uri>model://box_1185x785x1010</uri>
+      <name>box_obsticle</name>
+      <pose>23  5 0.4 0 0 0</pose>
+    </include>
+
+
+
 
 
     <gui fullscreen='0'>

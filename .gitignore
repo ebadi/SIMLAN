@@ -30,3 +30,4 @@ imu_tools/
 gazebo_ros2_control/
 rcl/
 wireless/
+rosbag*

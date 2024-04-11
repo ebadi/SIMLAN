@@ -20,105 +20,90 @@ Click on image below to see the Volvo layout demo:
 
 [![Delivery 2, Volvo layout](https://img.youtube.com/vi/f8ULCZFEM5Q/0.jpg)](https://www.youtube.com/watch?v=f8ULCZFEM5Q)
 
-## Installation in production environment
+## Installation in development environment
 
-These steps are used to install ROS (Humble) and Gazebo (11.10.2) on
-  - Ubuntu 22.04
-  - Windows 10 (after installing "ubuntu 22.04.3 LTS" WSL2 from Microsoft Store).
+Dependencies: `vscode` (with `Dev containers` extension) and `docker`.
 
-### ROS, RViz, Gazebo
-
-We follow [the installation instruction](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html) to install ROS, RViz, Gazebo and nav2. [.devcontainer/Dockerfile](.devcontainer/Dockerfile) can alternatively be used.
-
-```bash
-sudo apt update && sudo apt install locales
-sudo locale-gen en_US en_US.UTF-8
-sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-export LANG=en_US.UTF-8
-locale  # verify settings
-
-
-sudo apt install software-properties-common
-sudo add-apt-repository universe
-
-sudo apt update && sudo apt install curl -y
-sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
-
-echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
-
-sudo apt update
-sudo apt upgrade
-sudo apt install ros-humble-desktop ros-dev-tools ros-humble-slam-toolbox ros-humble-twist-mux
-sudo apt install ros-humble-nav2*
-```
-
-After successful installation you need to set up the ROS environment, which can be done by running `source /opt/ros/humble/setup.bash`. Doing this every time you launch a new terminal instance can be annoying, so we recommend adding it to your bash config so that the environment is sourced automatically on every new instance you open. Do this by running the following command in your terminal:
-
-```bash
-echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
-```
-
-On a *new* terminal make sure the following command prints out `humble` to ensure that ROS environment is set up correctly.
-
-```bash
-$ printenv ROS_DISTRO
-humble
-```
-
-For a quick installation of Gazebo, use the following command command:
-
-```bash
-sudo apt install ros-humble-gazebo*
-```
-
-After successfully installation and setup you should be able to see this:
-
-```bash
-$ gazebo -v
-Gazebo multi-robot simulator, version 11.10.2
-```
-
-### Development environment
 To improve collaboration in development environment we use vscode and docker as explained in [this instruction](https://www.allisonthackston.com/articles/docker-development.html) using these [docker files](https://github.com/athackst/dockerfiles).
-
-To build and open the container in vscode: `Ctrl + Shift + P` and select `Dev containers: Rebuild and Reopen in container`
-
-If you have any issue with the dockerfile, update `.devcontainer/Dockerfile`
-```
--FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04 AS base
-+FROM ubuntu:22.04 AS base
-```
-
-#### Nvidia GPU
 
 To build the docker files with nvidia support, update `.devcontainer/devcontainer.json`  from `"service": "smile_simulation"` to `"service": "smile_simulation_nvidia"`
 
-To test the docker files : `docker compose up --build`
-
-#### Python Packages 
-For communicating with ROS2 we use `rclpy` package. Make sure that you source your environment if `rclpy` is missing. For other packages use pip to install the right package as below:
+### Quick start example
+To build and open the container in vscode: `Ctrl + Shift + P` and select `Dev containers: Rebuild and Reopen in container` . You can run these commands in the vscode terminal after vscode is connected to the docker.
 
 ```bash
-pip install -r requirements.txt
+./start.sh sim
+./start.sh infobot_teleop
+./start.sh ros_record
+./start.sh cam_record
 ```
+
 ### to build and run the simulation
 
 ```bash
 ./build.sh
 ```
 
-2. Spawn Aruco and Camera on the scene:
+Spawn robots, Aruco and cameras on the scene:
 
 ```bash
-./start all
+./start sim
 ```
 
 The jackal can then be controlled with the computer keyboard by running
+
 ```bash
-ros2 launch dyno_jackal_bringup keyboard_steering.launch.py
+./start teleop_jackal
+```
+## Manual control and data collection
+To control the infobot using keyboard:
+
+```bash
+./start teleop_infobot
 ```
 
+(optionally) To record ros messages in ROS bag files:
+
+```bash
+./start ros_record
+```
+
+To replay the last rosbag recording:
+
+```bash
+./start ros_replay
+```
+
+```
+Files:             rosbag2_2024_03_18-07_53_18_0.db3
+Bag size:          77.0 KiB
+Storage id:        sqlite3
+Duration:          30.980s
+Start:             Mar 18 2024 07:53:21.942 (1710748401.942)
+End:               Mar 18 2024 07:53:52.923 (1710748432.923)
+Messages:          554
+Topic information: Topic: /cmd_vel | Type: geometry_msgs/msg/Twist | Count: 554 | Serialization Format: cdr
+
+[INFO] [1710775265.896618797] [rosbag2_storage]: Opened database 'rosbag2_2024_03_18-15_16_56/rosbag2_2024_03_18-15_16_56_0.db3' for READ_ONLY.
+```
+
+(optionally) To do cartography: 
+
+```bash
+./start slam
+```
+
+To start nav2 navigation stack and start commanding the infobot to move in the map:
+
+```bash
+./start nav
+```
+and then: 
+
+```bash
+./start commander
+```
 
 ### Additional information
 
-Please see [LICENSE](LINCESE),  [CREDITS.md](CREDITS.md) and [CHANGELOG.md](CHANGELOG.md) for more information.
+Please see [LICENSE](LINCESE), [CREDITS.md](CREDITS.md) and [CHANGELOG.md](CHANGELOG.md) for more information.

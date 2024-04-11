@@ -3,7 +3,7 @@
 <robot xmlns:xacro="http://ros.org/wiki/xacro"> 
 
 <!-- GOPAL400 and FORKLIFT -->
-<xacro:property name="robot_type" value="GOPAL400"/>
+<xacro:property name="robot_type" value="FORKLIFT"/>
 
 
     <xacro:property name="base_length" value="1.4"/>
