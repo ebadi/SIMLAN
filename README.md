@@ -8,6 +8,7 @@ Find technical and more detailed documentation and specifications in the followi
 - [Building Gazebo models (Blender/Phobos)](simulation/raw_models/README.md)
 - [Objects specifications](simulation/raw_models/objects/README.md)
 - [Warehouse specification](simulation/raw_models/warehouse/README.md)
+- [Camera extrinsic calibration](processing/extrinsic) and [Camera intrinsic calibration](processing/intrinsic)
 
 ![Warehouse in Gazebo and ROS](resources/warehouse.png)
 
@@ -26,52 +27,68 @@ Dependencies: `vscode` (with `Dev containers` extension) and `docker`.
 
 To improve collaboration in development environment we use vscode and docker as explained in [this instruction](https://www.allisonthackston.com/articles/docker-development.html) using these [docker files](https://github.com/athackst/dockerfiles).
 
-To build the docker files with nvidia support, update `.devcontainer/devcontainer.json`  from `"service": "smile_simulation"` to `"service": "smile_simulation_nvidia"`
+To build the docker files with nvidia support, update `.devcontainer/devcontainer.json`  from `"service": "smile_simulation"` to `"service": "smile_simulation_nvidia"`. To build and open the container in vscode: `Ctrl + Shift + P` and select `Dev containers: Rebuild and Reopen in container` . 
 
-### Quick start example
-To build and open the container in vscode: `Ctrl + Shift + P` and select `Dev containers: Rebuild and Reopen in container` . You can run these commands in the vscode terminal after vscode is connected to the docker.
+
+### Quick start commands
+Please run these commands in the vscode terminal after vscode is connected to the docker as image below (in working directory `~/src`):
+
+![dev container in vscode](resources/vscode.png)
+
+To kill previously running simulation instances, build the project again and start the simulation environment and agents(spawn robots, Aruco marks and cameras on the scene):
 
 ```bash
 ./start.sh sim
-./start.sh infobot_teleop
-./start.sh ros_record
-./start.sh cam_record
 ```
 
-### to build and run the simulation
+The jackal can then be controlled with the computer keyboard by running:
 
 ```bash
-./build.sh
+./start.sh teleop_jackal
 ```
-
-Spawn robots, Aruco and cameras on the scene:
-
-```bash
-./start sim
-```
-
-The jackal can then be controlled with the computer keyboard by running
-
-```bash
-./start teleop_jackal
-```
-## Manual control and data collection
 To control the infobot using keyboard:
 
 ```bash
-./start teleop_infobot
+./start.sh teleop_infobot
 ```
 
-(optionally) To record ros messages in ROS bag files:
+To record camera images we use a simple python code [./processing/camera_subscriber.py](./processin/camera_subscriber.py) that can be executed with following command:
 
 ```bash
-./start ros_record
+./start.sh cam_record
+```
+The result will be stored in `./processing/images_data/`. 
+
+## Advanced features (not fully supported yet):
+
+
+To kill all relevant process (related to gazebo, ros2), delete build files, delete recorded images and rosbag files using the following command:
+
+```bash
+./start.sh clean
+```
+
+To clean up and build the ros2 simulation
+
+```bash
+./start.sh build
+```
+To test the unit tests before pushing new codes:
+```bash
+./start.sh clean
+```
+
+
+To record ros messages in ROS bag files to replay the scenario later:
+
+```bash
+./start.sh ros_record
 ```
 
 To replay the last rosbag recording:
 
 ```bash
-./start ros_replay
+./start.sh ros_replay
 ```
 
 ```
@@ -90,18 +107,18 @@ Topic information: Topic: /cmd_vel | Type: geometry_msgs/msg/Twist | Count: 554 
 (optionally) To do cartography: 
 
 ```bash
-./start slam
+./start.sh slam
 ```
 
 To start nav2 navigation stack and start commanding the infobot to move in the map:
 
 ```bash
-./start nav
+./start.sh nav
 ```
 and then: 
 
 ```bash
-./start commander
+./start.sh commander
 ```
 
 ### Additional information

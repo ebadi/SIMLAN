@@ -41,7 +41,7 @@ then
     sleep 7
     # agents
     ros2 launch infobot_agent infobot.launch.py &
-    # ros2 launch dyno_jackal_bringup sim.launch.py &
+    ros2 launch dyno_jackal_bringup sim.launch.py &
     ros2 launch static_agent_launcher static-agent.launch.py &
 elif [[ "$*" == *"jackal_teleop"* ]]
 then
