@@ -23,25 +23,26 @@ Click on image below to see the Volvo layout demo:
 
 ## Installation in development environment
 
-Dependencies: `vscode` (with `Dev containers` extension) and `docker`.
+ 
+*Dependencies*: `vscode` (with `Dev containers` extension installed) and `docker`.
 
-To improve collaboration in development environment we use vscode and docker as explained in [this instruction](https://www.allisonthackston.com/articles/docker-development.html) using these [docker files](https://github.com/athackst/dockerfiles).
-
-To build the docker files with nvidia support, update `.devcontainer/devcontainer.json`  from `"service": "smile_simulation"` to `"service": "smile_simulation_nvidia"`. To build and open the container in vscode: `Ctrl + Shift + P` and select `Dev containers: Rebuild and Reopen in container` . 
+To build and open the container in vscode: `Ctrl + Shift + P` and select `Dev containers: Rebuild and Reopen in container` . 
 
 
 ### Quick start commands
-Please run these commands in the vscode terminal after vscode is connected to the docker as image below (in working directory `~/src`):
+Please run these commands in the vscode terminal after vscode is built and vscode is connected to the docker as shown in image below:
 
 ![dev container in vscode](resources/vscode.png)
 
-To kill previously running simulation instances, build the project again and start the simulation environment and agents(spawn robots, Aruco marks and cameras on the scene):
+To kill previously running simulation instances, build the project and start the simulation environment and agents(spawn robots, Aruco marks and cameras on the scene). After running this command you should be able to see the Gazebo graphical simulation window:
 
 ```bash
 ./start.sh sim
 ```
 
-The jackal can then be controlled with the computer keyboard by running:
+*Attention*: run these commands in a parallel terminal within _vscode_ .
+
+the jackal can then be controlled with the computer keyboard by running:
 
 ```bash
 ./start.sh teleop_jackal

@@ -1,3 +1,8 @@
+
+To improve collaboration in development environment we use vscode and docker as explained in [this instruction](https://www.allisonthackston.com/articles/docker-development.html) using these [docker files](https://github.com/athackst/dockerfiles).
+
+To build the docker files with nvidia support, update `.devcontainer/devcontainer.json`  from `"service": "smile_simulation"` to `"service": "smile_simulation_nvidia"`. 
+
 ### ROS, RViz, Gazebo
 
 We follow installation procedure used in [.devcontainer/Dockerfile](.devcontainer/Dockerfile) to install dependencies in the production environment. 
