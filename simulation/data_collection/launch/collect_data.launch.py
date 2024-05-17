@@ -42,10 +42,15 @@ def generate_launch_description():
     cameras = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(pkg_static_agents, "launch", "static-agent.launch.py")))
+    
+    x_pose = LaunchConfiguration("x_pose", default="20.0")
+    y_pose = LaunchConfiguration("y_pose", default="25.0")
 
     forklift = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_infobot_agent, "launch", "infobot.launch.py")))
+            os.path.join(pkg_infobot_agent, "launch", "infobot.launch.py")),
+            launch_arguments={'x_pose': x_pose, 'y_pose': y_pose}.items()
+        )
     
     jackal = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(

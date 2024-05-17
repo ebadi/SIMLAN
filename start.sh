@@ -96,7 +96,7 @@ then
     colcon test --packages-select ros2_test --pytest-args --verbose
 elif [[ "$*" == *"collect_data"* ]]
 then
-    ros2 launch data_collection collect_data.launch.py
-    sleep 10
-    ros2 run data_collection move_object
+    ros2 launch data_collection collect_data.launch.py && 
+    sleep 5 &&
+    ros2 run data_collection move_object 
 fi
