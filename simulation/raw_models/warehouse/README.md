@@ -1,31 +1,30 @@
 ## Blueprint
 
-This document contains explanations and motivations for the measurements as well as names for variables that should be used when designing the objects. The categories are mostly self explanatory, the one that might need more of an explanation is the color red. This refers to loose objects such as pallets, barrels, boxes and things that will be placed directly on the ground. 
+This document contains explanations and motivations for the measurements as well as names for variables that should be used when designing the objects. The categories are mostly self explanatory, the one that might need more of an explanation is the color red. This refers to loose objects such as pallets, barrels, boxes and things that will be placed directly on the ground.
 
 **Measurements:**
 
-| Category              | Part / Object         | Variable Name                 | Value [unit]  |
-| :---                  | :----:                |    :----:                     |          ---: |
-| Warehouse             | Walls                 | warehouse_length              | 23.2 [m]      |
-| Warehouse             | Walls                 | warehouse_width               | 18 [m]        |
-| Warehouse             | Walls                 | warehouse_height              | 6 [m]         |
-| Warehouse             | Aisle                 | aisle_width                   | 3.7 [m]       |
-| Warehouse             | Door                  | door_height                   | 4 [m]         |
-| Warehouse             | Door                  | door_width                    | 3 [m]         |
-| Warehouse             | Warehouse             | door_distance_to_wall         | 2 [m]         |
-| Warehouse             | Shelf                 | shelf_distance_side_side      | 0 [m]         |
-| Warehouse             | Shelf                 | single_shelf_wall_distance    | 0.1 [m]       |
-| Warehouse             | Shelf                 | double_shelf_depth_distance   | 0.2 [m]       |
-| Warehouse             | Shelf                 | shelf_total_length            | 2.88 [m]      |
-| Warehouse             | Shelf                 | shelf_total_depth             | 1.1 [m]       |
-| Warehouse             | Shelf                 | shelf_total_height            | 3 [m]         |
+| Category  | Part / Object |        Variable Name        | Value \[unit\] |
+| :-------- | :-----------: | :-------------------------: | -------------: |
+| Warehouse |     Walls     |      warehouse_length       |     23.2 \[m\] |
+| Warehouse |     Walls     |       warehouse_width       |       18 \[m\] |
+| Warehouse |     Walls     |      warehouse_height       |        6 \[m\] |
+| Warehouse |     Aisle     |         aisle_width         |      3.7 \[m\] |
+| Warehouse |     Door      |         door_height         |        4 \[m\] |
+| Warehouse |     Door      |         door_width          |        3 \[m\] |
+| Warehouse |   Warehouse   |    door_distance_to_wall    |        2 \[m\] |
+| Warehouse |     Shelf     |  shelf_distance_side_side   |        0 \[m\] |
+| Warehouse |     Shelf     | single_shelf_wall_distance  |      0.1 \[m\] |
+| Warehouse |     Shelf     | double_shelf_depth_distance |      0.2 \[m\] |
+| Warehouse |     Shelf     |     shelf_total_length      |     2.88 \[m\] |
+| Warehouse |     Shelf     |      shelf_total_depth      |      1.1 \[m\] |
+| Warehouse |     Shelf     |     shelf_total_height      |        3 \[m\] |
 
-|![blueprint](resources/blueprint_storage.drawio.png)|
-|:--:| 
-| *The storage blueprint* |
+| ![blueprint](resources/blueprint_storage.drawio.png) |
+| :--------------------------------------------------: |
+|               *The storage blueprint*                |
 
 TODO @Anders new blueprint
-
 
 ## Install instruction for BIM and Arch workbench
 
@@ -44,13 +43,11 @@ Going to the top view, I created a new rectangle object covering the whole wareh
 
 Everything was added to a level object (note: by default this level object is named "Floor", but don't confuse it with the slab that constitutes the physical floor) so that it's grouped together. If we set the wall heights to 0 they will automatically inherit the height of the Level object, so we can change all the walls easily by changing the height of the level. Textures for the floor and walls can later be added in Blender.
 
-
 Finally I exported the project as a Collada file (.dae) and added it into a simple .world file to see if it loaded properly in Gazebo, and the results seemed correct.
 
 Since the warehouse will be static we shouldn't need to define any additional parameters like mass or inertia, visuals and collision should be enough. Textures might need some improvement as currently they're just basic colors but it should be possible to add those in FreeCAD and have them included in the .dae file so we can load them visually in Gazebo later.
 
 I also added windows for slightly better visibility.
-
 
 ## Add warehouse to world-file
 
@@ -59,5 +56,3 @@ The floor of the warehouse goes below z=0 so the ground plane was lowered by 0.2
 ## Resources
 
 Warehouse Aisle width: [Aisle Width](https://www.conger.com/forklift-width/#:~:text=As%20you%20may%20recall%20from,standard%2048-inch%20pallets.)
-
-

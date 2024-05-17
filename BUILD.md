@@ -1,17 +1,16 @@
-
 To improve collaboration in development environment we use vscode and docker as explained in [this instruction](https://www.allisonthackston.com/articles/docker-development.html) using these [docker files](https://github.com/athackst/dockerfiles).
 
-To build the docker files with nvidia support, update `.devcontainer/devcontainer.json`  from `"service": "smile_simulation"` to `"service": "smile_simulation_nvidia"`. 
+To build the docker files with nvidia support, update `.devcontainer/devcontainer.json`  from `"service": "factory_simulation"` to `"service": "factory_simulation_nvidia"`.
 
 ### ROS, RViz, Gazebo
 
-We follow installation procedure used in [.devcontainer/Dockerfile](.devcontainer/Dockerfile) to install dependencies in the production environment. 
-Alternatively one can follow [the installation instruction](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html) to install minimal packages to get ROS, RViz, Gazebo and nav2 working. 
+We follow installation procedure used in [.devcontainer/Dockerfile](.devcontainer/Dockerfile) to install dependencies in the production environment.
+Alternatively one can follow [the installation instruction](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html) to install minimal packages to get ROS, RViz, Gazebo and nav2 working.
 
 These steps are used to install ROS (Humble) and Gazebo (11.10.2) on
-  - Ubuntu 22.04
-  - Windows 10 (after installing "ubuntu 22.04.3 LTS" WSL2 from Microsoft Store).
-  
+
+- Ubuntu 22.04
+- Windows 10 (after installing "ubuntu 22.04.3 LTS" WSL2 from Microsoft Store).
 
 ```bash
 sudo apt update && sudo apt install locales
@@ -61,9 +60,26 @@ $ gazebo -v
 Gazebo multi-robot simulator, version 11.10.2
 ```
 
-### Python Packages 
+### Python Packages
+
 For communicating with ROS2 we use `rclpy` package. Make sure that you source your environment if `rclpy` is missing. For other packages use pip to install the right package as below:
 
 ```bash
 pip install -r requirements.txt
+```
+
+### Docker compose
+
+```
+docker compose --project-name infobotprj -f ./docker-compose.yaml down
+docker compose --project-name infobotprj -f ./docker-compose.yaml build
+docker compose --project-name infobotprj -f ./docker-compose.yaml up -d
+docker ps
+docker exec -i -u root 2d426177e1ee  /bin/bash
+```
+
+Headless mode `/simulation/infobot_gazebo_environment/launch/infobot_factory.launch.py ` uncomment `ld.add_action(gzclient_cmd)`
+
+```
+docker build -t 6c035b5d87ff48ef9b9bb4cf75d36503181ffd13 --build-arg name=value -f ./.devcontainer/Dockerfile ./
 ```

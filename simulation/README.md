@@ -1,7 +1,7 @@
-
 ## Adding Aruco and camera (static agents)
 
 Aruco codes and cameras are all attached to the same link in Gazebo. To create new static agents, go to `simulation/static_agent_launcher/description/agents.urdf.xacro`. There you only need to add a new line on the form `<xacro:camera number="1" x="3" y="3" z="6" r="0" p="0" w="0"/>` for a new camera, or a new line on the form `<xacro:aruco number="1" x="3" y="3" z="0.1" r="0" p="0" w="0"/>` for a new aruco. The commands are identical apart from the name.
+
 - `Number` is added to the name to make the static agent unique. For cameras this mean they will publish on e.g. the topic `static_agents/camera_[number]/image_raw`. For aruco the number indicates which aruco png to use.
 - `x, y, z` is the coordinate offset from the link the agents are all attached to.
 - `r, p, w` are the rotation, pitch, and yaw of the camera, dictating in which direction and at what angle the cameras are looking.
@@ -15,16 +15,16 @@ Aruco codes and cameras are all attached to the same link in Gazebo. To create n
 
 ## Using actors in Gazebo
 
-* Placed in sdf or world file
-* Actors use the actor tag (as opposed to the model tag most other objects use).
-* actor tags contain links like usual, but also a `<script>` tag.
-* The script tag contains:
-  * loop: Whether the script should loop on completion
-  * delay\_start: Time to wait before running the script, also waits between loops
-  * auto\_start: Whether the script should start automatically when the sim starts
-  * A trajectory tag, which has an (unique) id and a type (used to couple it with an animation)
-    * Inside the trajectory tags we define waypoint tags which consist of a pose and the time where we are supposed to reach the pose.
-    * Note: The trajectory is smoothed as a whole. This means that you'll get a fluid motion, but the exact poses contained in the waypoints might not be reached.
+- Placed in sdf or world file
+- Actors use the actor tag (as opposed to the model tag most other objects use).
+- actor tags contain links like usual, but also a `<script>` tag.
+- The script tag contains:
+  - loop: Whether the script should loop on completion
+  - delay_start: Time to wait before running the script, also waits between loops
+  - auto_start: Whether the script should start automatically when the sim starts
+  - A trajectory tag, which has an (unique) id and a type (used to couple it with an animation)
+    - Inside the trajectory tags we define waypoint tags which consist of a pose and the time where we are supposed to reach the pose.
+    - Note: The trajectory is smoothed as a whole. This means that you'll get a fluid motion, but the exact poses contained in the waypoints might not be reached.
 
 Script structure:
 
@@ -57,14 +57,13 @@ Script structure:
 </script>
 ```
 
-* Gazebo supports two different skeleton animation file formats: COLLADA (.dae) and Biovision Hierarchy (.bvh).
-* Skin is similar, simply import a collada file
-* <interpolate_x>true</interpolate_x> makes the animation match the movement. The animation is done briefly along the x-axis and then it can be interpolated into any direction by gazebo.
-* In a top down positive x,y frame of reference:  0 = right, 1.57 = up, -1.57 = down, 3.14 = left
-  * Pos/negative matters! 0 to -1.57 does not behave the same as 0 to 4.71!
-  * In other words increasing the angle of rotation means rotating left, and decreasing it means rotating right.
-* Tension = how strictly it follows the waypoints in a span 0-1 where 0 is not very strict, 1 very strict
-
+- Gazebo supports two different skeleton animation file formats: COLLADA (.dae) and Biovision Hierarchy (.bvh).
+- Skin is similar, simply import a collada file
+- \<interpolate_x>true\</interpolate_x> makes the animation match the movement. The animation is done briefly along the x-axis and then it can be interpolated into any direction by gazebo.
+- In a top down positive x,y frame of reference:  0 = right, 1.57 = up, -1.57 = down, 3.14 = left
+  - Pos/negative matters! 0 to -1.57 does not behave the same as 0 to 4.71!
+  - In other words increasing the angle of rotation means rotating left, and decreasing it means rotating right.
+- Tension = how strictly it follows the waypoints in a span 0-1 where 0 is not very strict, 1 very strict
 
 ## Simulation Specification
 
@@ -119,6 +118,7 @@ Additionally these are expected from the simulator:
 - tele-operation with keyboard and programmatically from python
 
 ## AMR
+
 differential-drive (casterwheel)/achermann (car) type of robot
 
 `/cmd_vel` topic accepts `Twist` formatted messages only non-zero value for linear.x (forward/backward) and non-zero value for angular.z (differential drive, rotating in z axis)
@@ -149,15 +149,14 @@ I also added windows for slightly better visibility.
 
 The floor of the warehouse goes below z=0 so the ground plane was lowered by 0.2 so that the warehouse still rests on top of it. As our simulations will mainly take place inside the warehouse the warehouse floor replaces the ground plane at z=0. The warehouse itself was placed in the models directory and loaded into the world with an `<include>` tag. Additionally the maze in the stage4 world was moved away from the origin so that it is fully contained inside the warehouse, though in the future it should be removed altogether.
 
-
 ## Textures
 
 Shelf, pallet, warehouse walls are using CC0 textures from https://polyhaven.com/textures
 Box and warehouse floor are using images from Volvo as a base.
-  * box: picture from [Volvo-group-packaging-specifications_2015.pdf](https://www.volvogroup.com/content/dam/volvo-group/markets/master/suppliers/useful-links-and-documents-for-existing-suppliers/logistics-solutions/volvo-group-packaging-system/Volvo-group-packaging-specifications_2015.pdf)
+
+- box: picture from [Volvo-group-packaging-specifications_2015.pdf](https://www.volvogroup.com/content/dam/volvo-group/markets/master/suppliers/useful-links-and-documents-for-existing-suppliers/logistics-solutions/volvo-group-packaging-system/Volvo-group-packaging-specifications_2015.pdf)
 
 ### Conventions
 
-- Keep your links/joints paired, and use the suffix _link and _joint (e.g. arm_link and arm_joint) and maybe follow [REP 120 naming conventions](https://www.ros.org/reps/rep-0120.html)
+- Keep your links/joints paired, and use the suffix \_link and \_joint (e.g. arm_link and arm_joint) and maybe follow [REP 120 naming conventions](https://www.ros.org/reps/rep-0120.html)
 - Define visual, collision, inertial and Gazebo material (and maybe friction) for all objects
-

@@ -12,28 +12,33 @@ import xacro
 
 
 def generate_launch_description():
-    pkg_name = 'static_agent_launcher'
-    file_subpath = 'description/agents.urdf.xacro'
+    pkg_name = "static_agent_launcher"
+    file_subpath = "description/agents.urdf.xacro"
 
-    xacro_file = os.path.join(
-        get_package_share_directory(pkg_name), file_subpath)
+    xacro_file = os.path.join(get_package_share_directory(pkg_name), file_subpath)
     robot_description_raw = xacro.process_file(xacro_file).toxml()
     # Configure the node
     node_robot_state_publisher = Node(
-        package='robot_state_publisher',
-        executable='robot_state_publisher',
-        namespace='static_agents',
-        output='screen',
-        parameters=[{'robot_description': robot_description_raw,
-                     'use_sim_time': True}]
+        package="robot_state_publisher",
+        executable="robot_state_publisher",
+        namespace="static_agents",
+        output="screen",
+        parameters=[{"robot_description": robot_description_raw, "use_sim_time": True}],
     )
 
-    spawn_entity = Node(package='gazebo_ros', executable='spawn_entity.py', namespace="static_agents",
-                        arguments=['-topic', 'robot_description',
-                                   '-robot_namespace', 'static_agents', '-entity', 'cameras'],
-                        output='screen')
+    spawn_entity = Node(
+        package="gazebo_ros",
+        executable="spawn_entity.py",
+        namespace="static_agents",
+        arguments=[
+            "-topic",
+            "robot_description",
+            "-robot_namespace",
+            "static_agents",
+            "-entity",
+            "cameras",
+        ],
+        output="screen",
+    )
 
-    return LaunchDescription([
-        node_robot_state_publisher,
-        spawn_entity
-    ])
+    return LaunchDescription([node_robot_state_publisher, spawn_entity])

@@ -62,7 +62,7 @@ ros2 topic pub /effort_controller/commands std_msgs/msg/Float64MultiArray "data:
 
     <inertial>
       <mass value="100"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
     </inertial>
   </link>
 
@@ -96,7 +96,7 @@ ros2 topic pub /effort_controller/commands std_msgs/msg/Float64MultiArray "data:
 
     <inertial>
       <mass value="1"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
     </inertial>
   </link>
 
@@ -140,7 +140,7 @@ ros2 topic pub /effort_controller/commands std_msgs/msg/Float64MultiArray "data:
     </collision>
     <inertial>
       <mass value="0.01"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
     </inertial>
   </link>
   <joint name="fork1_to_cart" type="fixed">
@@ -165,7 +165,7 @@ ros2 topic pub /effort_controller/commands std_msgs/msg/Float64MultiArray "data:
     </collision>
     <inertial>
       <mass value="0.01"/>
-      <inertia ixx="1.0" ixy="0.0" ixz="0.0" iyy="1.0" iyz="0.0" izz="1.0"/>
+      <inertia ixx="0.1" ixy="0.0" ixz="0.0" iyy="0.1" iyz="0.0" izz="0.1"/>
     </inertial>
   </link>
 

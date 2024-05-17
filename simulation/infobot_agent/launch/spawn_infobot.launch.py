@@ -25,42 +25,48 @@ import subprocess
 
 def generate_launch_description():
 
-    xacro_urdf_path = os.path.join(get_package_share_directory(
-        'infobot_agent'), 'urdf', 'infobot.urdf.xacro')
-    urdf_path = os.path.join(get_package_share_directory(
-        'infobot_agent'), 'urdf', 'infobot.urdf')
-    p = subprocess.Popen(['xacro', xacro_urdf_path],
-                         stdout=open(urdf_path, "w"))
+    xacro_urdf_path = os.path.join(
+        get_package_share_directory("infobot_agent"), "urdf", "infobot.urdf.xacro"
+    )
+    urdf_path = os.path.join(
+        get_package_share_directory("infobot_agent"), "urdf", "infobot.urdf"
+    )
+    p = subprocess.Popen(["xacro", xacro_urdf_path], stdout=open(urdf_path, "w"))
     (output, err) = p.communicate()
     p.wait()
     print("urdf_path2:", urdf_path)
-    x_pose = LaunchConfiguration('x_pose', default='0.0')
-    y_pose = LaunchConfiguration('y_pose', default='0.0')
-    z_pose = LaunchConfiguration('z_pose', default='0.0')
+    x_pose = LaunchConfiguration("x_pose", default="0.0")
+    y_pose = LaunchConfiguration("y_pose", default="0.0")
+    z_pose = LaunchConfiguration("z_pose", default="0.0")
 
     declare_x_position_cmd = DeclareLaunchArgument(
-        'x_pose', default_value='0.0',
-        description='x_pose')
+        "x_pose", default_value="0.0", description="x_pose"
+    )
 
     declare_y_position_cmd = DeclareLaunchArgument(
-        'y_pose', default_value='0.0',
-        description='y__pose')
+        "y_pose", default_value="0.0", description="y__pose"
+    )
 
     declare_z_position_cmd = DeclareLaunchArgument(
-        'z_pose', default_value='0.0',
-        description='z_pose')
+        "z_pose", default_value="0.0", description="z_pose"
+    )
 
     start_gazebo_ros_spawner_cmd = Node(
-        package='gazebo_ros',
-        executable='spawn_entity.py',
+        package="gazebo_ros",
+        executable="spawn_entity.py",
         arguments=[
-            '-entity', 'infotiv',
-            '-file', urdf_path,
-            '-x', x_pose,
-            '-y', y_pose,
-            '-z', z_pose
+            "-entity",
+            "infotiv",
+            "-file",
+            urdf_path,
+            "-x",
+            x_pose,
+            "-y",
+            y_pose,
+            "-z",
+            z_pose,
         ],
-        output='screen',
+        output="screen",
     )
 
     ld = LaunchDescription()

@@ -5,7 +5,7 @@ find_package(ament_cmake REQUIRED)
 
 
 install(
-    DIRECTORY forklift_webots  
+    DIRECTORY forklift_webots
     DESTINATION share/${PROJECT_NAME}
 )
 

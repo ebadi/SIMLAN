@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 
-<robot xmlns:xacro="http://ros.org/wiki/xacro"> 
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
 
 <!-- GOPAL400 and FORKLIFT -->
 <xacro:property name="robot_type" value="FORKLIFT"/>
@@ -44,7 +44,7 @@
 
 </xacro:if>
 
-<!-- FORKLIFT -->  
+<!-- FORKLIFT -->
 <xacro:if value="${robot_type == 'FORKLIFT'}">
 
     <xacro:property name="fork_size_x" value="1.2"/>

@@ -37,8 +37,8 @@ aruco_type = aruco.DICT_5X5_1000
 aruco_sidepixel = 100  # size of the image in pixels
 aruco_borderbits = 10  # width of the marker border.
 aruco_max = 100
-texture_path = '../infobot_gazebo_environment/models/aruco/materials/textures'
-material_script_path = '../infobot_gazebo_environment/models/aruco/materials/scripts/'
+texture_path = "../infobot_gazebo_environment/models/aruco/materials/textures"
+material_script_path = "../infobot_gazebo_environment/models/aruco/materials/scripts/"
 
 shutil.rmtree(texture_path, ignore_errors=True)
 os.mkdir(texture_path)
@@ -52,14 +52,15 @@ aruco_dict = aruco.Dictionary_get(aruco_type)
 for indx in range(0, aruco_max):
     img = aruco.drawMarker(aruco_dict, indx, aruco_sidepixel, aruco_borderbits)
     png_file = str(indx) + ".png"
-    filename = texture_path + '/' + png_file
+    filename = texture_path + "/" + png_file
     print(filename)
     cv2.imwrite(filename, img)
-    file_object = open(material_script_path + 'aruco_' +
-                       str(indx) + '.material', "w")
+    file_object = open(material_script_path + "aruco_" + str(indx) + ".material", "w")
     file_object.write(
         """
-material aruco_""" + str(indx) + """
+material aruco_"""
+        + str(indx)
+        + """
 {
   technique
   {
@@ -67,7 +68,9 @@ material aruco_""" + str(indx) + """
     {
       texture_unit
       {
-        texture """ + png_file + """
+        texture """
+        + png_file
+        + """
         filtering anisotropic
         max_anisotropy 16
       }

@@ -12,20 +12,31 @@
     </visual>
     <inertial>
       <inertia>
-        <ixx>1.28388</ixx>
+        <ixx>0.064194</ixx>
         <ixy>0</ixy>
         <ixz>0</ixz>
-        <iyy>2.88614</iyy>
+        <iyy>0.144307</iyy>
         <iyz>0</iyz>
-        <izz>4.06990</izz>
+        <izz>0.203495</izz>
       </inertia>
       <pose relative_to="node0_link">0.6 0.4 0.1 0 0 0</pose>
-      <mass>25.00000</mass>
+      <mass>2.00000</mass>
     </inertial>
   </link>
 
   <link name="collision_holder_1">
-    <mass>0.0001</mass>
+    <inertial>
+      <inertia>
+        <ixx>0.064194</ixx>
+        <ixy>0</ixy>
+        <ixz>0</ixz>
+        <iyy>0.144307</iyy>
+        <iyz>0</iyz>
+        <izz>0.203495</izz>
+      </inertia>
+      <pose relative_to="node0_link">0.6 0.4 0.1 0 0 0</pose>
+      <mass>1.00000</mass>
+    </inertial>
     <collision name="collision_holder_1">
       <pose>0.6 0.05 0.075 0.0 0.0 0.0</pose>
       <geometry>
@@ -58,7 +69,18 @@
 
 
   <link name="collision_holder_2">
-    <mass>0.0001</mass>
+    <inertial>
+      <inertia>
+        <ixx>0.064194</ixx>
+        <ixy>0</ixy>
+        <ixz>0</ixz>
+        <iyy>0.144307</iyy>
+        <iyz>0</iyz>
+        <izz>0.203495</izz>
+      </inertia>
+      <pose relative_to="node0_link">0.6 0.4 0.1 0 0 0</pose>
+      <mass>1.00000</mass>
+    </inertial>
     <collision name="collision_holder_2">
       <pose>0.6 0.4 0.075 0.00000 0.00000 0.00000</pose>
       <geometry>
@@ -91,7 +113,18 @@
   </link>
 
   <link name="collision_holder_3">
-    <mass>0.0001</mass>
+    <inertial>
+      <inertia>
+        <ixx>0.064194</ixx>
+        <ixy>0</ixy>
+        <ixz>0</ixz>
+        <iyy>0.144307</iyy>
+        <iyz>0</iyz>
+        <izz>0.203495</izz>
+      </inertia>
+      <pose relative_to="node0_link">0.6 0.4 0.1 0 0 0</pose>
+      <mass>1.00000</mass>
+    </inertial>
     <collision name="collision_holder_3">
       <pose>0.6 0.75 0.075 0.00000 0.00000 0.00000</pose>
       <geometry>
@@ -126,7 +159,18 @@
 
 
   <link name="collision_holder_surface">
-    <mass>0.0001</mass>
+    <inertial>
+      <inertia>
+        <ixx>0.064194</ixx>
+        <ixy>0</ixy>
+        <ixz>0</ixz>
+        <iyy>0.144307</iyy>
+        <iyz>0</iyz>
+        <izz>0.203495</izz>
+      </inertia>
+      <pose relative_to="node0_link">0.6 0.4 0.1 0 0 0</pose>
+      <mass>1.00000</mass>
+    </inertial>
     <collision name="collision_holder_3">
       <pose>0.6 0.4 0.144 0.00000 0.00000 0.00000</pose>
       <geometry>

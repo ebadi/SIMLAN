@@ -6,7 +6,7 @@
       <visual name="base_link_visual">
         <geometry>
           <mesh>
-            <uri>model://forklift/meshes/base_link.dae</uri> 
+            <uri>model://forklift/meshes/base_link.dae</uri>
           </mesh>
         </geometry>
       </visual>
@@ -20,41 +20,41 @@
       </collision>
       <inertial>
         <mass>500</mass>
-        <inertia> 
-          <ixx>206</ixx> 
-          <ixy>0</ixy> 
+        <inertia>
+          <ixx>206</ixx>
+          <ixy>0</ixy>
           <ixz>-23</ixz>
-          <iyy>389</iyy> 
-          <iyz>0</iyz> 
+          <iyy>389</iyy>
+          <iyz>0</iyz>
           <izz>316</izz>
         </inertia>
       </inertial>
     </link>
-  
+
     <link name="fork">
       <pose>1.0795 -0.368600 1 0 0 0</pose>
       <visual name="fork_visual">
         <geometry>
           <mesh>
-            <uri>model://forklift/meshes/fork.dae</uri> 
+            <uri>model://forklift/meshes/fork.dae</uri>
           </mesh>
         </geometry>
       </visual>
       <collision name="fork_collision">
         <geometry>
           <mesh>
-            <uri>model://forklift/meshes/fork.dae</uri> 
+            <uri>model://forklift/meshes/fork.dae</uri>
           </mesh>
         </geometry>
       </collision>
       <inertial>
         <mass>100</mass>
-        <inertia> 
-          <ixx>0.2</ixx> 
-          <ixy>0</ixy> 
+        <inertia>
+          <ixx>0.2</ixx>
+          <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.3</iyy> 
-          <iyz>0</iyz> 
+          <iyy>0.3</iyy>
+          <iyz>0</iyz>
           <izz>0.4</izz>
         </inertia>
       </inertial>
@@ -78,12 +78,12 @@
       </collision>
       <inertial>
         <mass>5</mass>
-        <inertia> 
-          <ixx>0.001</ixx> 
-          <ixy>0</ixy> 
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.0015</iyy> 
-          <iyz>0</iyz> 
+          <iyy>0.0015</iyy>
+          <iyz>0</iyz>
           <izz>0.001</izz>
         </inertia>
       </inertial>
@@ -107,12 +107,12 @@
       </collision>
       <inertial>
         <mass>5</mass>
-        <inertia> 
-          <ixx>0.001</ixx> 
-          <ixy>0</ixy> 
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.0015</iyy> 
-          <iyz>0</iyz> 
+          <iyy>0.0015</iyy>
+          <iyz>0</iyz>
           <izz>0.001</izz>
         </inertia>
       </inertial>
@@ -136,12 +136,12 @@
       </collision>
       <inertial>
           <mass>5</mass>
-          <inertia> 
-            <ixx>0.001</ixx> 
-            <ixy>0</ixy> 
+          <inertia>
+            <ixx>0.001</ixx>
+            <ixy>0</ixy>
             <ixz>0</ixz>
-            <iyy>0.0015</iyy> 
-            <iyz>0</iyz> 
+            <iyy>0.0015</iyy>
+            <iyz>0</iyz>
             <izz>0.001</izz>
           </inertia>
         </inertial>
@@ -165,12 +165,12 @@
       </collision>
       <inertial>
         <mass>5</mass>
-        <inertia> 
-          <ixx>0.001</ixx> 
-          <ixy>0</ixy> 
+        <inertia>
+          <ixx>0.001</ixx>
+          <ixy>0</ixy>
           <ixz>0</ixz>
-          <iyy>0.0015</iyy> 
-          <iyz>0</iyz> 
+          <iyy>0.0015</iyy>
+          <iyz>0</iyz>
           <izz>0.001</izz>
         </inertia>
       </inertial>
@@ -179,12 +179,12 @@
     <joint name="base_to_fork" type="prismatic">
       <parent>base_link</parent>
       <child>fork</child>
-      <limit> 
-        <lower>0</lower> 
-        <upper>2</upper> 
+      <limit>
+        <lower>0</lower>
+        <upper>2</upper>
         <velocity>0.1</velocity>
-      </limit> 
-      <axis> 
+      </limit>
+      <axis>
         <initial_position>0.2</initial_position>
         <xyz>0 0 1</xyz>
       </axis>

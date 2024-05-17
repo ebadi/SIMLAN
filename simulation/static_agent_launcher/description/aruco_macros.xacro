@@ -17,7 +17,7 @@
         <joint name="aruco_${number}_joint" type="fixed">
             <origin xyz="${x} ${y} ${z}" rpy="${r} ${p} ${w}"/>
             <parent link="${attach_to}"/>
-            <child link="aruco_${number}_link"/>        
+            <child link="aruco_${number}_link"/>
         </joint>
     </xacro:macro>
 
@@ -46,7 +46,7 @@
                         <size>0.0001 0.5 0.5</size>
                     </box>
                 </geometry>
-            </visual> 
+            </visual>
         </gazebo>
    </xacro:macro>
 

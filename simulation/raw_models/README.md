@@ -51,10 +51,10 @@ model
 
 In order to accomplish this we'll have to create the model.config file, however this is relatively simple as it doesn't contain any unique data between different models aside from the model name.
 
-
 Example of a successful build:
+
 ```
-simulation/raw_models$ ./build_models.sh 
+simulation/raw_models$ ./build_models.sh
 
 ../infobot_gazebo_environment/models/aruco/materials/textures/0.png
 ../infobot_gazebo_environment/models/aruco/materials/textures/1.png
@@ -112,7 +112,7 @@ RELOAD:  phobos.blender.phoboslog
 RELOAD:  phobos.blender.phobossystem
 RELOAD:  phobos.blender.reserved_keys
 RELOAD:  phobos.blender.utils
-Registering operators.selection... 
+Registering operators.selection...
 Registering operators.io...
 Registering operators.editing...
 TypeError: EnumProperty(..., default='mechanism'): not found in enum members

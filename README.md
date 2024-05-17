@@ -16,25 +16,31 @@ Find technical and more detailed documentation and specifications in the followi
 ,
 [video demo 2](resources/demo2.mp4)
 
-
 Click on image below to see the Volvo layout demo:
 
 [![Delivery 2, Volvo layout](https://img.youtube.com/vi/f8ULCZFEM5Q/0.jpg)](https://www.youtube.com/watch?v=f8ULCZFEM5Q)
 
 ## Installation in development environment
 
- 
-*Dependencies*: `vscode` (with `Dev containers` extension installed) and `docker`.
-
-To build and open the container in vscode: `Ctrl + Shift + P` and select `Dev containers: Rebuild and Reopen in container` . 
-
-
-### Quick start commands
-Please run these commands in the vscode terminal after vscode is built and vscode is connected to the docker as shown in image below:
+*Dependencies*: `vscode` (with `Dev containers` extension installed) and `docker`. Make sure to accept installation of vscode extensions when you open the project.
+Additionally you are requested to rebuild in the container that you should also accept. This make take couple of minutes. Run these commands in the vscode terminal after vscode is connected to the docker as shown in image below:
 
 ![dev container in vscode](resources/vscode.png)
+(if you don't see this try to build manually in vscode by pressing `Ctrl + Shift + P` and select `Dev containers: Rebuild and Reopen in container`.
+)
+To kill all relevant process (related to gazebo, ros2), delete build files, delete recorded images and rosbag files using the following command:
 
-To kill previously running simulation instances, build the project and start the simulation environment and agents(spawn robots, Aruco marks and cameras on the scene). After running this command you should be able to see the Gazebo graphical simulation window:
+```bash
+./start.sh clean
+```
+
+To clean up and build the ros2 simulation
+
+```bash
+./start.sh build
+```
+
+To kill previously running simulation instances, build the project and start the simulation environment and agents(spawn robots, Aruco marks and cameras on the scene) run the following command and you should be able to see the Gazebo graphical simulation window:
 
 ```bash
 ./start.sh sim
@@ -47,38 +53,30 @@ the jackal can then be controlled with the computer keyboard by running:
 ```bash
 ./start.sh teleop_jackal
 ```
+
 To control the infobot using keyboard:
 
 ```bash
 ./start.sh teleop_infobot
 ```
 
-To record camera images we use a simple python code [./processing/camera_subscriber.py](./processin/camera_subscriber.py) that can be executed with following command:
+To record camera images for available cameras we use a simple python code [./processing/camera_subscriber.py](./processing/camera_subscriber.py) that can be executed with following command:
+
+To record continuously:
 
 ```bash
-./start.sh cam_record
+./start.sh cam_record 164
 ```
-The result will be stored in `./processing/images_data/`. 
+
+To record one screenshot:
+
+```bash
+./start.sh screenshot 164
+```
+
+The result will be stored in `./processing/images_data/`.
 
 ## Advanced features (not fully supported yet):
-
-
-To kill all relevant process (related to gazebo, ros2), delete build files, delete recorded images and rosbag files using the following command:
-
-```bash
-./start.sh clean
-```
-
-To clean up and build the ros2 simulation
-
-```bash
-./start.sh build
-```
-To test the unit tests before pushing new codes:
-```bash
-./start.sh clean
-```
-
 
 To record ros messages in ROS bag files to replay the scenario later:
 
@@ -92,20 +90,7 @@ To replay the last rosbag recording:
 ./start.sh ros_replay
 ```
 
-```
-Files:             rosbag2_2024_03_18-07_53_18_0.db3
-Bag size:          77.0 KiB
-Storage id:        sqlite3
-Duration:          30.980s
-Start:             Mar 18 2024 07:53:21.942 (1710748401.942)
-End:               Mar 18 2024 07:53:52.923 (1710748432.923)
-Messages:          554
-Topic information: Topic: /cmd_vel | Type: geometry_msgs/msg/Twist | Count: 554 | Serialization Format: cdr
-
-[INFO] [1710775265.896618797] [rosbag2_storage]: Opened database 'rosbag2_2024_03_18-15_16_56/rosbag2_2024_03_18-15_16_56_0.db3' for READ_ONLY.
-```
-
-(optionally) To do cartography: 
+(optionally) To do cartography:
 
 ```bash
 ./start.sh slam
@@ -116,12 +101,24 @@ To start nav2 navigation stack and start commanding the infobot to move in the m
 ```bash
 ./start.sh nav
 ```
-and then: 
+
+and then:
 
 ```bash
 ./start.sh commander
 ```
 
+To test the unit tests before pushing new codes:
+
+```bash
+./start.sh test
+```
+
 ### Additional information
 
-Please see [LICENSE](LINCESE), [CREDITS.md](CREDITS.md) and [CHANGELOG.md](CHANGELOG.md) for more information.
+Please see [LICENSE](LICENSE), [CREDITS.md](CREDITS.md) and [CHANGELOG.md](CHANGELOG.md) for more information.
+
+This work was carried out within these projects:
+
+- the [SMILE IV](https://www.vinnova.se/p/smile-iv/) project financed by Vinnova, FFI, Fordonsstrategisk forskning och innovation under the grant number 2023-00789.
+- the EUREKA [ITEA4](https://www.vinnova.se/p/artwork---the-smart-and-connected-worker/) ArtWork - The smart and connected worker under the grant number 2023-00970.

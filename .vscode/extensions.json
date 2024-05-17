@@ -1,0 +1,26 @@
+{
+	"recommendations": [
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"ms-python.pylint",
+		"ms-python.autopep8",
+		"ms-python.black-formatter",
+		"ybaumes.highlight-trailing-white-spaces",
+		"ms-azuretools.vscode-docker",
+		"streetsidesoftware.code-spell-checker",
+		"ms-iot.vscode-ros",
+		"sweilz.ros-snippets",
+		"Trunk.io",
+		"smilerobotics.urdf",
+		"redhat.vscode-yaml",
+		"ms-azuretools.vscode-docker",
+		"ms-vscode-remote.remote-containers",
+		"ms-vscode-remote.vscode-remote-extensionpack",
+		"ms-vscode.remote-server",
+		"ms-vscode-remote.remote-ssh-edit",
+		"ms-vscode-remote.remote-ssh"
+	],
+	"unwantedRecommendations": [
+
+	]
+}

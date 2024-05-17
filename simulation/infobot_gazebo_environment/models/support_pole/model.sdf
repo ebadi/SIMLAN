@@ -10,7 +10,7 @@
         </mesh>
       </geometry>
       <surface>
-        <contact><ode>  <max_vel>0.001</max_vel><min_depth>0.01</min_depth><kd>1e15</kd>  </ode></contact> 
+        <contact><ode>  <max_vel>0.001</max_vel><min_depth>0.01</min_depth><kd>1e15</kd>  </ode></contact>
       </surface>
     </collision>
     <inertial>

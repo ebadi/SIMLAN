@@ -1,5 +1,12 @@
-## Delivery 2 (Dec 2023) - Hamid Ebadi
-- TODO
+## Experimental (Delivery 3 )
+
+- D3.1 Dataset for HH
+- D3.2 Images for stitching.
+- CI/CD chain
+- camera image dump
+- Jackal integration
+- Docker/vscode
+- ETC
 
 ## Jackal Robot (Mar 2024) - Christoffer Johannesson
 
@@ -11,6 +18,16 @@
 - Updated README with info on how to use Docker setup in VS Code, and some features to make it easy to share the same setup with others.
 - Features includes: python3 dependency install with pip, cloning of other git repositories and how to make changes to those repositories.
 
+### Delivery 2 (February 2024)
+
+- Volvo warehouse 0.0.1 : Hamid Ebadi
+- Volvo camera calibration in Gazebo 0.0.1 : Hamid Ebadi
+- Integrate Infobot_agent 0.0.2: InfoBot differential-drive AMR (Autonomous Mobile Robot) URDF and ROS launcher (GOPAL and forklift): Hamid Ebadi
+- Integrate Infobot_cartographer 2.1.5: cartographer for creating PGM maps
+- Integrate nav2_commander 0.0.2: ROS package to command Infobot where the destination is : Hamid Ebadi
+- Integrate Infobot_navigation2 2.1.5: Standard Nav2 stack launcher : Hamid Ebadi
+- Integrate Infobot_teleop 0.0.2: Teleoperation for InfotBot
+
 ## Delivery 1 (Dec 2023) - Supervisor: Hamid Ebadi
 
 - Basic warehouse model 1.0.0: Anders Bäckelie
@@ -20,12 +37,3 @@
 - Infobot_gazebo_environment 1.0.0: ROS2 launcher to start Gazebo world : Hamid Ebadi
 - static_agent_launcher 1.0.0: Camera and Aruco tags : Hamid Ebadi
 - camera-viewer 1.0.0: Python code to get Gazebo camera feed : Hamid Ebadi
-
-### Experimental features:
-- Volvo warehouse 0.0.1 : Hamid Ebadi
-- Volvo camera calibration in Gazebo 0.0.1 : Hamid Ebadi
-- Integrate Infobot_agent 0.0.2: InfoBot differential-drive AMR (Autonomous Mobile Robot) URDF and ROS launcher (GOPAL and forklift): Hamid Ebadi
-- Integrate Infobot_cartographer 2.1.5: cartographer for creating PGM maps
-- Integrate nav2_commander 0.0.2: ROS package to command Infobot where the destination is : Hamid Ebadi
-- Integrate Infobot_navigation2 2.1.5: Standard Nav2 stack launcher : Hamid Ebadi
-- Integrate Infobot_teleop 0.0.2: Teleoperation for InfotBot

@@ -42,7 +42,8 @@ from std_msgs.msg import Float64
 from geometry_msgs.msg import Twist
 from rclpy.qos import QoSProfile
 from std_msgs.msg import Float64MultiArray
-if os.name == 'nt':
+
+if os.name == "nt":
     import msvcrt
 else:
     import termios
@@ -82,25 +83,25 @@ Communications Failed
 
 
 def get_key(settings):
-    if os.name == 'nt':
-        return msvcrt.getch().decode('utf-8')
+    if os.name == "nt":
+        return msvcrt.getch().decode("utf-8")
     tty.setraw(sys.stdin.fileno())
     rlist, _, _ = select.select([sys.stdin], [], [], 0.1)
     if rlist:
         key = sys.stdin.read(1)
     else:
-        key = ''
+        key = ""
 
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
     return key
 
 
 def print_vels(target_linear_velocity, target_angular_velocity, target_arm_force):
-    print('currently:\tlinear velocity {0}\t angular velocity {1}\t arm force {2} '.format(
-        target_linear_velocity,
-        target_angular_velocity,
-        target_arm_force
-        ))
+    print(
+        "currently:\tlinear velocity {0}\t angular velocity {1}\t arm force {2} ".format(
+            target_linear_velocity, target_angular_velocity, target_arm_force
+        )
+    )
 
 
 def make_simple_profile(output, input, slop):
@@ -129,7 +130,6 @@ def check_linear_limit_velocity(velocity):
     return constrain(velocity, -INFOBOT_MAX_LIN_VEL, INFOBOT_MAX_LIN_VEL)
 
 
-
 def check_angular_limit_velocity(velocity):
     return constrain(velocity, -INFOBOT_MAX_ANG_VEL, INFOBOT_MAX_ANG_VEL)
 
@@ -137,17 +137,20 @@ def check_angular_limit_velocity(velocity):
 def check_prismatic_arm_limit(force):
     return constrain(force, -10, 10)
 
+
 def main():
     settings = None
-    if os.name != 'nt':
+    if os.name != "nt":
         settings = termios.tcgetattr(sys.stdin)
 
     rclpy.init()
 
     qos = QoSProfile(depth=10)
-    node = rclpy.create_node('teleop_keyboard')
-    pub = node.create_publisher(Twist, 'cmd_vel', qos)
-    prismatic_joint_pub = node.create_publisher(Float64MultiArray, '/effort_controller/commands', 10)
+    node = rclpy.create_node("teleop_keyboard")
+    pub = node.create_publisher(Twist, "cmd_vel", qos)
+    prismatic_joint_pub = node.create_publisher(
+        Float64MultiArray, "/effort_controller/commands", 10
+    )
 
     status = 0
     target_linear_velocity = 0.0
@@ -157,47 +160,61 @@ def main():
     target_arm_force = 0.0
     try:
         print(msg)
-        while (1):
+        while 1:
             key = get_key(settings)
-            if key == 'w':
-                target_linear_velocity =\
-                    check_linear_limit_velocity(
-                        target_linear_velocity + LIN_VEL_STEP_SIZE)
+            if key == "w":
+                target_linear_velocity = check_linear_limit_velocity(
+                    target_linear_velocity + LIN_VEL_STEP_SIZE
+                )
                 status = status + 1
-                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
-            elif key == 'x':
-                target_linear_velocity =\
-                    check_linear_limit_velocity(
-                        target_linear_velocity - LIN_VEL_STEP_SIZE)
+                print_vels(
+                    target_linear_velocity, target_angular_velocity, target_arm_force
+                )
+            elif key == "x":
+                target_linear_velocity = check_linear_limit_velocity(
+                    target_linear_velocity - LIN_VEL_STEP_SIZE
+                )
                 status = status + 1
-                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
-            elif key == 'a':
-                target_angular_velocity =\
-                    check_angular_limit_velocity(
-                        target_angular_velocity + ANG_VEL_STEP_SIZE)
+                print_vels(
+                    target_linear_velocity, target_angular_velocity, target_arm_force
+                )
+            elif key == "a":
+                target_angular_velocity = check_angular_limit_velocity(
+                    target_angular_velocity + ANG_VEL_STEP_SIZE
+                )
                 status = status + 1
-                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
-            elif key == 'd':
-                target_angular_velocity =\
-                    check_angular_limit_velocity(
-                        target_angular_velocity - ANG_VEL_STEP_SIZE)
+                print_vels(
+                    target_linear_velocity, target_angular_velocity, target_arm_force
+                )
+            elif key == "d":
+                target_angular_velocity = check_angular_limit_velocity(
+                    target_angular_velocity - ANG_VEL_STEP_SIZE
+                )
                 status = status + 1
-                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
-            elif key == ' ' or key == 's':
+                print_vels(
+                    target_linear_velocity, target_angular_velocity, target_arm_force
+                )
+            elif key == " " or key == "s":
                 target_linear_velocity = 0.0
                 control_linear_velocity = 0.0
                 target_angular_velocity = 0.0
                 control_angular_velocity = 0.0
                 target_arm_force = 0.0
-                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
-            elif key == '1':
-                target_arm_force =  target_arm_force  + FORCE_STEP_SIZE
-                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
-            elif key == '2':
-                target_arm_force =  target_arm_force  - FORCE_STEP_SIZE
-                print_vels(target_linear_velocity, target_angular_velocity, target_arm_force)
+                print_vels(
+                    target_linear_velocity, target_angular_velocity, target_arm_force
+                )
+            elif key == "1":
+                target_arm_force = target_arm_force + FORCE_STEP_SIZE
+                print_vels(
+                    target_linear_velocity, target_angular_velocity, target_arm_force
+                )
+            elif key == "2":
+                target_arm_force = target_arm_force - FORCE_STEP_SIZE
+                print_vels(
+                    target_linear_velocity, target_angular_velocity, target_arm_force
+                )
             else:
-                if (key == '\x03'):
+                if key == "\x03":
                     break
 
             if status == 20:
@@ -209,7 +226,8 @@ def main():
             control_linear_velocity = make_simple_profile(
                 control_linear_velocity,
                 target_linear_velocity,
-                (LIN_VEL_STEP_SIZE / 2.0))
+                (LIN_VEL_STEP_SIZE / 2.0),
+            )
 
             twist.linear.x = control_linear_velocity
             twist.linear.y = 0.0
@@ -218,7 +236,8 @@ def main():
             control_angular_velocity = make_simple_profile(
                 control_angular_velocity,
                 target_angular_velocity,
-                (ANG_VEL_STEP_SIZE / 2.0))
+                (ANG_VEL_STEP_SIZE / 2.0),
+            )
 
             twist.angular.x = 0.0
             twist.angular.y = 0.0
@@ -227,9 +246,8 @@ def main():
             pub.publish(twist)
 
             prismatic_msg = Float64MultiArray()
-            prismatic_msg.data = [target_arm_force] 
+            prismatic_msg.data = [target_arm_force]
             prismatic_joint_pub.publish(prismatic_msg)
-
 
     except Exception as e:
         print(e)
@@ -246,9 +264,9 @@ def main():
 
         pub.publish(twist)
 
-        if os.name != 'nt':
+        if os.name != "nt":
             termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

@@ -29,16 +29,16 @@
         </ode>
       </contact>
       </surface>
-      
+
     </collision>
     <inertial>
       <inertia>
-        <ixx>34.08996</ixx>
+        <ixx>8.508996</ixx>
         <ixy>-0.00000</ixy>
         <ixz>-0.00000</ixz>
-        <iyy>50.50658</iyy>
+        <iyy>12.70658</iyy>
         <iyz>-0.00000</iyz>
-        <izz>42.09254</izz>
+        <izz>10.59254</izz>
       </inertia>
       <pose relative_to="node0_link">0.59250 -0.39250 0.50500 0.00000 0.00000 0.00000</pose>
       <mass>50.00000</mass>

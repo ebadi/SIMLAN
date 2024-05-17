@@ -10,13 +10,13 @@ ENV PYTHONPATH=/opt/ros/humble/lib/python3.8/site-packages
 ENV ROS_PYTHON_VERSION=3
 ENV ROS_VERSION=2
 
-ENV DEBIAN_FRONTEND=dialog
+ENV DEBIAN_FRONTEND=noninteractive
+
 # Env vars for the nvidia-container-runtime.
 ENV NVIDIA_VISIBLE_DEVICES all
 ENV NVIDIA_DRIVER_CAPABILITIES graphics,utility,compute
 ENV QT_X11_NO_MITSHM=1
 
-# ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
   # opengl stuff
   libgl1-mesa-glx \
@@ -52,13 +52,13 @@ RUN apt-get update && apt-get install -y \
   ros-humble-launch-testing \
   ros-humble-launch-testing-ament-cmake \
   ros-humble-launch-testing-ros \
-  python3-autopep8 \
-  && rm -rf /var/lib/apt/lists/* \
-  && rosdep init || echo "rosdep already initialized"
+  ros-humble-gazebo-ros-pkgs \
+  iputils-ping net-tools xvfb \
+  python3-autopep8
 
 
 # Install palanteer
-RUN apt-get update && apt-get install -y \ 
+RUN apt-get update && apt-get install -y \
     libdw-dev libunwind-dev     libgl1-mesa-glx libgl1-mesa-dri mesa-utils     && rm -rf /var/likb/apt/lists/*
 
 RUN cd /opt && git clone https://github.com/dfeneyrou/palanteer && \
@@ -77,6 +77,10 @@ RUN apt-get update && \
     gcc cmake libssl-dev make ninja-build ranger \
     && rm -rf /var/lib/apt/lists/*
 
+
+RUN rm -rf /var/lib/apt/lists/*
+RUN rosdep init || echo "rosdep already initialized"
+
 RUN mkdir -p /opt/dependencies_ws/src
 # Build ROS 2 source dependencies
 
@@ -92,10 +96,16 @@ RUN apt-get update && \
 RUN . /opt/ros/humble/setup.sh && colcon build --merge-install --cmake-args -DCMAKE_BUILD_TYPE=Release
 
 WORKDIR /home/ros/src/
-USER ros
+
 
 RUN echo "if [ -f /home/ros/install/setup.bash ]; then source /home/ros/install/setup.bash; fi" >> /home/ros/.bashrc
 RUN echo "if [ -f /usr/share/gazebo/setup.sh ]; then . /usr/share/gazebo/setup.sh; fi" >> /home/ros/.bashrc
 RUN echo "export RCUTILS_COLORIZED_OUTPUT=1" >> /home/ros/.bashrc
+RUN echo "pre-commit install --hook-type commit-msg" >>  /home/ros/.bashrc
+RUN echo "pre-commit install" >> /home/ros/.bashrc
+RUN echo "export GAZEBO_MASTER_URI=http://0.0.0.0:12345" >> /home/ros/.bashrc
 
-RUN echo "export GAZEBO_MASTER_URI=http://localhost:11333" >> /home/ros/.bashrc
+COPY . /home/ros/src/
+RUN chown -R ros:ros  /home/ros/src/
+
+USER ros

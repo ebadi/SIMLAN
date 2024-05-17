@@ -1,8 +1,7 @@
-version: "3.9"
 
 services:
-  smile_simulation: &smile-base
-    container_name: smile_simulation
+  factory_simulation: &research-base
+    container_name: factory_simulation
     build:
       context: .
       dockerfile: .devcontainer/Dockerfile
@@ -26,9 +25,9 @@ services:
     restart: always
     runtime: nvidia
 
-  smile_simulation_nvidia:
-    <<: *smile-base
-    container_name: smile_simulation_nvidia
+  factory_simulation_nvidia:
+    <<: *research-base
+    container_name: factory_simulation_nvidia
     runtime: nvidia
     deploy:
       resources:

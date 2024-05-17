@@ -26,38 +26,57 @@ from launch.substitutions import LaunchConfiguration
 
 
 def generate_launch_description():
-    launch_file_dir = os.path.join(get_package_share_directory(
-        'infobot_gazebo_environment'), 'launch')
-    os.environ['GAZEBO_MODEL_PATH'] = os.environ['GAZEBO_MODEL_PATH'] + os.path.join(get_package_share_directory('infobot_gazebo_environment'), 'models') + ":" + os.path.join(get_package_share_directory('infobot_agent'), 'models') 
-    print(os.environ['GAZEBO_MODEL_PATH'])
-    pkg_gazebo_ros = get_package_share_directory('gazebo_ros')
 
-    use_sim_time = LaunchConfiguration('use_sim_time', default='true')
+    launch_file_dir = os.path.join(
+        get_package_share_directory("infobot_gazebo_environment"), "launch"
+    )
+    os.environ["GAZEBO_MODEL_PATH"] = (
+        os.environ["GAZEBO_MODEL_PATH"]
+        + os.path.join(
+            get_package_share_directory("infobot_gazebo_environment"), "models"
+        )
+        + ":"
+        + os.path.join(get_package_share_directory("infobot_agent"), "models")
+    )
+    print(os.environ["GAZEBO_MODEL_PATH"])
+    pkg_gazebo_ros = get_package_share_directory("gazebo_ros")
+
+    use_sim_time = LaunchConfiguration("use_sim_time", default="true")
 
     world = os.path.join(
-        get_package_share_directory('infobot_gazebo_environment'),
-        'worlds',
-        'infobot_factory.world'
+        get_package_share_directory("infobot_gazebo_environment"),
+        "worlds",
+        "infobot_factory.world",
     )
     gzserver_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')
+            os.path.join(pkg_gazebo_ros, "launch", "gzserver.launch.py")
         ),
         launch_arguments={
-            'world': world, 'use_sim_time': use_sim_time, "verbose": "true", "pause":"false"}.items()
-    )
-
-    gzclient_cmd = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            os.path.join(pkg_gazebo_ros, 'launch', 'gzclient.launch.py')
-        ),
-        launch_arguments={'use_sim_time': use_sim_time,
-                          "verbose": "true"}.items()
+            "world": world,
+            "use_sim_time": use_sim_time,
+            "verbose": "true",
+            "pause": "false",
+        }.items(),
     )
 
     ld = LaunchDescription()
-
     ld.add_action(gzserver_cmd)
-    ld.add_action(gzclient_cmd)
+
+    try:
+        value = os.environ["SIM_ENV"]  # "DEV" , "CICD" or empty
+        print("SIM_ENV=" + value)
+    except KeyError:
+        print("SIM_ENV not found, set to DEV")
+        os.environ["SIM_ENV"] = "DEV"
+
+    if os.environ["SIM_ENV"] != "CICD":
+        gzclient_cmd = IncludeLaunchDescription(
+            PythonLaunchDescriptionSource(
+                os.path.join(pkg_gazebo_ros, "launch", "gzclient.launch.py")
+            ),
+            launch_arguments={"use_sim_time": use_sim_time, "verbose": "true"}.items(),
+        )
+        ld.add_action(gzclient_cmd)
 
     return ld

@@ -4,3 +4,5 @@ pysimplegui
 opencv-contrib-python==4.7.0.68
 opencv-python==4.7.0.68
 transforms3d==0.4.1
+pre-commit==2.20.0
+pylint==2.15.8

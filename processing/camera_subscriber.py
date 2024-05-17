@@ -1,4 +1,3 @@
-#!/usr/bin/python3
 # pip install opencv-contrib-python
 # pip install transforms3d==0.4.1
 
@@ -8,10 +7,9 @@ from rclpy.qos import QoSProfile, QoSReliabilityPolicy, QoSHistoryPolicy
 
 from sensor_msgs.msg import Image
 from cv_bridge import CvBridge
-from time import time 
-
-import sys
+from time import time
 import argparse
+
 # Authors: Hamid Ebadi
 # Run this after spawn-static-agents.sh script as below:
 # python3 ./camera_viewer.py
@@ -24,60 +22,87 @@ import argparse
 # - physics real_time_update_rate
 
 import cv2 as cv
-dictionary = cv.aruco.getPredefinedDictionary(cv.aruco.DICT_5X5_1000)
-parameters =  cv.aruco.DetectorParameters()
-detector = cv.aruco.ArucoDetector(dictionary, parameters)
 
 import cameraCalibration
+import shutil
+import os
 
-import shutil, os
-DATA_DIR = 'images_data/'
-shutil.rmtree(DATA_DIR, ignore_errors = True)
-os.mkdir(DATA_DIR)
+dictionary = cv.aruco.getPredefinedDictionary(cv.aruco.DICT_5X5_1000)
+parameters = cv.aruco.DetectorParameters()
+detector = cv.aruco.ArucoDetector(dictionary, parameters)
+
 
 class MultiCameraSubscriber(Node):
-    def __init__(self, camera_ids ):
-        super().__init__('image_subscriber')
+    def __init__(self, camera_id):
+        super().__init__("image_subscriber")
         qos_profile = QoSProfile(
             reliability=QoSReliabilityPolicy.BEST_EFFORT,
             history=QoSHistoryPolicy.KEEP_LAST,
-            depth=len(camera_ids) *3 
+            depth=10,
         )
 
-        for camera_id in camera_ids:
-            camera_conf = cameraCalibration.Camera_config( "intrinsic/"+ camera_id +".yaml", "extrinsic/" + camera_id + ".yaml", camera_id )
-            #create Background Subtractor objects
-            if args.algo == 'MOG2':
-                backSub[camera_id] = cv.createBackgroundSubtractorMOG2(history = 500, varThreshold = 8, detectShadows = False)
-            elif args.algo == 'KNN':
-                backSub[camera_id] = cv.createBackgroundSubtractorKNN(history=500, dist2Threshold=400.0, detectShadows = False)
-            else:
-                print ("No BackgroundSubtractor for camera: ",  camera_id)
-            self.subscription = self.create_subscription(
-                Image,
-                '/static_agents/camera_' + camera_id + '/image_raw',
-                lambda msg, camera_id=camera_id: self.image_callback(msg, camera_id, camera_conf),
-                qos_profile  # QoS
+        self.background_sub = None
+        camera_conf = cameraCalibration.Camera_config(
+            "intrinsic/" + camera_id + ".yaml",
+            "extrinsic/" + camera_id + ".yaml",
+            camera_id,
+        )
+        # create Background Subtractor objects
+        if args.algo == "MOG2":
+            self.background_sub = cv.createBackgroundSubtractorMOG2(
+                history=500, varThreshold=8, detectShadows=False
             )
-            self.cv_bridge = CvBridge()
+        elif args.algo == "KNN":
+            self.background_sub = cv.createBackgroundSubtractorKNN(
+                history=500, dist2Threshold=400.0, detectShadows=False
+            )
+        else:
+            print("No BackgroundSubtractor for camera: ", camera_id)
+        self.subscription = self.create_subscription(
+            Image,
+            "/static_agents/camera_" + camera_id + "/image_raw",
+            lambda msg, camera_id=camera_id: self.image_callback(
+                msg, camera_id, camera_conf
+            ),
+            qos_profile,  # QoS
+        )
+        self.cv_bridge = CvBridge()
 
     def image_callback(self, msg, camera_id, camera_conf):
         timestamp = str(int(time()))
         print(camera_id, timestamp)
         try:
             # Convert ROS Image message to OpenCV format imgmsg_to_cv
-            cv_image = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+            cv_image = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
             # np_image = numpy.array(cv_image)
             # detect_aruco(cv_image)
-            if args.action == 'save':
-                #cv.imshow('raw-image-'  + camera_id , cv_image)
-                cv.imwrite(os.path.join(DATA_DIR,  "raw_" + timestamp  + "_" + camera_id + ".png"), cv_image)
+            if args.action == "save":
+                # cv.imshow('raw-image-'  + camera_id , cv_image)
+                cv.imwrite(
+                    os.path.join(
+                        DATA_DIR, "raw_" + timestamp + "_" + camera_id + ".png"
+                    ),
+                    cv_image,
+                )
                 # cv.waitKey(1)
-            elif args.action == 'removebg':
-                fgMask = backSub[camera_id].apply(cv_image)
-                #cv.imshow('mask-image-'  + camera_id , fgMask)
-                cv.imwrite(os.path.join(DATA_DIR,  "mask_" + timestamp + "_" + camera_id + ".png"), fgMask)
+            elif args.action == "screenshot":
+                print("Screeshot timers", timestamp, start_timestamp, args.shottime)
+                cv.imwrite(
+                    os.path.join(DATA_DIR, "screenshot_" + camera_id + ".png"), cv_image
+                )
+                if int(timestamp) > start_timestamp + args.shottime:
+                    exit(0)
+            elif args.action == "removebg":
+                fgMask = self.background_sub.apply(cv_image)
+                # cv.imshow('mask-image-'  + camera_id , fgMask)
+                cv.imwrite(
+                    os.path.join(
+                        DATA_DIR, "mask_" + timestamp + "_" + camera_id + ".png"
+                    ),
+                    fgMask,
+                )
                 # cv.waitKey(1)
+
             else:
                 print("unknown action" + args.action)
 
@@ -85,15 +110,15 @@ class MultiCameraSubscriber(Node):
             self.get_logger().error(f"Error processing image: {str(e)}")
 
 
-def main():
+start_timestamp = int(time())
+
+
+def main(camera):
 
     rclpy.init()
-    # all cameras
-    # cam_list = ['160','161','162','163','164','165','166','167', '168', '169', '170', '171']
-    cam_list = ['164','165','166','167', '168']
 
     try:
-        node = MultiCameraSubscriber(cam_list)
+        node = MultiCameraSubscriber(camera)
         rclpy.spin(node)
     except KeyboardInterrupt:
         pass
@@ -101,20 +126,39 @@ def main():
     node.destroy_node()
     rclpy.shutdown()
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument('--action', help='continuously save camera images (for background extraction)' )
-    parser.add_argument('--algo', type=str, help='Background subtraction method (KNN, MOG2).', default='MOG2')
+    parser.add_argument(
+        "--action", help="continuously save camera images (for background extraction)"
+    )
+    parser.add_argument("--camera", help="camera id")
+    parser.add_argument(
+        "--shottime",
+        type=int,
+        help="after how many seconds take camera shots",
+        default=5,
+    )
+
+    parser.add_argument(
+        "--algo", help="Background subtraction method (KNN, MOG2).", default="MOG2"
+    )
     args = parser.parse_args()
-    backSub = {}
-    main()
+
+    DATA_DIR = (
+        os.path.dirname(os.path.abspath(__file__)) + "/images_data/" + args.camera
+    )
+    shutil.rmtree(DATA_DIR, ignore_errors=True)
+    os.mkdir(DATA_DIR)
+
+    main(args.camera)
 
 
 def detect_aruco(cv_image):
     # Aruco detection code is based on https://pyimagesearch.com/2020/12/21/detecting-aruco-markers-with-opencv-and-python/
     corners, ids, rejectedCandidates = detector.detectMarkers(cv_image)
     if len(corners) > 0:
-        for (markerCorner, markerID) in zip(corners, ids):
+        for markerCorner, markerID in zip(corners, ids):
             corners = markerCorner.reshape((4, 2))
             (topLeft, topRight, bottomRight, bottomLeft) = corners
             topRight = (int(topRight[0]), int(topRight[1]))
@@ -131,7 +175,12 @@ def detect_aruco(cv_image):
             cX = int((topLeft[0] + bottomRight[0]) / 2.0)
             cY = int((topLeft[1] + bottomRight[1]) / 2.0)
             cv.circle(cv_image, (cX, cY), 4, (0, 0, 255), -1)
-            cv.putText(cv_image, str(markerID),
+            cv.putText(
+                cv_image,
+                str(markerID),
                 (topLeft[0], topLeft[1] - 15),
                 cv.FONT_HERSHEY_SIMPLEX,
-                0.5, (0, 255, 0), 2)
+                0.5,
+                (0, 255, 0),
+                2,
+            )
