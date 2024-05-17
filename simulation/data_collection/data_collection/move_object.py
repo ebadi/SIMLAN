@@ -23,15 +23,20 @@ class MoveObject(Node):
         self.orientation = [0.0, 0.0, 0.0, 0.0]
 
         # create lists to loop through with objects, poses and orientations
-        self.orientations = 100
-        self.grid_max = [10, 10]
-        self.grid_min = [-10, -10]
-        self.grid_count = 500
+        self.orientations = 225 # Request from Jesper: 225 orientations in each cell
+        self.grid_x = [21.0, 26.6]
+        self.grid_y = [-0.5, 3.8]
+        self.grid_count = 15 # Request from Jesper: 15x15 grid
 
-        self.start_pose = [20.0, 0.0, 0.0]
         self.objects = ['jackal', 'infotiv', 'eur_pallet', 'box_group_pickup']
-        self.poses = [[0.0, 1.0, 0.0], [2.5, 1.0, 0.0], [5.0, 1.0, 0.0], [20.0, 20.0, 1.0]] # end with "out of camera view [20, 20, 1.0]"
         self.yaws = [iter * 2*3.1415/self.orientations for iter in range(self.orientations)]
+
+        # make a grid of poses from grid_x and grid_y
+        self.poses_x = [self.grid_x[0] + i * ((self.grid_x[1] - self.grid_x[0]) / self.grid_count) for i in range(self.grid_count)]
+        self.poses_y = [self.grid_y[0] + i * ((self.grid_y[1] - self.grid_y[0]) / self.grid_count) for i in range(self.grid_count)]
+        self.poses = [(x, y, 0.0) for x in self.poses_x for y in self.poses_y]
+        # add a final pose to move the object out of camera view
+        self.poses.append([20.0, 20.0, 1.0])
 
         self.object_iter = 0
         self.pose_iter = 0
@@ -43,9 +48,9 @@ class MoveObject(Node):
     def send_request(self):
         
         # add new position and orientation to the request
-        self.req.state.pose.position.x = self.pose[0] + self.start_pose[0]
-        self.req.state.pose.position.y = self.pose[1] + self.start_pose[1]
-        self.req.state.pose.position.z = self.pose[2] + self.start_pose[2]
+        self.req.state.pose.position.x = self.pose[0]
+        self.req.state.pose.position.y = self.pose[1]
+        self.req.state.pose.position.z = self.pose[2]
         self.req.state.pose.orientation.x = self.orientation[0]
         self.req.state.pose.orientation.y = self.orientation[1]
         self.req.state.pose.orientation.z = self.orientation[2]

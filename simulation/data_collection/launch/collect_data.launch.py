@@ -57,6 +57,5 @@ def generate_launch_description():
     ld.add_action(gzclient_cmd)
     ld.add_action(cameras)
     ld.add_action(forklift)
-    # ld.add_action(jackal)
 
     return ld
