@@ -72,9 +72,9 @@ The Clearpath Jackal Robot code is forked by Dyno Robotics from Clearpaths [jack
 
 ## Licenses
 
-Imu_tools is the one with several licences, using BSD-3, GPLv3, GNU v3, but as we don't change the code so we believe there is no license conflict with the current project license.
+Imu_tools is the one with several licenses, using BSD-3, GPLv3, GNU v3, but as we don't change the code so we believe there is no license conflict with the current project license.
 
-The dependency wireless (https://github.com/clearpathrobotics/wireless.git) from Clearpath robotics is the without a separate licence file. There are licence name within files, referencing BSD so we believe there is no license conflict with the current project license.
+The dependency wireless (https://github.com/clearpathrobotics/wireless.git) from Clearpath robotics is the without a separate license file. There are license names within files, referencing BSD so we believe there is no license conflict with the current project license.
 
 ## Docker and VS Code setup
 

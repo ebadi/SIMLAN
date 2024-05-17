@@ -1,4 +1,4 @@
-# InfoBot Navigation Within a Simulation Warehouse
+# InfoBot, ROS2 and Gazabo simulation of navigation within warehouse/factory
 
 This is the repository for research project activities at Infotiv Technology Development.
 
@@ -121,4 +121,4 @@ Please see [LICENSE](LICENSE), [CREDITS.md](CREDITS.md) and [CHANGELOG.md](CHANG
 This work was carried out within these projects:
 
 - the [SMILE IV](https://www.vinnova.se/p/smile-iv/) project financed by Vinnova, FFI, Fordonsstrategisk forskning och innovation under the grant number 2023-00789.
-- the EUREKA [ITEA4](https://www.vinnova.se/p/artwork---the-smart-and-connected-worker/) ArtWork - The smart and connected worker under the grant number 2023-00970.
+- the EUREKA [ITEA4](https://www.vinnova.se/p/artwork---the-smart-and-connected-worker/) ArtWork - The smart and connected worker financed by Vinnova under the grant number 2023-00970.

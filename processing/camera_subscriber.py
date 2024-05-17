@@ -73,7 +73,10 @@ class MultiCameraSubscriber(Node):
         print(camera_id, timestamp)
         try:
             # Convert ROS Image message to OpenCV format imgmsg_to_cv
-            cv_image = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+            cv_image_rotated = self.cv_bridge.imgmsg_to_cv2(
+                msg, desired_encoding="bgr8"
+            )
+            cv_image = cv.rotate(cv_image_rotated, cv.ROTATE_90_CLOCKWISE)
             # np_image = numpy.array(cv_image)
             # detect_aruco(cv_image)
             if args.action == "save":
@@ -88,7 +91,7 @@ class MultiCameraSubscriber(Node):
             elif args.action == "screenshot":
                 print("Screeshot timers", timestamp, start_timestamp, args.shottime)
                 cv.imwrite(
-                    os.path.join(DATA_DIR, "screenshot_" + camera_id + ".png"), cv_image
+                    os.path.join(DATA_DIR, "screenshot_" + camera_id + ".jpg"), cv_image
                 )
                 if int(timestamp) > start_timestamp + args.shottime:
                     exit(0)
@@ -97,7 +100,7 @@ class MultiCameraSubscriber(Node):
                 # cv.imshow('mask-image-'  + camera_id , fgMask)
                 cv.imwrite(
                     os.path.join(
-                        DATA_DIR, "mask_" + timestamp + "_" + camera_id + ".png"
+                        DATA_DIR, "mask_" + timestamp + "_" + camera_id + ".jpg"
                     ),
                     fgMask,
                 )

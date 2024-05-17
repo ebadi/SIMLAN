@@ -4,4 +4,9 @@ log/
 build/
 *.ply
 sdf*
+images_data/*.jpg
+images_data/*.png
+*.jpg
+*.png
+
 
