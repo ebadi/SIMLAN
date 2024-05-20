@@ -94,4 +94,9 @@ then
     # Running python unittest, https://docs.ros.org/en/humble/Tutorials/Intermediate/Testing/Python.html
     # https://docs.ros.org/en/humble/Tutorials/Intermediate/Testing/Python.html
     colcon test --packages-select ros2_test --pytest-args --verbose
+elif [[ "$*" == *"collect_data"* ]]
+then
+    ros2 launch data_collection collect_data.launch.py && 
+    sleep 5 &&
+    ros2 run data_collection move_object 
 fi
