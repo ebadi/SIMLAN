@@ -14,10 +14,10 @@ setup(
     ],
     install_requires=["setuptools"],
     zip_safe=True,
-    maintainer="ros",
+    maintainer="Christoffer Johannesson",
     maintainer_email="christoffer@dynorobotics.se",
-    description="move objects within the scene",
-    license="Apache License, Version 2.0",
+    description="move objects within the world",
+    license="Apache 2.0",
     tests_require=["pytest"],
     entry_points={
         "console_scripts": [

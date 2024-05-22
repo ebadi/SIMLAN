@@ -3,9 +3,9 @@
 <package format="3">
   <name>object_mover</name>
   <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="christoffer@dynorobotics.se">ros</maintainer>
-  <license>TODO: License declaration</license>
+  <description>move objects within the world</description>
+  <maintainer email="christoffer@dynorobotics.se">Christoffer Johannesson</maintainer>
+  <license>Apache 2.0</license>
 
   <test_depend>ament_copyright</test_depend>
   <test_depend>ament_flake8</test_depend>
