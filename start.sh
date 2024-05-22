@@ -16,7 +16,8 @@ clean () {
     pkill -9 -f gazebo
     pkill -9 -f rviz
     pkill -9 -f humble
-
+    pkill -9 -f object_mover
+    pkill -9 -f camera_subscriber
     echo "--- removing build files"
     rm -rf ./build ./install ./log
     rm -rf rosbag* ; rm -rf processing/images_data/*
@@ -94,9 +95,7 @@ then
     # Running python unittest, https://docs.ros.org/en/humble/Tutorials/Intermediate/Testing/Python.html
     # https://docs.ros.org/en/humble/Tutorials/Intermediate/Testing/Python.html
     colcon test --packages-select ros2_test --pytest-args --verbose
-elif [[ "$*" == *"collect_data"* ]]
+elif [[ "$*" == *"move_object"* ]]
 then
-    ros2 launch data_collection collect_data.launch.py && 
-    sleep 5 &&
-    ros2 run data_collection move_object 
+    ros2 run object_mover move_object
 fi

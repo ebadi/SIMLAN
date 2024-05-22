@@ -1,5 +1,5 @@
 {
-    "name": "RESEARCH (Extending docker-compose)",
+    "name": "ROS2 RESEARCH CONTAINER",
     "dockerComposeFile": "../docker-compose.yaml",
     "service": "factory_simulation_nvidia",
     "remoteUser": "ros",

@@ -56,7 +56,7 @@ def generate_launch_description():
         executable="spawn_entity.py",
         arguments=[
             "-entity",
-            "infotiv",
+            "infobot",
             "-file",
             urdf_path,
             "-x",
