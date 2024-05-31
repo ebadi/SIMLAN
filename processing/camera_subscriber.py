@@ -73,17 +73,16 @@ class MultiCameraSubscriber(Node):
         print(camera_id, timestamp)
         try:
             # Convert ROS Image message to OpenCV format imgmsg_to_cv
-            cv_image_rotated = self.cv_bridge.imgmsg_to_cv2(
-                msg, desired_encoding="bgr8"
-            )
-            cv_image = cv.rotate(cv_image_rotated, cv.ROTATE_90_CLOCKWISE)
+            cv_image = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+            # cv_image = cv.rotate(cv_image_rotated, cv.ROTATE_90_CLOCKWISE)
+
             # np_image = numpy.array(cv_image)
             # detect_aruco(cv_image)
             if args.action == "save":
                 # cv.imshow('raw-image-'  + camera_id , cv_image)
                 cv.imwrite(
                     os.path.join(
-                        DATA_DIR, "raw_" + timestamp + "_" + camera_id + ".png"
+                        DATA_DIR, "raw_" + timestamp + "_" + camera_id + ".jpg"
                     ),
                     cv_image,
                 )
@@ -149,7 +148,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     DATA_DIR = (
-        os.path.dirname(os.path.abspath(__file__)) + "/images_data/" + args.camera
+        os.path.dirname(os.path.abspath(__file__)) + "/camera_data/" + args.camera
     )
     shutil.rmtree(DATA_DIR, ignore_errors=True)
     os.mkdir(DATA_DIR)

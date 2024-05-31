@@ -3,34 +3,73 @@ import cv2
 import transforms3d  # pip3 install transforms3d==0.4.1
 import math
 import numpy
+import numpy as np
+
+
+# https://learnopencv.com/rotation-matrix-to-euler-angles/
+# Checks if a matrix is a valid rotation matrix.
+def isRotationMatrix(R):
+    Rt = np.transpose(R)
+    shouldBeIdentity = np.dot(Rt, R)
+    I = np.identity(3, dtype=R.dtype)
+    n = np.linalg.norm(I - shouldBeIdentity)
+    return n < 1e-6
+
+
+# Calculates rotation matrix to euler angles
+# The result is the same as MATLAB except the order
+# of the euler angles ( x and z are swapped ).
+def rotationMatrixToEulerAngles(R):
+
+    assert isRotationMatrix(R)
+
+    sy = math.sqrt(R[0, 0] * R[0, 0] + R[1, 0] * R[1, 0])
+
+    singular = sy < 1e-6
+
+    if not singular:
+        x = math.atan2(R[2, 1], R[2, 2])
+        y = math.atan2(-R[2, 0], sy)
+        z = math.atan2(R[1, 0], R[0, 0])
+    else:
+        x = math.atan2(-R[1, 2], R[1, 1])
+        y = math.atan2(-R[2, 0], sy)
+        z = 0
+
+    return np.array([x, y, z])
 
 
 class Camera_config:
-    def __init__(
-        self, intrinsic_yaml_file, extrinsic_yaml_file, camera_name="camera_name"
-    ):
+    def __init__(self, intrinsic_yaml_file, extrinsic_yaml_file, name="camera_name"):
 
-        self.camera_name = camera_name
+        self.camera_name = name
         intrinsic_yaml = cv2.FileStorage(intrinsic_yaml_file, cv2.FILE_STORAGE_READ)
         extrinsic_yaml = cv2.FileStorage(extrinsic_yaml_file, cv2.FILE_STORAGE_READ)
 
         # https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
         # https://www.geeksforgeeks.org/calibratecamera-opencv-in-python/
-        self.in_K = intrinsic_yaml.getNode("K").mat()  # 9 items: Camera matrix
-        self.in_D = intrinsic_yaml.getNode(
-            "D"
-        ).mat()  # 5 items: Distortion coefficients
-        self.in_xi = intrinsic_yaml.getNode("xi").mat()  # 0
-        in_image_shape = intrinsic_yaml.getNode("image_shape").mat()  # 3 items
 
-        self.ex_rot_mat = extrinsic_yaml.getNode("rot_mat").mat()  # 9 items: rotation
-        self.ex_t_vec = extrinsic_yaml.getNode("t_vec").mat()  # 3 items:
-        self.ex_camera_matrix_p = extrinsic_yaml.getNode(
-            "camera_matrix_p"
-        ).mat()  # 12 items:
-        self.ex_position = extrinsic_yaml.getNode(
-            "position"
-        ).mat()  # 3 items: xyz position
+        # 9 items: Camera matrix
+        self.in_K = intrinsic_yaml.getNode("K").mat()
+        # 5 items: Distortion coefficients
+        self.in_D = intrinsic_yaml.getNode("D").mat()
+
+        self.in_xi = intrinsic_yaml.getNode("xi").mat()  # 0
+
+        # 3 items
+        in_image_shape = intrinsic_yaml.getNode("image_shape").mat()
+
+        # 9 items: rotation vectors
+        self.ex_rot_mat = extrinsic_yaml.getNode("rot_mat").mat()
+
+        # 3 items:  translation vectors
+        self.ex_t_vec = extrinsic_yaml.getNode("t_vec").mat()
+
+        # 12 items:
+        self.ex_camera_matrix_p = extrinsic_yaml.getNode("camera_matrix_p").mat()
+
+        # 3 items: xyz position
+        self.ex_position = extrinsic_yaml.getNode("position").mat()
 
         # http://sdformat.org/tutorials?tut=specify_pose
         # The elements x y z specify the position vector (in meters), and the elements roll pitch yaw are Euler angles (in radians) that specify the orientation, which can be computed by an extrinsic X-Y-Z rotation
@@ -46,15 +85,8 @@ class Camera_config:
         self.y = neg_invR_t[1][0]
         self.z = neg_invR_t[2][0]
 
-        rpy = transforms3d.euler.mat2euler(
-            mat=self.ex_rot_mat, axes="sxyz"
-        )  # other possible _AXES2TUPLE : https://github.com/matthew-brett/transforms3d/blob/main/transforms3d/euler.py#L148
-
-        self.r = rpy[0]
-        # THIS IS A HACK, our guess is that we didn't use the right value for _AXES2TUPLE! We tried few transformation but couldn't find a "p" that is multiplier of math.pi/2
-        # We even tried another online convertor https://www.andre-gaschler.com/rotationconverter/
-        self.p = math.pi / 2 - rpy[1]
-        self.w = rpy[2]
+        # other possible _AXES2TUPLE : https://github.com/matthew-brett/transforms3d/blob/main/transforms3d/euler.py#L148
+        # https://www.andre-gaschler.com/rotationconverter/
 
         self.width = int(in_image_shape[0][0])
         self.height = int(in_image_shape[1][0])
@@ -64,8 +96,8 @@ class Camera_config:
 
         self.k1 = self.in_D[0][0]
         self.k2 = self.in_D[1][0]
-        self.p1 = self.in_D[3][0]
-        self.p2 = self.in_D[2][0]
+        self.p1 = self.in_D[2][0]
+        self.p2 = self.in_D[3][0]
         self.k3 = self.in_D[4][0]
 
         self.px = self.in_K[0][2]
@@ -83,60 +115,238 @@ class Camera_config:
         self.fovaspect = self.fov_x / self.fov_y
         # [OpenCV](https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html) uses five parameters, known as distortion coefficients given by like this: `k1, k2, p1, p2 , k3 # pay attention to the order`
 
-    def xacro_str(self):
-        return f"""<xacro:camera number="{self.camera_name}" x="{self.x}" y="{self.y}" z="{self.z}" r="{self.r}" p="{self.p}" w="{self.w}" width="{self.width}" height="{self.height}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        # rpy, R, Q, Qx, Qy, Qz = cv2.RQDecomp3x3(self.ex_rot_mat)
+        counter = 1
 
-    def vacancy_voxel_str(self):
-        # https://github.com/DLu/tf_transformations/tree/main#context
-        # The new API has more consistent naming, but even then, it is not a one-to-one translation. for example, tf.transformations.quaternion_from_euler could be replaced with transforms3d.euler.euler2quat, but tf returns the quaternion with the ordering x, y, z, w and transforms3d returns w, x, y, z.
-        qw, qx, qy, qz = transforms3d.euler.euler2quat(self.r, self.p, self.w)
-        # Intrinsic parameters are specific to a camera. They include information like focal length (fx,fy) and optical centers (cx,cy) (is it the same as principle point?)
-        # cameramatrix=|fx 0 cx|
-        #              |0 fy cy|
-        #              |0  0  0⎥
-        # https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
+        self.r, self.p, self.w = rotationMatrixToEulerAngles(self.ex_rot_mat)
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
 
-        # print("K=\n{:10.2f} {:10.2f} {:10.2f}\n{:10.2f} {:10.2f} {:10.2f}\n{:10.2f} {:10.2f} {:10.2f}".format(self.in_K[0][0],self.in_K[0][1],self.in_K[0][2],self.in_K[1][0],self.in_K[1][1],self.in_K[1][2],self.in_K[2][0],self.in_K[2][1],self.in_K[2][2]))
-        # print("W= ",  self.width/2, "H=", self.height/2 )
-        return f"""{self.camera_name} {self.x} {self.y} {self.z} {qx} {qy} {qz} {qw} {int(self.width)} {int(self.height)} {int(self.width/2)} {int(self.width/2)} {50} {50}"""
+        self.r, self.p, self.w = rotationMatrixToEulerAngles(self.ex_rot_mat)
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
 
-        """
-        ### Camera intrinsic file format
+        self.r, self.p, self.w = rotationMatrixToEulerAngles(neg_invR)
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
 
-        The `cameraCalibration.py` script generates `vacancy/data/cameras.txt` that is used by `VoxelCarving.cc`.
+        self.r, self.p, self.w = rotationMatrixToEulerAngles(neg_invR)
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
 
-        ```
-        00000 -39.163902 -48.510956 -718.163391 0.000000 0.000000 0.000000 1.000000 320 240 159.3 127.65 258.65 258.25
-        ```
+        self.r, self.p, self.w = rotationMatrixToEulerAngles(invR)
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
 
-        - FIELD[0]: Camera ID
-        - FIELD[1]: Pos X
-        - FIELD[2]: Pos Y
-        - FIELD[3]: Pos Z
-        - FIELD[4]: rot X
-        - FIELD[5]: rot Y
-        - FIELD[6]: rot Z
-        - FIELD[7]: rot W
-        - FIELD[8]: width, 320
-        - FIELD[9]: height, 240
-        - FIELD[10]: principal_point_x, 159.3f
-        - FIELD[11]: principal_point_y, 127.65f
-        - FIELD[12]: focal_length_x, 258.65f
-        - FIELD[13]: focal_length_y, 258.25f
+        self.r, self.p, self.w = rotationMatrixToEulerAngles(invR)
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
 
-        # voxel_curver command line argument parameters
-        - argv[0]: executable name
-        - argv[1]: bb_offset, 20.0f
-        - argv[2]: bb_min_x, -250.000000f
-        - argv[3]: bb_min_y, -344.586151f
-        - argv[4]: bb_min_z -129.982697f
-        - argv[5]: bb_max_x, 250.000000f
-        - argv[6]: bb_max_y, 150.542343f
-        - argv[7]: bb_max_z, 257.329224f
-        - argv[8]: resolution  10.0f = 10mm
-        - argv[9]: data directory
-        - argv[10]: timestamp directory inside data directory
-        """
+        counter = counter + 4
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="sxyz"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="sxyx"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="sxzy"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="sxzx"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="syzx"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="syzy"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="syxz"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="syxy"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="szxy"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="szxz"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="szyx"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="szyz"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="rzyx"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="rxyx"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="ryzx"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="rxzx"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="rxzy"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="ryzy"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="rzxy"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="ryxy"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="ryxz"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="rzxz"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="rxyz"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
+
+        self.r, self.p, self.w = transforms3d.euler.mat2euler(
+            mat=self.ex_rot_mat, axes="rzyz"
+        )
+        print(
+            f"""<xacro:camera number="{self.camera_name+"_"+str(counter)}" x="{self.x}" y="{self.y}" z="{self.z+counter}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        )
+        counter = counter + 1
 
 
 if __name__ == "__main__":
@@ -148,10 +358,6 @@ if __name__ == "__main__":
 
     intrinsic_yaml_file = sys.argv[1]
     extrinsic_yaml_file = sys.argv[2]
-    camera_name = sys.argv[3]
+    name = sys.argv[3]
 
-    conf = Camera_config(intrinsic_yaml_file, extrinsic_yaml_file, camera_name)
-    if sys.argv[4] == "xacro":
-        print(conf.xacro_str())
-    else:
-        print(conf.vacancy_voxel_str())
+    Camera_config(intrinsic_yaml_file, extrinsic_yaml_file, name)
