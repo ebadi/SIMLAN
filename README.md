@@ -23,6 +23,10 @@ Click on image below to see the Volvo layout demo:
 ## Installation in development environment
 
 *Dependencies*: `vscode` (with `Dev containers` extension installed) and `docker`. Make sure to accept installation of vscode extensions when you open the project.
+
+If you have any issue with docker incompatibility, make sure that `docker compose` or `docker-compose` is set correctly in the setting.
+![dev container in vscode](resources/dev-container-config.png)
+
 Additionally you are requested to rebuild in the container that you should also accept. This make take couple of minutes. Run these commands in the vscode terminal after vscode is connected to the docker as shown in image below:
 
 ![dev container in vscode](resources/vscode.png)

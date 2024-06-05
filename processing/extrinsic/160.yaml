@@ -33,7 +33,7 @@ position: !!opencv-matrix
        7.7927102372305752e+00 ]
 
 # t_vec and r_vec
-# rox_mat is the result of Rodruiz conversion? 
+# rox_mat is the result of Rodruiz conversion?
 # position of origin in camera position
 # two cord: world cord
 # camera coord
