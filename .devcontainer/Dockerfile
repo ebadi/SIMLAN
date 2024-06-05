@@ -109,3 +109,4 @@ COPY . /home/ros/src/
 RUN chown -R ros:ros  /home/ros/src/
 
 USER ros
+
