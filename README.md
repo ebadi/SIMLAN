@@ -1,6 +1,6 @@
-# InfoBot, ROS2 and Gazabo simulation of navigation within warehouse/factory
+# SIMLAN, Simulation for Indoor Multi-Camera Localization and Navigation
 
-This is the repository for research project activities at Infotiv Technology Development.
+This simulation environment, based on the Gazebo simulator and ROS2, resembles a Volvo trucks' warehouse and serves as a playground for rapid prototyping and testing indoor multi-camera localization, positioning, and navigation algorithms. While this environment can be utilized for Multi-Sensor SLAM (Simultaneous Localization and Mapping) using cameras, IMUs, GPS, lidar, and radar *mounted on the robot*, the focus of this project is *not* on mapping but on assuming a *fixed building layout* and using fixed cameras *mounted on the ceiling*.
 
 Find technical and more detailed documentation and specifications in the following links:
 
@@ -74,7 +74,7 @@ To record one screenshot:
 ./start.sh screenshot 164
 ```
 
-The result will be stored in `./processing/images_data/`.
+The result will be stored in `./processing/camera_data/`.
 
 ## Advanced features (not fully supported yet):
 

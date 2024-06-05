@@ -31,3 +31,9 @@ position: !!opencv-matrix
    dt: d
    data: [ -2.3768993347281643e+01, 1.0959115856381250e+00,
        7.7927102372305752e+00 ]
+
+# t_vec and r_vec
+# rox_mat is the result of Rodruiz conversion? 
+# position of origin in camera position
+# two cord: world cord
+# camera coord

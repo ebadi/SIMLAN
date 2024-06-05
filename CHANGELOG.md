@@ -1,8 +1,9 @@
 ## Experimental (Delivery 3 )
 
-- D3.1 Dataset for HH
+- D3.3 Normal images (random objects, in random position & orientation)
 - D3.2 Images for stitching.
-- CI/CD chain
+- D3.1 Dataset draft for HH
+- CI/CD and k8s integration by Vasilki and Filip
 - camera image dump
 - Jackal integration
 - Docker/vscode

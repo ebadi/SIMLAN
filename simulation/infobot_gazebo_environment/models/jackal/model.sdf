@@ -1,0 +1,4 @@
+<sdf version="1.7">
+<model name="jackal" canonical_link="node0_link">
+</model>
+</sdf>

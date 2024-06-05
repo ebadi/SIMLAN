@@ -20,11 +20,12 @@ clean () {
     pkill -9 -f camera_subscriber
     echo "--- removing build files"
     rm -rf ./build ./install ./log
-    rm -rf rosbag* ; rm -rf processing/images_data/*
+    rm -rf rosbag* ; rm -rf processing/camera_data/*
 }
 
 build () {
     clean
+    #(cd processing/; ./camconf2xacro.sh > ../simulation/static_agent_launcher/description/camera_config.xacro )
     colcon build --merge-install --symlink-install --cmake-args " -Wno-dev "
     echo "successful build"
 }
@@ -41,11 +42,11 @@ then
     # environment
     # SIM_ENV=CICD or DEV
     # agents
-    (sleep 8 && ros2 launch infobot_agent infobot.launch.py)&
-    echo "> Infobot is queed to be spawned"
-    (sleep 8 && ros2 launch dyno_jackal_bringup sim.launch.py)&
-    echo "> Jackal is queed to be spawned"
-    (sleep 8 && ros2 launch static_agent_launcher static-agent.launch.py)&
+    #(sleep 8 && ros2 launch infobot_agent infobot.launch.py)&
+    #echo "> Infobot is queed to be spawned"
+    #(sleep 8 && ros2 launch dyno_jackal_bringup sim.launch.py)&
+    #echo "> Jackal is queed to be spawned"
+    (sleep 5 && ros2 launch static_agent_launcher static-agent.launch.py)&
     echo "> Static agents are queed to be spawned"
     echo "> starting Gazebo"
     # This has to be blocking so that k8s can restart when it crashes
@@ -86,10 +87,39 @@ then
     # python3 ./camera_subscriber.py  --action save
     # python3 ./camera_subscriber.py  --action removebg  --algo KNN
     # algo: MOG2, KNN
-    cd ./processing ; python3 camera_subscriber.py --action save --camera $2
+    cd ./processing ;
+    python3 camera_subscriber.py --action save --camera $2
+elif [[ "$*" == *"camera_dump"* ]]
+then
+    cd ./processing ;
+    python3 camera_subscriber.py --action save --camera 164 &
+    python3 camera_subscriber.py --action save --camera 165 &
+    python3 camera_subscriber.py --action save --camera 166 &
+    python3 camera_subscriber.py --action save --camera 167 &
+    python3 camera_subscriber.py --action save --camera 168 &
+
+    python3 camera_subscriber.py --action save --camera 264 &
+    python3 camera_subscriber.py --action save --camera 265 &
+    python3 camera_subscriber.py --action save --camera 266 &
+    python3 camera_subscriber.py --action save --camera 267 &
+    python3 camera_subscriber.py --action save --camera 268 &
+
+    python3 camera_subscriber.py --action save --camera 364 &
+    python3 camera_subscriber.py --action save --camera 365 &
+    python3 camera_subscriber.py --action save --camera 366 &
+    python3 camera_subscriber.py --action save --camera 367 &
+    python3 camera_subscriber.py --action save --camera 368 &
+
+    python3 camera_subscriber.py --action save --camera 464 &
+    python3 camera_subscriber.py --action save --camera 465 &
+    python3 camera_subscriber.py --action save --camera 466 &
+    python3 camera_subscriber.py --action save --camera 467 &
+    python3 camera_subscriber.py --action save --camera 468 &
+
 elif [[ "$*" == *"screenshot"* ]]
 then
-    cd ./processing ; python3 camera_subscriber.py --action screenshot --camera $2 --shottime 4
+    cd ./processing ;
+    python3 camera_subscriber.py --action screenshot --camera $2 --shottime 4
 elif [[ "$*" == *"test"* ]]
 then
     # Running python unittest, https://docs.ros.org/en/humble/Tutorials/Intermediate/Testing/Python.html

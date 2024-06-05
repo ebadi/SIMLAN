@@ -1,3 +1,5 @@
+# This has to be uncommented unless you are adding to the internal git repo
+internal
 # ros2 colcon
 install/
 log/
@@ -25,7 +27,6 @@ phobos*
 .ipynb_checkpoints
 .ipy*
 #other repos
-**/jackal
 imu_tools/
 gazebo_ros2_control/
 rcl/
