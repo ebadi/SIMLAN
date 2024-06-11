@@ -56,10 +56,10 @@ Example of a successful build:
 ```
 simulation/raw_models$ ./build_models.sh
 
-../infobot_gazebo_environment/models/aruco/materials/textures/0.png
-../infobot_gazebo_environment/models/aruco/materials/textures/1.png
-../infobot_gazebo_environment/models/aruco/materials/textures/2.png
-../infobot_gazebo_environment/models/aruco/materials/textures/3.png
+../simlan_gazebo_environment/models/aruco/materials/textures/0.png
+../simlan_gazebo_environment/models/aruco/materials/textures/1.png
+../simlan_gazebo_environment/models/aruco/materials/textures/2.png
+../simlan_gazebo_environment/models/aruco/materials/textures/3.png
 
 
 

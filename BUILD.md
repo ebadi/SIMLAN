@@ -71,14 +71,14 @@ pip install -r requirements.txt
 ### Docker compose
 
 ```
-docker compose --project-name infobotprj -f ./docker-compose.yaml down
-docker compose --project-name infobotprj -f ./docker-compose.yaml build
-docker compose --project-name infobotprj -f ./docker-compose.yaml up -d
+docker compose --project-name simlanproject -f ./docker-compose.yaml down
+docker compose --project-name simlanproject -f ./docker-compose.yaml build
+docker compose --project-name simlanproject -f ./docker-compose.yaml up -d
 docker ps
 docker exec -i -u root 2d426177e1ee  /bin/bash
 ```
 
-Headless mode `/simulation/infobot_gazebo_environment/launch/infobot_factory.launch.py ` uncomment `ld.add_action(gzclient_cmd)`
+Headless mode `/simulation/simlan_gazebo_environment/launch/simlan_factory.launch.py ` uncomment `ld.add_action(gzclient_cmd)`
 
 ```
 docker build -t 6c035b5d87ff48ef9b9bb4cf75d36503181ffd13 --build-arg name=value -f ./.devcontainer/Dockerfile ./

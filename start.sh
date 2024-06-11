@@ -50,7 +50,7 @@ then
     echo "> Static agents are queed to be spawned"
     echo "> starting Gazebo"
     # This has to be blocking so that k8s can restart when it crashes
-    ros2 launch infobot_gazebo_environment infobot_factory.launch.py
+    ros2 launch simlan_gazebo_environment simlan_factory.launch.py
 
 
 elif [[ "$*" == *"rviz"* ]]

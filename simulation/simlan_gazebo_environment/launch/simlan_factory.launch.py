@@ -28,12 +28,12 @@ from launch.substitutions import LaunchConfiguration
 def generate_launch_description():
 
     launch_file_dir = os.path.join(
-        get_package_share_directory("infobot_gazebo_environment"), "launch"
+        get_package_share_directory("simlan_gazebo_environment"), "launch"
     )
     os.environ["GAZEBO_MODEL_PATH"] = (
         os.environ["GAZEBO_MODEL_PATH"]
         + os.path.join(
-            get_package_share_directory("infobot_gazebo_environment"), "models"
+            get_package_share_directory("simlan_gazebo_environment"), "models"
         )
         + ":"
         + os.path.join(get_package_share_directory("infobot_agent"), "models")
@@ -44,9 +44,9 @@ def generate_launch_description():
     use_sim_time = LaunchConfiguration("use_sim_time", default="true")
 
     world = os.path.join(
-        get_package_share_directory("infobot_gazebo_environment"),
+        get_package_share_directory("simlan_gazebo_environment"),
         "worlds",
-        "infobot_factory.world",
+        "simlan_factory.world",
     )
     gzserver_cmd = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(

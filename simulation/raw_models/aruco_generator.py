@@ -37,8 +37,8 @@ aruco_type = aruco.DICT_5X5_1000
 aruco_sidepixel = 100  # size of the image in pixels
 aruco_borderbits = 10  # width of the marker border.
 aruco_max = 100
-texture_path = "../infobot_gazebo_environment/models/aruco/materials/textures"
-material_script_path = "../infobot_gazebo_environment/models/aruco/materials/scripts/"
+texture_path = "../simlan_gazebo_environment/models/aruco/materials/textures"
+material_script_path = "../simlan_gazebo_environment/models/aruco/materials/scripts/"
 
 shutil.rmtree(texture_path, ignore_errors=True)
 os.mkdir(texture_path)

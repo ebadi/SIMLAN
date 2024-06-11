@@ -60,7 +60,7 @@ It is defined in XY plane and the center of the AMR is on x,y=0,0 and the bottom
 
 Define **scale** , **pos** and collision in these files:
 
-We write our AMR description in `infobot_gazebo_environment/urdf` and use `xacro` to create a `urdf` file with gazebo tags (so not a pure urdf file) that can be used both by `state_publisher` and `gazebo` (unlike 2 separate files  `model.sdf` that is used for Gazebo and `turtlebot.urf` that is used for state_publisher in original Turtlebot_simulation git project.
+We write our AMR description in `simlan_gazebo_environment/urdf` and use `xacro` to create a `urdf` file with gazebo tags (so not a pure urdf file) that can be used both by `state_publisher` and `gazebo` (unlike 2 separate files  `model.sdf` that is used for Gazebo and `turtlebot.urf` that is used for state_publisher in original Turtlebot_simulation git project.
 
 There are two actual diffdrive wheels that are named `left` and `right` and four supporting wheel to balance the robot that are named `front_left`, `front_right` and `back_left` and `back_right` (they have no friction and can be moved to different position) with the radius of 0.98 of the main wheels.
 

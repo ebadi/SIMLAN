@@ -6,7 +6,7 @@
 mkdir -p ./phobos_out/unnamed/
 blender -b --python convert_helper.py -- $1 $3
 
-outdir=../infobot_gazebo_environment/models/$2
+outdir=../simlan_gazebo_environment/models/$2
 rm -rf $outdir
 mkdir -p $outdir
 mkdir -p $outdir/meshes
@@ -25,7 +25,7 @@ echo "<?xml version=\"1.0\" ?>
     <version>1.0</version>
     <sdf version=\"1.7\">model.sdf</sdf>
     <author>
-        <name>infobot project</name>
+        <name>SIMLAN project</name>
     </author>
     <description>Auto-generated sdf model file for $2.</description>
 </model>" > $outdir/model.config

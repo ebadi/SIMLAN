@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>infobot_gazebo_environment</name>
+  <name>simlan_gazebo_environment</name>
   <version>2.2.6</version>
   <description>Gazebo simulation</description>
   <license>Apache 2.0</license>
