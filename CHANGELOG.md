@@ -1,13 +1,13 @@
 ## Experimental (Delivery 3 )
 
-- D3.3 Normal images (random objects, in random position & orientation)
+- D3.4 Out distribution data collection
+- D3.3 In distribution data collection
 - D3.2 Images for stitching.
 - D3.1 Dataset draft for HH
-- CI/CD and k8s integration by Vasilki and Filip
+- CI/CD and Kubernetes integration by Filip Melberg, Vasiliki Kostara
 - camera image dump
 - Jackal integration
 - Docker/vscode
-- ETC
 
 ## Jackal Robot (Mar 2024) - Christoffer Johannesson
 

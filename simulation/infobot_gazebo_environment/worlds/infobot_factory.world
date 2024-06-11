@@ -554,14 +554,14 @@
     <include>
       <uri>model://eur_pallet</uri>
       <name>pallet_group_pickup</name>
-      <pose>26 27 0.001 0 0 0</pose>
+      <pose>-15 4 0.001 0 0 0</pose>
     </include>
 
 
     <include>
       <uri>model://box_1185x785x1010</uri>
       <name>box_group_pickup</name>
-      <pose>24 20 0.4 0 0 0</pose>
+      <pose>-15  5 0.4 0 0 0</pose>
     </include>
 
 
@@ -580,9 +580,23 @@
 
   <!-- Objects for data collection-->
 
+
+    <include>
+      <static>1</static>
+      <uri>model://support_pole</uri>
+      <name>support_pole_move</name>
+      <pose>35 3 0.001 0 0 0</pose>
+    </include>
+
+    <include>
+      <uri>model://box_1185x785x1010</uri>
+      <name>box_move</name>
+      <pose>24 20 0.4 0 0 0</pose>
+    </include>
+
     <include>
       <uri>model://eur_pallet</uri>
-      <name>eur_pallet</name>
+      <name>eur_pallet_move</name>
       <pose>25 25 0.1 0 0 0</pose>
     </include>
 
@@ -600,7 +614,7 @@
       <pose>25 28 0.4 0 0 0</pose>
     </include>
 
-    <light name='user_spot_light_0' type='spot'>
+    <light name='user_spot_light_move' type='spot'>
       <pose>20.0 20.0 1 0 0 0</pose>
       <diffuse>0.5 0.5 0.5 1</diffuse>
       <specular>0.1 0.1 0.1 1</specular>
@@ -618,6 +632,7 @@
         <falloff>1</falloff>
       </spot>
     </light>
+
 
 
     <plugin name="gazebo_ros_state" filename="libgazebo_ros_state.so">

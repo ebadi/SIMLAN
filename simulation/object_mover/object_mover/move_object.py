@@ -7,12 +7,14 @@ from gazebo_msgs.srv import SetEntityState
 import subprocess
 import random
 
+PI = 3.14
+
 
 class MoveObject(Node):
 
     def __init__(self):
         super().__init__("move_object")
-
+        self.MODE = "normal"
         self.cli = self.create_client(SetEntityState, "gazebo/set_entity_state")
         while not self.cli.wait_for_service(timeout_sec=1.0):
             self.get_logger().info("service not available, waiting again...")
@@ -21,23 +23,36 @@ class MoveObject(Node):
         # set some default values for the request
         self.req = SetEntityState.Request()
         self.req.state.reference_frame = "world"
-        self.req.state.name = "eur_pallet"
+        self.req.state.name = "eur_pallet_move"
         self.pose = [0.0, 0.0, 0.0]
         self.orientation = [0.0, 0.0, 0.0, 0.0]
-
-        # create lists to loop through with objects, poses and orientations
-        self.orientations = 225  # Request from Jesper: 225 orientations in each cell
-        self.grid_x = [22.6, 25.6]  # [22.0, 25.6]
-        self.grid_y = [-1, 9]  # [-0.5, 3.8]
+        self.grid_x = [22.6, 25.6]
+        self.grid_y = [-1, 9]
         self.grid_count = 15  # Request from Jesper: 15x15 grid
-
-        self.objects = ["jackal", "infobot", "eur_pallet", "box_group_pickup"]
         self.objects_default_position = {
             "jackal": (40.0, 40.0),
             "infobot": (43.0, 43.0),
-            "eur_pallet": (46.0, 46.0),
-            "box_group_pickup": (50.0, 50.0),
+            "eur_pallet_move": (46.0, 46.0),
+            "box_move": (50.0, 50.0),
+            "traffic_cone": (53.0, 53.0),
+            "cameras": (0.0, 0.0),
+            "user_spot_light_move": (30.0, 30.0),
+            "support_pole_move": (50.0, 50.0),
         }
+
+        if self.MODE == "normal":
+            self.objects = ["jackal", "infobot", "eur_pallet_move", "box_move"]
+        else:
+            self.objects = [
+                "jackal",
+                "infobot",
+                "eur_pallet_move",
+                "box_move",
+                "traffic_cone",
+                "user_spot_light_move",
+                "support_pole_move",
+            ]
+
         self.timer_period = 1  # seconds
 
     def start(self):
@@ -67,7 +82,13 @@ class MoveObject(Node):
         return future.result()
 
     def timer_callback(self):
-        self.reset_pose()
+        if self.MODE == "normal":
+            self.reset_pose()
+        else:
+            # Make it possible to have two object in the scene by not moving the old object back to the default position
+            prob_not_moving = [True, True, True, True, True, False]
+            if random.choice(prob_not_moving):
+                self.reset_pose()
         self.send_request()
         self.update_pose()
         self.send_request()
@@ -82,12 +103,35 @@ class MoveObject(Node):
 
     def update_pose(self):
         self.req.state.name = random.choice(self.objects)
-        self.pose = [
-            random.uniform(self.grid_x[0], self.grid_x[1]),
-            random.uniform(self.grid_y[0], self.grid_y[1]),
-            0.0,
-        ]
-        self.orientation = quaternion_from_euler(0, 0, random.uniform(-1, 1))
+        if self.MODE == "normal":
+            self.pose = [
+                random.uniform(self.grid_x[0], self.grid_x[1]),
+                random.uniform(self.grid_y[0], self.grid_y[1]),
+                0.0,
+            ]
+            self.orientation = quaternion_from_euler(0, 0, random.uniform(-1, 1))
+        else:
+            self.pose = [
+                random.uniform(self.grid_x[0], self.grid_x[1]),
+                random.uniform(self.grid_y[0], self.grid_y[1]),
+                random.uniform(2, 3),
+            ]
+            # PI/6 = 30 degree
+            # PI/4 = 45 degree
+            if self.req.state.name == "user_spot_light_move":
+                # make sure not major rotation is done, < 30 degree
+                self.orientation = quaternion_from_euler(
+                    random.uniform(-PI / 6, PI / 6),
+                    random.uniform(PI / 6, PI / 6),
+                    random.uniform(PI / 6, PI / 6),
+                )
+            else:
+                # make sure there is a visible rotation, > 45 degree
+                self.orientation = quaternion_from_euler(
+                    random.uniform(PI / 4, (2 * PI) - PI / 4),
+                    random.uniform(PI / 4, (2 * PI) - PI / 4),
+                    random.uniform(PI / 4, (2 * PI) - PI / 4),
+                )
 
 
 def quaternion_from_euler(roll: float, pitch: float, yaw: float) -> list[float]:

@@ -42,11 +42,11 @@ then
     # environment
     # SIM_ENV=CICD or DEV
     # agents
-    #(sleep 8 && ros2 launch infobot_agent infobot.launch.py)&
+    (sleep 12 && ros2 launch infobot_agent infobot.launch.py)&
     #echo "> Infobot is queed to be spawned"
-    #(sleep 8 && ros2 launch dyno_jackal_bringup sim.launch.py)&
+    (sleep 10 && ros2 launch dyno_jackal_bringup sim.launch.py)&
     #echo "> Jackal is queed to be spawned"
-    (sleep 5 && ros2 launch static_agent_launcher static-agent.launch.py)&
+    (sleep 7 && ros2 launch static_agent_launcher static-agent.launch.py)&
     echo "> Static agents are queed to be spawned"
     echo "> starting Gazebo"
     # This has to be blocking so that k8s can restart when it crashes
