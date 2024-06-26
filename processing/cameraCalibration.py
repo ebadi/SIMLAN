@@ -117,7 +117,13 @@ class Camera_config:
 
         # rpy, R, Q, Qx, Qy, Qz = cv2.RQDecomp3x3(self.ex_rot_mat)
 
-        self.r, self.p, self.w = rotationMatrixToEulerAngles(self.ex_rot_mat)
+        R_world_to_cam = self.ex_rot_mat
+        R_cam_to_gazebocam = np.array([[ 0.,  0.,  1.],
+                                        [-1., 0., 0.],
+                                        [0., -1., 0.]])
+        R_world_to_gazebocam = np.matmul(R_cam_to_gazebocam, R_world_to_cam)
+        R_gazebocam_to_world = np.linalg.inv(R_world_to_gazebocam)
+        self.r, self.p, self.w = rotationMatrixToEulerAngles(R_gazebocam_to_world)
         print(
             f"""<xacro:camera number="{self.camera_name}" x="{self.x}" y="{self.y}" z="{self.z}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
         )
