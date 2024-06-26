@@ -25,7 +25,8 @@ clean () {
 
 build () {
     clean
-    #(cd processing/; ./camconf2xacro.sh > ../simulation/static_agent_launcher/description/camera_config.xacro )
+    mkdir processing/camera_data/
+    (cd processing/; ./camconf2xacro.sh > ../simulation/static_agent_launcher/description/camera_config.xacro )
     colcon build --merge-install --symlink-install --cmake-args " -Wno-dev "
     echo "successful build"
 }

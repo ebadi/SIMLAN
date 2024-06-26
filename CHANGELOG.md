@@ -1,5 +1,6 @@
 ## Experimental (Delivery 3 )
 
+- Updated camera  extrinsics, fixing OpenCV camera calibration to Gazebo simulator conversion) : Erik Brorsson, Volvo
 - D3.4 Out distribution data collection
 - D3.3 In distribution data collection
 - D3.2 Images for stitching.

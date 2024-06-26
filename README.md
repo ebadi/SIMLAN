@@ -22,7 +22,15 @@ Click on image below to see the Volvo layout demo:
 
 ## Installation in development environment
 
-*Dependencies*: `vscode` (with `Dev containers` extension installed) and `docker`. Make sure to accept installation of vscode extensions when you open the project.
+*Dependencies*: `vscode` (with `Dev containers` extension installed) and `docker` with `nvidia-container-runtime` and `nvidia-docker2` package installed. Make sure the you see nvidia when you run `docker info|grep -i runtime` like below:
+
+```
+$ docker info|grep -i runtime
+ Runtimes: nvidia runc
+ Default Runtime: runc
+```
+
+Also make sure to accept the installation of all vscode extensions when you open the project.
 
 If you have any issue with docker incompatibility, make sure that `docker compose` or `docker-compose` is set correctly in the setting.
 ![dev container in vscode](resources/dev-container-config.png)

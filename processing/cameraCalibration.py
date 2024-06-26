@@ -88,8 +88,8 @@ class Camera_config:
         # other possible _AXES2TUPLE : https://github.com/matthew-brett/transforms3d/blob/main/transforms3d/euler.py#L148
         # https://www.andre-gaschler.com/rotationconverter/
 
-        self.width = int(in_image_shape[0][0])
-        self.height = int(in_image_shape[1][0])
+        self.height = int(in_image_shape[0][0])
+        self.width = int(in_image_shape[1][0])
 
         # 84 degree to 1.46607657 radians
         # http://sdformat.org/spec?ver=1.11&elem=sensor#camera_distortion
@@ -117,10 +117,15 @@ class Camera_config:
 
         # rpy, R, Q, Qx, Qy, Qz = cv2.RQDecomp3x3(self.ex_rot_mat)
 
+        # R_temp = np.array([
+        #     [0, -1 ,0],
+        #     [0, 0, -1],
+        #     [1, 0, 0]
+        # ])
         R_world_to_cam = self.ex_rot_mat
-        R_cam_to_gazebocam = np.array([[ 0.,  0.,  1.],
-                                        [-1., 0., 0.],
-                                        [0., -1., 0.]])
+        R_cam_to_gazebocam = np.array(
+            [[0.0, 0.0, 1.0], [-1.0, 0.0, 0.0], [0.0, -1.0, 0.0]]
+        )
         R_world_to_gazebocam = np.matmul(R_cam_to_gazebocam, R_world_to_cam)
         R_gazebocam_to_world = np.linalg.inv(R_world_to_gazebocam)
         self.r, self.p, self.w = rotationMatrixToEulerAngles(R_gazebocam_to_world)
@@ -132,6 +137,7 @@ class Camera_config:
 if __name__ == "__main__":
 
     if len(sys.argv) != 4:
+        print("incorrect number of arguments:", len(sys.argv))
         print(
             "first argument: [opencv_intrinsic.yaml] [opencv_extrinsic.yaml] [camera_name]"
         )
