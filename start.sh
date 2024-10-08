@@ -25,7 +25,8 @@ clean () {
 
 build () {
     clean
-    #(cd processing/; ./camconf2xacro.sh > ../simulation/static_agent_launcher/description/camera_config.xacro )
+    mkdir processing/camera_data/
+    (cd processing/; ./camconf2xacro.sh > ../simulation/static_agent_launcher/description/camera_config.xacro )
     colcon build --merge-install --symlink-install --cmake-args " -Wno-dev "
     echo "successful build"
 }
@@ -81,45 +82,53 @@ then
 elif [[ "$*" == *"nav"* ]]
 then
     ros2 launch infobot_navigation2 navigation2.launch.py use_sim_time:=True map:=maps/emptywarehouse.yaml
-elif [[ "$*" == *"cam_record"* ]]
+elif [[ "$*" == *"screenshot"* ]]
 then
     # python3 ./camera_subscriber.py
     # python3 ./camera_subscriber.py  --action save
     # python3 ./camera_subscriber.py  --action removebg  --algo KNN
     # algo: MOG2, KNN
     cd ./processing ;
-    python3 camera_subscriber.py --action save --camera $2
+    python3 camera_subscriber.py --action screenshot --camera $2 --shottime 4
+
+
 elif [[ "$*" == *"camera_dump"* ]]
 then
     cd ./processing ;
+    python3 camera_subscriber.py --action save --camera 160 &
+    python3 camera_subscriber.py --action save --camera 161 &
+    python3 camera_subscriber.py --action save --camera 162 &
+    python3 camera_subscriber.py --action save --camera 163 &
     python3 camera_subscriber.py --action save --camera 164 &
     python3 camera_subscriber.py --action save --camera 165 &
     python3 camera_subscriber.py --action save --camera 166 &
     python3 camera_subscriber.py --action save --camera 167 &
     python3 camera_subscriber.py --action save --camera 168 &
+    python3 camera_subscriber.py --action save --camera 169 &
+    python3 camera_subscriber.py --action save --camera 170 &
+    python3 camera_subscriber.py --action save --camera 171 &
 
-    python3 camera_subscriber.py --action save --camera 264 &
-    python3 camera_subscriber.py --action save --camera 265 &
-    python3 camera_subscriber.py --action save --camera 266 &
-    python3 camera_subscriber.py --action save --camera 267 &
-    python3 camera_subscriber.py --action save --camera 268 &
 
-    python3 camera_subscriber.py --action save --camera 364 &
-    python3 camera_subscriber.py --action save --camera 365 &
-    python3 camera_subscriber.py --action save --camera 366 &
-    python3 camera_subscriber.py --action save --camera 367 &
-    python3 camera_subscriber.py --action save --camera 368 &
 
-    python3 camera_subscriber.py --action save --camera 464 &
-    python3 camera_subscriber.py --action save --camera 465 &
-    python3 camera_subscriber.py --action save --camera 466 &
-    python3 camera_subscriber.py --action save --camera 467 &
-    python3 camera_subscriber.py --action save --camera 468 &
+    # python3 camera_subscriber.py --action save --camera 264 &
+    # python3 camera_subscriber.py --action save --camera 265 &
+    # python3 camera_subscriber.py --action save --camera 266 &
+    # python3 camera_subscriber.py --action save --camera 267 &
+    # python3 camera_subscriber.py --action save --camera 268 &
 
-elif [[ "$*" == *"screenshot"* ]]
-then
-    cd ./processing ;
-    python3 camera_subscriber.py --action screenshot --camera $2 --shottime 4
+    # python3 camera_subscriber.py --action save --camera 364 &
+    # python3 camera_subscriber.py --action save --camera 365 &
+    # python3 camera_subscriber.py --action save --camera 366 &
+    # python3 camera_subscriber.py --action save --camera 367 &
+    # python3 camera_subscriber.py --action save --camera 368 &
+
+    # python3 camera_subscriber.py --action save --camera 464 &
+    # python3 camera_subscriber.py --action save --camera 465 &
+    # python3 camera_subscriber.py --action save --camera 466 &
+    # python3 camera_subscriber.py --action save --camera 467 &
+    # python3 camera_subscriber.py --action save --camera 468 &
+
+
 elif [[ "$*" == *"test"* ]]
 then
     # Running python unittest, https://docs.ros.org/en/humble/Tutorials/Intermediate/Testing/Python.html

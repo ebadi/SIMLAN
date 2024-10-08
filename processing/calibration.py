@@ -57,7 +57,7 @@ class Camera_config:
         self.in_xi = intrinsic_yaml.getNode("xi").mat()  # 0
 
         # 3 items
-        in_image_shape = intrinsic_yaml.getNode("image_shape").mat()
+        self.in_image_shape = intrinsic_yaml.getNode("image_shape").mat()
 
         # 9 items: rotation vectors
         self.ex_rot_mat = extrinsic_yaml.getNode("rot_mat").mat()
@@ -88,17 +88,19 @@ class Camera_config:
         # other possible _AXES2TUPLE : https://github.com/matthew-brett/transforms3d/blob/main/transforms3d/euler.py#L148
         # https://www.andre-gaschler.com/rotationconverter/
 
-        self.width = int(in_image_shape[0][0])
-        self.height = int(in_image_shape[1][0])
+        self.height = int(self.in_image_shape[0][0])
+        self.width = int(self.in_image_shape[1][0])
 
         # 84 degree to 1.46607657 radians
         # http://sdformat.org/spec?ver=1.11&elem=sensor#camera_distortion
 
         self.k1 = self.in_D[0][0]
         self.k2 = self.in_D[1][0]
+        self.k3 = self.in_D[4][0]
         self.p1 = self.in_D[2][0]
         self.p2 = self.in_D[3][0]
-        self.k3 = self.in_D[4][0]
+
+        # [OpenCV](https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html) uses five parameters, known as distortion coefficients given by like this: `k1, k2, p1, p2 , k3 # pay attention to the order`
 
         self.px = self.in_K[0][2]
         self.py = self.in_K[1][2]
@@ -113,19 +115,35 @@ class Camera_config:
 
         self.fovhor = self.fov_x
         self.fovaspect = self.fov_x / self.fov_y
-        # [OpenCV](https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html) uses five parameters, known as distortion coefficients given by like this: `k1, k2, p1, p2 , k3 # pay attention to the order`
 
         # rpy, R, Q, Qx, Qy, Qz = cv2.RQDecomp3x3(self.ex_rot_mat)
 
-        self.r, self.p, self.w = rotationMatrixToEulerAngles(self.ex_rot_mat)
-        print(
-            f"""<xacro:camera number="{self.camera_name}" x="{self.x}" y="{self.y}" z="{self.z}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width/20)}" height="{int(self.height/20)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
+        # R_temp = np.array([
+        #     [0, -1 ,0],
+        #     [0, 0, -1],
+        #     [1, 0, 0]
+        # ])
+        R_world_to_cam = self.ex_rot_mat
+        R_cam_to_gazebocam = np.array(
+            [[0.0, 0.0, 1.0], [-1.0, 0.0, 0.0], [0.0, -1.0, 0.0]]
         )
+        R_world_to_gazebocam = np.matmul(R_cam_to_gazebocam, R_world_to_cam)
+        R_gazebocam_to_world = np.linalg.inv(R_world_to_gazebocam)
+
+        # First, it turns out that the cameras in gazebo use another coordinate system than what is usually used for cameras (e.g., assumed by the calibration methods in opencv).
+        # Therefore, a rotation matrix R_cam_to_gazebocam to account is introduced.
+        # Second, rather than computing the Euler angles from R_world_to_gazebocam, (which was our initial attempt), the Euler angles must be computed from R_gazebocam_to_world.
+
+        self.r, self.p, self.w = rotationMatrixToEulerAngles(R_gazebocam_to_world)
+
+    def __str__(self):
+        return f"""<xacro:camera number="{self.camera_name}" x="{self.x}" y="{self.y}" z="{self.z}" r="{self.r}" p="{self.p}" w="{self.w}" width="{int(self.width)}" height="{int(self.height)}" k1="{self.k1}" k2="{self.k2}" k3="{self.k3}" p1="{self.p1}" p2="{self.p2}" horizental_fov="{self.fovhor}" aspect_ratio="{self.fovaspect}"  />   """
 
 
 if __name__ == "__main__":
 
     if len(sys.argv) != 4:
+        print("incorrect number of arguments:", len(sys.argv))
         print(
             "first argument: [opencv_intrinsic.yaml] [opencv_extrinsic.yaml] [camera_name]"
         )
@@ -134,4 +152,4 @@ if __name__ == "__main__":
     extrinsic_yaml_file = sys.argv[2]
     name = sys.argv[3]
 
-    Camera_config(intrinsic_yaml_file, extrinsic_yaml_file, name)
+    print(Camera_config(intrinsic_yaml_file, extrinsic_yaml_file, name))

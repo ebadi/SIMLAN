@@ -4,9 +4,3 @@ log/
 build/
 *.ply
 sdf*
-camera_data/*.jpg
-camera_data/*.png
-*.jpg
-*.png
-
-

@@ -66,6 +66,15 @@ Specification of items
 - [SDF tutorial](https://github.com/gazebosim/sdf_tutorials)
 - [FreeCAD RobotCreator Workbench](https://github.com/maidenone/RobotCreator)
 
+Camera projection
+
+- https://github.com/polygon-software/python-visual-odometry/blob/master/Chapter%203%20-%20Camera%20Projection.ipynb
+- https://classic.gazebosim.org/tutorials?tut=camera_distortion
+- https://learnopencv.com/rotation-matrix-to-euler-angles/
+- https://www.geeksforgeeks.org/calibratecamera-opencv-in-python/
+- https://docs.opencv.org/4.x/dc/dbb/tutorial_py_calibration.html
+- http://sdformat.org/tutorials?tut=specify_pose
+
 Jackal Robot:
 
 The Clearpath Jackal Robot code is forked by Dyno Robotics from Clearpaths [jackal](https://github.com/jackal/jackal) Github. Branch foxy-devel is ported to dyno_humble, where changes for namespacing and a bringup package is added.

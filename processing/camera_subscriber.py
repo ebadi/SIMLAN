@@ -23,7 +23,7 @@ import argparse
 
 import cv2 as cv
 
-import cameraCalibration
+import calibration
 import shutil
 import os
 
@@ -42,7 +42,7 @@ class MultiCameraSubscriber(Node):
         )
 
         self.background_sub = None
-        camera_conf = cameraCalibration.Camera_config(
+        camera_conf = calibration.Camera_config(
             "intrinsic/" + camera_id + ".yaml",
             "extrinsic/" + camera_id + ".yaml",
             camera_id,
