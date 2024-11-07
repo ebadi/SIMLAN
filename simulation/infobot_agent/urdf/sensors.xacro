@@ -20,7 +20,7 @@
     <visual>
       <origin xyz="0 0 0" rpy="0 0 0"/>
       <geometry>
-        <mesh filename="package://infobot_common/meshes/lds.dae" scale="0.001 0.001 0.001"/>
+        <mesh filename="file://$(find infobot_agent)/models/infobot_common/meshes/lds.dae" scale="0.001 0.001 0.001"/>
       </geometry>
       <material name="dark"/>
     </visual>
@@ -36,7 +36,7 @@
     <visual>
      <origin xyz="0 0 0" rpy="0 0 ${pi/2}"/>
       <geometry>
-       <mesh filename="package://infobot_common/meshes/camera.dae" scale="1 1 1" />
+       <mesh filename="file://$(find infobot_agent)/models/infobot_common/meshes/camera.dae" scale="1 1 1" />
       </geometry>
     </visual>
   </link>

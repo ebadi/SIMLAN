@@ -1,3 +1,8 @@
+### 1.0.5 Bringup pkg for project added - Christoffer Johannesson
+
+- Bringup pkg for project added to simplify launch
+- DynoWaitFor function added to avoid race conditions in launch
+
 ### 1.0.4: Delivery 3 (Oct 2024)
 
 - SMILE-IV and ArtWork projects contributions
