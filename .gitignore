@@ -1,5 +1,5 @@
 # This has to be uncommented unless you are adding to the internal git repo
-internal
+# internal
 # ros2 colcon
 install/
 log/

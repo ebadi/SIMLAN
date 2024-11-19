@@ -1,7 +1,9 @@
-### 1.0.5 Bringup pkg for project added - Christoffer Johannesson
+### 1.0.5: Devivery 4 (Dec 2024)
 
-- Bringup pkg for project added to simplify launch
-- DynoWaitFor function added to avoid race conditions in launch
+- fix: infobot mesh link error : Christoffer Johannesson
+- Trajectory processing : Hamid Ebadi
+- feat: added DynoWaitFor to make sure Jackal is launched last
+- simlan_bringup pkg created : Christoffer Johannesson
 
 ### 1.0.4: Delivery 3 (Oct 2024)
 

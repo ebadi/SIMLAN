@@ -9,7 +9,7 @@
 <xacro:if value="${robot_type == 'GOPAL400'}">
             <origin xyz="0 0 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="file://$(find infobot_agent)/models/infobot_common/meshes/AMR_GP400.dae" scale="1 1 1"/>
+                <mesh filename="package://infobot_common/meshes/AMR_GP400.dae" scale="1 1 1"/>
                 <!-- <box size="${base_length} ${base_width} ${base_height}" /> -->
             </geometry>
 </xacro:if>
@@ -17,7 +17,7 @@
 <xacro:if value="${robot_type == 'FORKLIFT'}">
             <origin xyz="-1.5 -0.5 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="file://$(find simlan_gazebo_environment)/models/forklift_robot/forklift_robot_description/meshes/base_link.dae"/>
+                <mesh filename="package://forklift_robot/forklift_robot_description/meshes/base_link.dae"/>
             </geometry>
 </xacro:if>
         </visual>
@@ -25,7 +25,7 @@
         <collision>
 <xacro:if value="${robot_type == 'GOPAL400'}">
             <geometry>
-                <mesh filename="file://$(find infobot_agent)/models/infobot_common/meshes/AMR_GP400.dae" scale="1 1 1"/>
+                <mesh filename="package://infobot_common/meshes/AMR_GP400.dae" scale="1 1 1"/>
                 <!-- <box size="${base_length} ${base_width} ${base_height}" />  -->
             </geometry>
 </xacro:if>
@@ -33,7 +33,7 @@
 <xacro:if value="${robot_type == 'FORKLIFT'}">
             <origin xyz="-1.5 -0.5 0" rpy="0 0 0" />
             <geometry>
-                <mesh filename="file://$(find simlan_gazebo_environment)/models/forklift_robot/forklift_robot_description/meshes/base_link.dae"/>
+                <mesh filename="package://forklift_robot/forklift_robot_description/meshes/base_link.dae"/>
             </geometry>
 </xacro:if>
         </collision>

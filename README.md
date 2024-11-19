@@ -33,19 +33,10 @@ This simulation environment, based on the Gazebo simulator and ROS2, resembles a
     - [`warehouse/README.md`](simulation/raw_models/warehouse/README.md) : warehouse specification
   - `simlan_gazebo_environment/`
   - `static_agent_launcher/`
-    *Dependencies*: `vscode` (with `Dev containers` extension installed) and `docker` with `nvidia-container-runtime` and `nvidia-docker2` package installed. Make sure the you see nvidia when you run `docker info|grep -i runtime` like below:
-
-```
-$ docker info|grep -i runtime
- Runtimes: nvidia runc
- Default Runtime: runc
-```
-
-Also make sure to accept the installation of all vscode extensions when you open the project.
 
 - [`processing/`](processing/): to positions cameras in simulator and processing images from simulation
 
-  - [`camera_data/`](processing/camera_data/) : camera data stored here
+  - [`camera_data/`](processing/camera_data/) : camera data are stored here
 
   - [`extrinsic/`](processing/extrinsic/) : extrinsic camera calibration
 
@@ -236,6 +227,10 @@ To test the unit tests before pushing new codes:
 ```bash
 ./start.sh test
 ```
+
+### Volvo GPSS (Generic photo-based sensor system)
+
+[GPSS (Generic photo-based sensor system)](https://www.youtube.com/watch?v=DA7lKiCdkCc), utilizes ceiling mounted cameras, deep learning and computer vision algorithms, and very simple transport robots.
 
 ### Research Funding
 
