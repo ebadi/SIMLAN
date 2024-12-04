@@ -31,10 +31,37 @@ dictionary = cv.aruco.getPredefinedDictionary(cv.aruco.DICT_5X5_1000)
 parameters = cv.aruco.DetectorParameters()
 detector = cv.aruco.ArucoDetector(dictionary, parameters)
 
+import rclpy
+from rclpy.node import Node
+from rclpy.qos import qos_profile_system_default
+from rcl_interfaces.srv import GetParameters
+
+
+class StatusClient(Node):
+    def __init__(self):
+        super().__init__("status_client")
+        self.client = self.create_client(GetParameters, "status_server")
+        while not self.client.wait_for_service(timeout_sec=1.0):
+            self.get_logger().info("Waiting for status service...")
+        self.request = GetParameters.Request()
+
+    def send_request(self):
+        future = self.client.call_async(self.request)
+        rclpy.spin_until_future_complete(self, future)
+        if future.result() is not None:
+            # Extract and log the `double_value` field from each ParameterValue
+            values = [param.double_value for param in future.result().values]
+            self.get_logger().info(f"status received: {values}")
+        else:
+            self.get_logger().error("Failed to call service")
+        return values
+
 
 class MultiCameraSubscriber(Node):
     def __init__(self, camera_id):
         super().__init__("image_subscriber")
+        self.node = StatusClient()
+
         qos_profile = QoSProfile(
             reliability=QoSReliabilityPolicy.BEST_EFFORT,
             history=QoSHistoryPolicy.KEEP_LAST,
@@ -71,45 +98,54 @@ class MultiCameraSubscriber(Node):
     def image_callback(self, msg, camera_id, camera_conf):
         timestamp = str(int(time()))
         print(camera_id, timestamp)
-        try:
-            # Convert ROS Image message to OpenCV format imgmsg_to_cv
-            cv_image = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
-            # cv_image = cv.rotate(cv_image_rotated, cv.ROTATE_90_CLOCKWISE)
+        # Convert ROS Image message to OpenCV format imgmsg_to_cv
+        cv_image = self.cv_bridge.imgmsg_to_cv2(msg, desired_encoding="bgr8")
+        # cv_image = cv.rotate(cv_image_rotated, cv.ROTATE_90_CLOCKWISE)
+        # np_image = numpy.array(cv_image)
+        # detect_aruco(cv_image)
+        status_response = self.node.send_request()
+        print(status_response)
+        if (
+            status_response[0] == 41.0
+            and status_response[1] == 41.0
+            and status_response[2] == 41.0
+        ):
+            print("Recieved End Sequence")
+            raise Exception("End Sequence")
+        if args.action == "save":
+            # cv.imshow('raw-image-'  + camera_id , cv_image)
+            cv.imwrite(
+                os.path.join(
+                    DATA_DIR,
+                    "raw_"
+                    # + timestamp
+                    + "_"
+                    + camera_id
+                    + "_"
+                    + (",".join(map(str, status_response)))
+                    + ".png",
+                ),
+                cv_image,
+            )
+            # cv.waitKey(1)
+        elif args.action == "screenshot":
+            print("Screeshot timers", timestamp, start_timestamp, args.shottime)
+            cv.imwrite(
+                os.path.join(DATA_DIR, "screenshot_" + camera_id + ".png"), cv_image
+            )
+            if int(timestamp) > start_timestamp + args.shottime:
+                exit(0)
+        elif args.action == "removebg":
+            fgMask = self.background_sub.apply(cv_image)
+            # cv.imshow('mask-image-'  + camera_id , fgMask)
+            cv.imwrite(
+                os.path.join(DATA_DIR, "mask_" + timestamp + "_" + camera_id + ".png"),
+                fgMask,
+            )
+            # cv.waitKey(1)
 
-            # np_image = numpy.array(cv_image)
-            # detect_aruco(cv_image)
-            if args.action == "save":
-                # cv.imshow('raw-image-'  + camera_id , cv_image)
-                cv.imwrite(
-                    os.path.join(
-                        DATA_DIR, "raw_" + timestamp + "_" + camera_id + ".jpg"
-                    ),
-                    cv_image,
-                )
-                # cv.waitKey(1)
-            elif args.action == "screenshot":
-                print("Screeshot timers", timestamp, start_timestamp, args.shottime)
-                cv.imwrite(
-                    os.path.join(DATA_DIR, "screenshot_" + camera_id + ".jpg"), cv_image
-                )
-                if int(timestamp) > start_timestamp + args.shottime:
-                    exit(0)
-            elif args.action == "removebg":
-                fgMask = self.background_sub.apply(cv_image)
-                # cv.imshow('mask-image-'  + camera_id , fgMask)
-                cv.imwrite(
-                    os.path.join(
-                        DATA_DIR, "mask_" + timestamp + "_" + camera_id + ".jpg"
-                    ),
-                    fgMask,
-                )
-                # cv.waitKey(1)
-
-            else:
-                print("unknown action" + args.action)
-
-        except Exception as e:
-            self.get_logger().error(f"Error processing image: {str(e)}")
+        else:
+            print("unknown action" + args.action)
 
 
 start_timestamp = int(time())

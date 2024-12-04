@@ -1,8 +1,8 @@
-### 1.0.5: Devivery 4 (Dec 2024)
+### 1.0.5: Delivery 4 (Dec 2024)
 
-- fix: infobot mesh link error : Christoffer Johannesson
-- Trajectory processing : Hamid Ebadi
-- feat: added DynoWaitFor to make sure Jackal is launched last
+- D3.5 Disentanglement: One-parameter Object Movements.
+- Trajectory visualization : Hamid Ebadi
+- feat: added DynoWaitFor to make sure Jackal is launched last (synchronisation issue)
 - simlan_bringup pkg created : Christoffer Johannesson
 
 ### 1.0.4: Delivery 3 (Oct 2024)

@@ -95,18 +95,18 @@ then
 elif [[ "$*" == *"camera_dump"* ]]
 then
     cd ./processing ;
-    python3 camera_subscriber.py --action save --camera 160 &
-    python3 camera_subscriber.py --action save --camera 161 &
-    python3 camera_subscriber.py --action save --camera 162 &
-    python3 camera_subscriber.py --action save --camera 163 &
-    python3 camera_subscriber.py --action save --camera 164 &
-    python3 camera_subscriber.py --action save --camera 165 &
-    python3 camera_subscriber.py --action save --camera 166 &
-    python3 camera_subscriber.py --action save --camera 167 &
-    python3 camera_subscriber.py --action save --camera 168 &
-    python3 camera_subscriber.py --action save --camera 169 &
-    python3 camera_subscriber.py --action save --camera 170 &
-    python3 camera_subscriber.py --action save --camera 171 &
+    # python3 camera_subscriber.py --action save --camera 160 &
+    # python3 camera_subscriber.py --action save --camera 161 &
+    # python3 camera_subscriber.py --action save --camera 162 &
+    # python3 camera_subscriber.py --action save --camera 163 &
+    python3 camera_subscriber.py --action save --camera 164
+    # python3 camera_subscriber.py --action save --camera 165 &
+    # python3 camera_subscriber.py --action save --camera 166 &
+    # python3 camera_subscriber.py --action save --camera 167 &
+    # python3 camera_subscriber.py --action save --camera 168 &
+    # python3 camera_subscriber.py --action save --camera 169 &
+    # python3 camera_subscriber.py --action save --camera 170 &
+    # python3 camera_subscriber.py --action save --camera 171 &
 
 
 

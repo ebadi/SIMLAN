@@ -31,7 +31,7 @@
             <sensor name="camera_${number}" type="camera">
                 <always_on>true</always_on>
                 <visualize>true</visualize>
-                <update_rate>0</update_rate>
+                <update_rate>1</update_rate>
                 <camera name="intel_realsense_r200">
                   <horizontal_fov>${horizental_fov}</horizontal_fov>
                   <aspect_ratio>${aspect_ratio}</aspect_ratio>
